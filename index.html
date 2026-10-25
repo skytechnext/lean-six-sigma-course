@@ -71,7 +71,83 @@ code,.mono{font-family:var(--mono);font-size:.9em}
 main{padding-block:40px 80px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .col{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
 .lede{font-size:1.12rem;color:var(--muted);max-width:62ch}
-.prose{display:flex;flex-direction:column;gap:14px;max-width:68ch}
+.prose{display:flex;flex-direction:column;gap:14px}
+.prose>p,.prose>ul,.prose>ol{max-width:68ch}
+.brand-row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.theme-btn{padding:8px 10px;justify-content:center;gap:6px}
+.theme-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2}
+
+/* Diagrams */
+.fig{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;overflow-x:auto;display:flex;flex-direction:column;gap:10px}
+.fig>svg{display:block;width:100%;height:auto}
+.fig figcaption{font-size:.85rem;color:var(--muted);line-height:1.45}
+.fig svg text{fill:var(--ink);font-family:var(--body);font-size:12px}
+.fig svg .t-m{fill:var(--muted)} .fig svg .t-a{fill:var(--accent)} .fig svg .t-r{fill:var(--ucl)}
+.fig svg .t-s{font-size:10.5px} .fig svg .t-b{font-weight:600} .fig svg .t-mono{font-family:var(--mono)} .fig svg .t-l{font-size:15px}
+.s-box{fill:var(--surface);stroke:var(--line)} .s-bg{fill:var(--bg);stroke:var(--line)} .s-sunk{fill:var(--sunk)}
+.s-soft{fill:var(--accent-soft);stroke:var(--accent)} .s-acc{fill:var(--accent)} .s-accl{stroke:var(--accent);fill:none;stroke-width:2}
+.s-ln{stroke:var(--line);fill:none} .s-mu{stroke:var(--muted);fill:none;stroke-width:1.4} .s-ink{stroke:var(--ink);fill:none;stroke-width:1.6}
+.s-red{fill:var(--ucl)} .s-redl{stroke:var(--ucl);fill:none;stroke-width:1.6} .s-yel{fill:var(--belt-yellow)} .s-yell{stroke:var(--belt-yellow);fill:none;stroke-width:2.2}
+.s-grn{fill:var(--belt-green)} .s-dash{stroke-dasharray:5 4} .mk{fill:var(--muted)} .s-inkf{fill:var(--ink)}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:stretch}
+.flow .st{flex:1 1 110px;min-width:0;border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:var(--bg);display:flex;flex-direction:column;gap:2px;font-size:.84rem;line-height:1.35}
+.flow .st.hl{background:var(--accent-soft);border-color:var(--accent)}
+.flow .st small{color:var(--muted);font-size:.78rem}
+.flow .arrow{display:flex;flex-direction:column;justify-content:center;align-items:center;color:var(--muted);font-size:1.1rem;flex:none}
+.flow .arrow small{font-size:.68rem;color:var(--ucl);font-family:var(--mono);white-space:nowrap}
+.flow .arrow .ar{font-style:normal}
+.flow .arrow .ar::before{content:"→"}
+.house{display:flex;flex-direction:column;gap:6px;max-width:560px;width:100%;margin:0 auto;text-align:center;font-size:.85rem;line-height:1.35}
+.house .roof{background:var(--accent);color:var(--accent-ink);clip-path:polygon(50% 0,100% 100%,0 100%);padding:44px 16% 12px;font-weight:600}
+.house .pillars{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:6px}
+.house .pillars>div{border:1px solid var(--line);border-radius:6px;padding:14px 8px;display:flex;flex-direction:column;gap:4px;background:var(--bg)}
+.house .pillars>.pillar{background:var(--accent-soft);border-color:var(--accent)}
+.house .pillars span,.house .base span{color:var(--muted);font-size:.78rem}
+.house .base{background:var(--sunk);border-radius:6px;padding:8px;display:flex;flex-direction:column;gap:2px}
+.wgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.wgrid>div{border:1px solid var(--line);border-radius:8px;padding:10px;background:var(--bg);display:flex;flex-direction:column;gap:2px;font-size:.82rem;line-height:1.35}
+.wgrid b{font-family:var(--display);font-size:1.7rem;color:var(--accent);line-height:1}
+.wgrid span{font-weight:600} .wgrid small{color:var(--muted)}
+.stack{display:flex;height:34px;border-radius:6px;overflow:hidden;border:1px solid var(--line)}
+.stack>i{display:block;height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.82rem;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:12px;height:12px;border-radius:3px;display:inline-block}
+.c-acc{background:var(--accent)} .c-yel{background:var(--belt-yellow)} .c-sunk{background:var(--sunk)} .c-red{background:var(--ucl)} .c-grn{background:var(--belt-green)}
+.kb{display:grid;grid-template-columns:repeat(5,minmax(104px,1fr));gap:8px;min-width:560px}
+.kb>div{background:var(--sunk);border-radius:8px;padding:8px;display:flex;flex-direction:column;gap:6px;font-size:.8rem}
+.kb>div.full{outline:2px solid var(--belt-yellow);outline-offset:-2px}
+.kb h5{margin:0;font-size:.78rem;display:flex;justify-content:space-between;gap:6px;font-family:var(--mono);font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.kb .card{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:6px 8px;line-height:1.3}
+.ladder{display:flex;flex-direction:column;align-items:center;gap:4px}
+.ladder>div{border:1px solid var(--accent);border-radius:6px;padding:8px 12px;text-align:center;font-size:.85rem;line-height:1.35;display:flex;flex-direction:column;gap:2px;max-width:100%}
+.ladder>div small{color:var(--muted)}
+.ladder-ends{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.quad{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;gap:6px}
+.quad .qy{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--mono);font-size:.72rem;color:var(--muted);text-align:center;text-transform:uppercase;letter-spacing:.06em}
+.quad .qx{grid-column:2;font-family:var(--mono);font-size:.72rem;color:var(--muted);text-align:center;text-transform:uppercase;letter-spacing:.06em}
+.qgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.qgrid>div{border:1px solid var(--line);border-radius:8px;padding:10px;background:var(--bg);display:flex;flex-direction:column;gap:6px;font-size:.84rem;min-height:92px}
+.qgrid>div.hot{background:var(--accent-soft);border-color:var(--accent)}
+.qgrid small{color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:4px}
+.chips>span{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:2px 8px;font-size:.76rem}
+.a3{border:1px solid var(--line);border-radius:6px;background:var(--bg);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;overflow:hidden}
+.a3 .a3h{grid-column:1/-1;background:var(--sunk);padding:8px 12px;font-size:.84rem;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.a3 .col2{display:flex;flex-direction:column;gap:1px;background:var(--line)}
+.a3 .col2>div{background:var(--surface);padding:8px 12px;font-size:.8rem;display:flex;flex-direction:column;gap:2px}
+.a3 .col2 small{color:var(--muted)}
+.ctree{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.ctree>div{border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:10px;display:flex;flex-direction:column;gap:6px;font-size:.84rem}
+.ctree .r{display:flex;justify-content:space-between;gap:8px;border-top:1px dashed var(--line);padding-top:6px}
+.ctree .r b{font-family:var(--mono);color:var(--accent);font-weight:500;white-space:nowrap}
+
+/* Key-term definitions */
+.term{background:none;border:0;padding:0;margin:0;font:inherit;color:inherit;line-height:inherit;text-align:inherit;border-bottom:1.5px dotted var(--accent);cursor:help;border-radius:0}
+.term:hover,.term[aria-expanded="true"]{color:var(--accent)}
+#pop{position:fixed;z-index:50;max-width:min(320px,calc(100vw - 32px));background:var(--ink);color:var(--bg);padding:10px 12px;border-radius:8px;font-size:.88rem;line-height:1.45;box-shadow:0 8px 24px rgb(0 0 0 / .22)}
+#pop b{display:block;margin-bottom:2px;font-family:var(--display)}
+#pop a{color:inherit;font-size:.8rem;opacity:.8}
 .prose ul,.prose ol{margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:6px}
 .prose strong{font-weight:600}
 section.lesson{display:flex;flex-direction:column;gap:14px;padding-top:6px}
@@ -178,6 +254,11 @@ dl.gl dd{margin:0;color:var(--muted)}
   main{padding-block:24px 60px}
   .dmaic{grid-template-columns:minmax(0,1fr)}
   .tools,.belts{grid-template-columns:minmax(0,1fr)}
+  .wgrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .ctree{grid-template-columns:minmax(0,1fr)}
+  .flow .arrow{flex-basis:100%;flex-direction:row;gap:8px}
+  .flow .arrow .ar::before{content:"↓"}
+  .flow .st{flex-basis:100%}
   dl.gl>div{grid-template-columns:minmax(0,1fr);gap:2px}
   .pager a{max-width:100%;flex:1 1 100%}
 }
@@ -198,7 +279,10 @@ dl.gl dd{margin:0;color:var(--muted)}
         <span class="eyebrow">Beginner → Intermediate</span>
         <b>Lean Six Sigma Path</b>
       </div>
-      <button class="btn menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">Modules</button>
+      <div class="row" style="gap:6px">
+        <button class="btn theme-btn" id="themeBtn" type="button"></button>
+        <button class="btn menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">Modules</button>
+      </div>
     </div>
     <div class="overall">
       <div class="row" style="justify-content:space-between"><span class="eyebrow">Your progress</span><span class="score" id="pct">0%</span></div>
@@ -1260,8 +1344,286 @@ const GLOSSARY = [
 ["Value-added (VA)","A step the customer cares about, that changes the product/service, done right first time."],
 ["VOC","Voice of the customer: customer needs and expectations."],
 ["WIP","Work in progress: items started but not finished."],
-["Y = f(X)","The output (Y) is a function of process inputs and variables (X's)."]
+["Y = f(X)","The output (Y) is a function of process inputs and variables (X's)."],
+["Standard deviation","A measure of spread: the typical distance of data points from the mean (σ)."],
+["Hand-off","A point where work passes from one person, team or system to another; a common source of delay and lost information."],
+["Hidden factory","Rework and corrections that consume capacity but don't show up in final output metrics."],
+["Histogram","Bar chart of how often values fall in each range; shows the shape of a distribution."],
+["Run chart","Data plotted in time order to show trends, shifts and cycles."],
+["Stratification","Splitting data into subgroups (team, region, product) to reveal differences hidden in the total."],
+["Median","The middle value when data is sorted; unaffected by outliers."],
+["Value stream","All the steps, value-adding or not, needed to deliver a product or service from request to customer."],
+["Correlation","How strongly two variables move together, from −1 to +1 (r). It does not prove cause."],
+["Regression","A model that predicts Y from one or more X's; R² shows how much variation it explains."],
+["Box plot","Chart showing median, quartiles and outliers; good for comparing groups."],
+["Process mining","Software that rebuilds the real process from system event logs."]
 ];
+GLOSSARY.sort((a,b)=>a[0].localeCompare(b[0]));
+
+/* ============================== DIAGRAMS ============================== */
+const AR=`<defs><marker id="ar" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L8,4L0,8z" class="mk"/></marker></defs>`;
+const svg=(w,h,label,inner,minw)=>`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${label}"${minw?` style="min-width:${minw}px"`:""} xmlns="http://www.w3.org/2000/svg">${AR}${inner}</svg>`;
+const fig=(inner,cap)=>`<figure class="fig">${inner}${cap?`<figcaption>${cap}</figcaption>`:""}</figure>`;
+const tx=(x,y,s,cls="",anchor="start")=>`<text x="${x}" y="${y}" class="${cls}" text-anchor="${anchor}">${s}</text>`;
+const npdf=z=>Math.exp(-z*z/2);
+/* Bell-curve path in σ units: cx is the axis zero, sx px per σ, mu shifts the curve */
+function curve(cx,base,sx,hy,a,b,mu=0,closed=false){let p="";
+  for(let i=0;i<=80;i++){const z=a+(b-a)*i/80;p+=(i?"L":"M")+(cx+z*sx).toFixed(1)+","+(base-hy*npdf(z-mu)).toFixed(1);}
+  return closed?p+`L${(cx+b*sx).toFixed(1)},${base}L${(cx+a*sx).toFixed(1)},${base}Z`:p;}
+const flow=(items,gaps)=>`<div class="flow">${items.map((it,i)=>`${i?`<span class="arrow">${gaps&&gaps[i-1]?`<small>${gaps[i-1]}</small>`:""}<i class="ar"></i></span>`:""}<div class="st${it.hl?" hl":""}"><b>${it.t}</b>${it.s?`<small>${it.s}</small>`:""}</div>`).join("")}</div>`;
+const ladder=(rows,top,bottom)=>`<div class="ladder-ends"><span>${top}</span></div><div class="ladder">${rows.map((r,i)=>`<div style="width:${100-i*(55/Math.max(1,rows.length-1))}%;background:color-mix(in srgb,var(--accent-soft) ${100-i*15}%,var(--surface))"><b>${r.t}</b><small>${r.s}</small></div>`).join("")}</div><div class="ladder-ends"><span>${bottom}</span></div>`;
+
+const D={
+tps:()=>fig(`<div class="house"><div class="roof">Goal: highest quality, lowest cost, shortest lead time</div>
+ <div class="pillars"><div class="pillar"><b>Just-in-Time</b><span>Takt · flow · pull</span></div><div><b>People and teamwork</b><span>Waste reduction · kaizen</span></div><div class="pillar"><b>Jidoka</b><span>Stop on abnormality · andon · poka-yoke</span></div></div>
+ <div class="base"><b>Heijunka · Standard work · Visual management</b><span>Level the load, document the best way, make problems visible</span></div>
+ <div class="base"><b>Stability</b></div></div>`,"The Toyota Production System 'house'. The roof is only as strong as the two pillars, and both rest on a stable, standardised foundation."),
+
+venn:()=>fig(svg(600,250,"Venn diagram of Lean and Six Sigma",`
+ <circle cx="235" cy="125" r="118" fill="var(--accent)" fill-opacity=".14" stroke="var(--accent)"/>
+ <circle cx="365" cy="125" r="118" fill="var(--belt-yellow)" fill-opacity=".16" stroke="var(--belt-yellow)"/>
+ ${tx(165,85,"Lean","t-b t-l","middle")}${tx(165,110,"Speed and flow","t-s","middle")}${tx(165,128,"Remove waste","t-s","middle")}${tx(165,146,"Kaizen events","t-s","middle")}${tx(165,164,"Visual management","t-s","middle")}
+ ${tx(435,85,"Six Sigma","t-b t-l","middle")}${tx(435,110,"Reduce variation","t-s","middle")}${tx(435,128,"Data and statistics","t-s","middle")}${tx(435,146,"DMAIC projects","t-s","middle")}${tx(435,164,"Control charts","t-s","middle")}
+ ${tx(300,95,"Both","t-b","middle")}${tx(300,118,"Customer focus","t-s","middle")}${tx(300,136,"Process thinking","t-s","middle")}${tx(300,154,"Root causes","t-s","middle")}`),"Lean makes the process fast; Six Sigma makes it right. The overlap is where most real projects live."),
+
+principles:()=>{const P=[["1","Value","What the customer pays for"],["2","Value stream","Every step, end to end"],["3","Flow","No queues or batches"],["4","Pull","Start only on demand"],["5","Perfection","Repeat, forever"]];
+ let s="";P.forEach((p,i)=>{const x=12+i*128;s+=`<rect x="${x}" y="16" width="104" height="70" rx="8" class="${i==0?"s-soft":"s-box"}"/>${tx(x+10,36,p[0],"t-a t-mono t-s")}${tx(x+10,56,p[1],"t-b")}${tx(x+10,74,p[2],"t-m t-s")}`;
+  if(i<4)s+=`<line x1="${x+106}" y1="51" x2="${x+125}" y2="51" class="s-mu" marker-end="url(#ar)"/>`;});
+ s+=`<path d="M576,88 V118 H64 V90" class="s-mu s-dash" marker-end="url(#ar)"/>${tx(320,136,"Each cycle exposes more waste to remove","t-m t-s","middle")}`;
+ return fig(svg(640,145,"The five Lean principles as a cycle",s,520),"The five Lean principles (Womack and Jones). Perfection is not an end point: it sends you back to re-examine value.");},
+
+vabar:()=>fig(`<div class="stack" role="img" aria-label="Lead time split: 5 percent value-added, 10 percent business-value-added, 85 percent non-value-added"><i class="c-acc" style="flex:5"></i><i class="c-yel" style="flex:10"></i><i class="c-sunk" style="flex:85"></i></div>
+ <div class="legend"><span><i class="c-acc"></i>Value-added 5%</span><span><i class="c-yel"></i>Business-value-added 10%</span><span><i class="c-sunk" style="border:1px solid var(--line)"></i>Non-value-added 85%: waiting, rework, hand-offs</span></div>`,"A typical office process. If a request takes 10 days, the work customers would pay for often fits in half a day."),
+
+wastes:()=>fig(`<div class="wgrid">${[["D","Defects","Wrong invoice amount"],["O","Overproduction","Reports nobody reads"],["W","Waiting","Approval stuck in an inbox"],["N","Non-utilised talent","Experts doing data entry"],["T","Transportation","Files emailed between teams"],["I","Inventory","Backlog of 1,800 tickets"],["M","Motion","Switching between six apps"],["E","Extra-processing","Three signatures for $50"]].map(w=>`<div><b>${w[0]}</b><span>${w[1]}</span><small>${w[2]}</small></div>`).join("")}</div>`,"DOWNTIME: one office example of each waste."),
+
+mura:()=>{const v=[60,55,62,58,60,65,70,64,60,58,62,66,72,70,68,75,85,98,120,135,140,110];let s="";
+ v.forEach((d,i)=>{const x=40+i*24,h=d;s+=`<rect x="${x}" y="${190-h}" width="18" height="${h}" rx="2" class="${d>100?"s-red":"s-sunk"}"/>`;});
+ s+=`<line x1="34" y1="90" x2="570" y2="90" class="s-ink s-dash"/>${tx(36,84,"Team capacity","t-s t-b")}<line x1="34" y1="190" x2="570" y2="190" class="s-ln"/>
+ ${tx(40,206,"Day 1","t-m t-s")}${tx(568,206,"Day 22","t-m t-s","end")}${tx(568,32,"Muri: load above capacity","t-r t-s t-b","end")}${tx(568,46,"→ errors and rework (muda)","t-r t-s","end")}${tx(200,120,"Mura: uneven load. Spare capacity early in the month","t-m t-s")}`;
+ return fig(svg(600,215,"Daily workload across a month, exceeding capacity at month-end",s,480),"Month-end close in an accounting team. Unevenness (mura) causes overburden (muri), which causes defects (muda). Levelling the work treats all three.");},
+
+sipoc:()=>fig(flow([{t:"Suppliers",s:"Vendors, purchasing, receiving"},{t:"Inputs",s:"Invoice, PO, goods receipt"},{t:"Process",s:"Receive → match → approve → pay",hl:1},{t:"Outputs",s:"Paid invoice, ledger entry"},{t:"Customers",s:"Vendors, controller, auditors"}]),"SIPOC for supplier invoice processing. Fill it in the order P → O → C → I → S."),
+
+swimlane:()=>{const lanes=["Vendor","AP clerk","Buyer","Approver","Treasury"],cy=i=>39+i*62;let s="";
+ lanes.forEach((l,i)=>{s+=`<rect x="8" y="${8+i*62}" width="684" height="60" class="${i%2?"s-bg":"s-box"}"/><rect x="8" y="${8+i*62}" width="88" height="60" class="s-sunk"/>${tx(16,cy(i)+4,l,"t-b t-s")}`;});
+ const st=[[0,150,"Send invoice"],[1,245,"Scan, index"],[1,340,"3-way match"],[2,440,"Resolve gap"],[3,540,"Approve"],[4,640,"Pay"]];
+ st.forEach((p,i)=>{if(!i)return;const a=st[i-1],x1=a[1]+42,x2=p[1]-42,y1=cy(a[0]),y2=cy(p[0]);
+  if(y1===y2)s+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" class="s-mu" marker-end="url(#ar)"/>`;
+  else{const xm=(x1+x2)/2;s+=`<path d="M${x1},${y1}H${xm}V${y2}H${x2}" class="s-mu" marker-end="url(#ar)"/><circle cx="${xm}" cy="${(y1+y2)/2}" r="6" class="s-red"/>`;}});
+ s+=`<path d="M440,${cy(2)-17}V${cy(0)}H192" class="s-redl s-dash" marker-end="url(#ar)"/>${tx(300,cy(0)-8,"Rework: request credit note","t-r t-s","middle")}`;
+ st.forEach(p=>{s+=`<rect x="${p[1]-42}" y="${cy(p[0])-17}" width="84" height="34" rx="6" class="s-soft"/>${tx(p[1],cy(p[0])+4,p[2],"t-s","middle")}`;});
+ return fig(svg(700,320,"Swimlane map of invoice processing with hand-offs marked",s,560),"Swimlane map of invoice processing. Each red dot is a hand-off between lanes, where work queues and context gets lost. The dashed loop is rework.");},
+
+vsm:()=>{const d=[["Receive","1.0 d","5 min"],["Match","2.0 d","10 min"],["Exceptions","3.5 d","25 min"],["Approval","4.0 d","3 min"],["Payment","1.5 d","7 min"]];let s="",x=10,p="M10,40";
+ d.forEach(r=>{p+=`H${x+62}V95H${x+124}V40`;s+=tx(x+31,32,r[1],"t-r t-mono t-s","middle")+tx(x+93,112,r[2],"t-a t-mono t-s","middle")+tx(x+93,130,r[0],"t-m t-s","middle");x+=124;});
+ s=`<path d="${p.replace(/V40$/,"")}" class="s-ink"/>`+s+`<rect x="636" y="22" width="114" height="108" rx="8" class="s-soft"/>${tx(646,44,"Lead time","t-s t-m")}${tx(646,60,"12.0 days","t-b t-mono")}${tx(646,82,"Process time","t-s t-m")}${tx(646,98,"50 min","t-b t-mono")}${tx(646,120,"PCE ≈ 0.9%","t-s t-b t-a")}${tx(10,14,"Wait (queue) time","t-r t-s")}${tx(10,150,"Process (touch) time","t-a t-s")}`;
+ return fig(svg(760,158,"Value stream map timeline ladder for invoice approval",s,600),"The timeline ladder at the bottom of a value stream map. Peaks are waiting; valleys are work. Almost all of the 12 days is waiting.");},
+
+little:()=>{let s=`<line x1="20" y1="90" x2="166" y2="90" class="s-mu" marker-end="url(#ar)"/>${tx(20,80,"New claims arrive","t-s t-m")}
+ <rect x="170" y="30" width="260" height="120" rx="10" class="s-box"/>`;
+ for(let r=0;r<4;r++)for(let c=0;c<10;c++)s+=`<rect x="${186+c*24}" y="${42+r*20}" width="18" height="14" rx="3" class="s-soft"/>`;
+ s+=`${tx(300,140,"WIP: 600 claims in progress","t-b t-s","middle")}<line x1="434" y1="90" x2="600" y2="90" class="s-mu" marker-end="url(#ar)"/>${tx(440,80,"Throughput: 50/day","t-s t-a t-b")}
+ ${tx(310,185,"Lead time = WIP ÷ Throughput = 600 ÷ 50 = 12 days","t-mono t-b","middle")}`;
+ return fig(svg(620,200,"Little's Law illustrated: a queue of 600 claims draining at 50 per day",s,480),"Little's Law. Halve the work in progress and, at the same throughput, you halve the lead time.");},
+
+kanban:()=>fig(`<div class="kb">${[["To do","",["Spring email","Partner webinar","Pricing page","Case study"]],["Analyse","2/2",["Q3 survey","Brand refresh"],1],["Build","2/3",["Product launch","Newsletter"]],["Review","1/2",["Event invite"]],["Done","",["Blog series","Social plan","Retail promo"]]].map(c=>`<div class="${c[3]?"full":""}"><h5><span>${c[0]}</span><span>${c[1]?"WIP "+c[1]:""}</span></h5>${c[2].map(t=>`<div class="card">${t}</div>`).join("")}</div>`).join("")}</div>`,"A kanban board with WIP limits. 'Analyse' is full (2/2), so nobody pulls a new card into it; the team helps finish what's there instead."),
+
+batch:()=>{const X=t=>60+t*34,C=["s-acc","s-yel","s-grn"];let s="";
+ const panel=(oy,title,start)=>{s+=tx(10,oy,title,"t-b t-s");for(let i=0;i<5;i++){const y=oy+8+i*14;s+=tx(52,y+9,"#"+(i+1),"t-m t-s","end");for(let k=0;k<3;k++){const t=start(i,k);s+=`<rect x="${X(t)}" y="${y}" width="33" height="10" rx="2" class="${C[k]}"/>`;}}};
+ panel(16,"Batch of 5: first form done at 11 min, last at 15 min",(i,k)=>k*5+i);
+ panel(112,"One-piece flow: first form done at 3 min, last at 7 min",(i,k)=>i+k);
+ s+=`<line x1="60" y1="202" x2="${X(15)}" y2="202" class="s-mu"/>`;[0,3,5,7,10,11,15].forEach(t=>{s+=`<line x1="${X(t)}" y1="202" x2="${X(t)}" y2="207" class="s-mu"/>${tx(X(t),220,t,"t-m t-s t-mono","middle")}`;});
+ s+=tx(X(15)+6,220,"min","t-m t-s");
+ return fig(svg(620,230,"Gantt chart comparing batch processing with one-piece flow",s,480)+`<div class="legend"><span><i class="c-acc"></i>Step A</span><span><i class="c-yel"></i>Step B</span><span><i class="c-grn"></i>Step C</span></div>`,"Five forms, three one-minute steps. Same work, same people: one-piece flow gets the first form to the customer almost four times sooner.");},
+
+bottleneck:()=>{const d=[["Intake",120],["Assessment",60],["Approval",150],["Payment",200]];let s="";
+ d.forEach((r,i)=>{const y=30+i*36,w=r[1]*2,bn=r[1]===60;s+=tx(120,y+15,r[0],"t-s"+(bn?" t-b":""),"end")+`<rect x="130" y="${y}" width="${w}" height="22" rx="3" class="${bn?"s-red":"s-soft"}"/>`+(bn?"":tx(136+w,y+15,r[1]+"/day","t-mono t-s"));});
+ s+=`<line x1="290" y1="20" x2="290" y2="172" class="s-ink s-dash"/>${tx(290,14,"Demand 80/day","t-s t-b","middle")}${tx(300,81,"60/day: the constraint. Backlog grows ≈ 20/day","t-r t-s t-b")}`;
+ return fig(svg(620,180,"Capacity per step compared with demand; Assessment is the bottleneck",s,480),"Daily capacity of each step in a claims process. Only Assessment is below demand, so speeding up any other step changes nothing.");},
+
+controls:()=>fig(ladder([{t:"Eliminate the step",s:"No step, no error"},{t:"Prevent (poka-yoke)",s:"Drop-down lists, mandatory fields, validation"},{t:"Detect immediately",s:"Duplicate-invoice warning, red banner"},{t:"Inspect afterwards",s:"Audit, second-person check"},{t:"Train and remind",s:"Relies on memory"}],"Strongest","Weakest"),"Hierarchy of controls. Move every important check as high up this list as you can."),
+
+normal:()=>{const cx=320,b=170,sx=80,hy=140;let s=`<path d="${curve(cx,b,sx,hy,-3,3,0,true)}" class="s-acc" fill-opacity=".12"/><path d="${curve(cx,b,sx,hy,-2,2,0,true)}" class="s-acc" fill-opacity=".14"/><path d="${curve(cx,b,sx,hy,-1,1,0,true)}" class="s-acc" fill-opacity=".2"/><path d="${curve(cx,b,sx,hy,-3.7,3.7)}" class="s-accl"/><line x1="20" y1="${b}" x2="620" y2="${b}" class="s-mu"/>`;
+ for(let k=-3;k<=3;k++){const x=cx+k*sx;s+=`<line x1="${x}" y1="${b}" x2="${x}" y2="${b+5}" class="s-mu"/>`+tx(x,b+18,k?`μ${k>0?"+":"−"}${Math.abs(k)}σ`:"μ","t-mono t-s t-m","middle");}
+ [[1,"68.3%"],[2,"95.4%"],[3,"99.7%"]].forEach(([k,l],i)=>{const y=b+38+i*22;s+=`<path d="M${cx-k*sx},${y-5}V${y}H${cx+k*sx}V${y-5}" class="s-mu"/>`+tx(cx+k*sx+8,y+4,l,"t-mono t-s t-b");});
+ return fig(svg(640,250,"Normal distribution with 1, 2 and 3 standard deviation bands",s,480),"For a normal distribution, about 68% of results fall within ±1σ of the mean, 95% within ±2σ and 99.7% within ±3σ.");},
+
+sigma:()=>{const d=[[1,691462],[2,308538],[3,66807],[4,6210],[5,233],[6,3.4]],x0=110,W=440;let s=tx(x0,16,"Defects per million opportunities (log scale)","t-m t-s");
+ d.forEach(([k,v],i)=>{const y=30+i*28,w=Math.max(4,Math.log10(v)/6*W);s+=tx(x0-12,y+14,k+"σ","t-b t-mono","end")+`<rect x="${x0}" y="${y}" width="${w}" height="18" rx="3" class="${k==6?"s-grn":"s-acc"}" fill-opacity="${k==6?1:.35+k*.1}"/>`+tx(x0+w+6,y+14,v.toLocaleString("en-US"),"t-mono t-s");});
+ ["1","10","100","1k","10k","100k","1M"].forEach((l,e)=>{const x=x0+e/6*W;s+=`<line x1="${x}" y1="200" x2="${x}" y2="205" class="s-mu"/>`+tx(x,218,l,"t-m t-s t-mono","middle");});
+ s+=`<line x1="${x0}" y1="200" x2="${x0+W}" y2="200" class="s-mu"/>`;
+ return fig(svg(640,226,"Bar chart of DPMO by sigma level on a log scale",s,480),"Each sigma level is roughly a 10× (and at the top, 70×) cut in defects. The scale is logarithmic, or six sigma would be invisible.");},
+
+rty:()=>{const v=[100,95,90.25,85.74,81.45,77.38,73.51],b=210,H=170;let s=`<line x1="40" y1="${b}" x2="600" y2="${b}" class="s-mu"/>`;
+ v.forEach((y,i)=>{const x=60+i*76,h=y/100*H;s+=`<rect x="${x}" y="${b-H}" width="52" height="${H-h}" class="s-red" fill-opacity=".25"/><rect x="${x}" y="${b-h}" width="52" height="${h}" class="s-acc"/>`+tx(x+26,b-h+16,y.toFixed(1)+"%","t-mono t-s t-b","middle").replace('class="','style="fill:var(--accent-ink)" class="')+tx(x+26,b+16,i?"Step "+i:"Start","t-m t-s","middle");});
+ s+=tx(60+6*76+26,b-H+28,"Rework","t-r t-s t-b","middle");
+ return fig(svg(620,232,"Rolled throughput yield falling across six steps of 95 percent first-pass yield",s,480),"Six steps, each 95% right first time. Only 73.5% of units get through without rework somewhere: the red area is the hidden factory.");},
+
+kano:()=>{let s=`<line x1="30" y1="150" x2="430" y2="150" class="s-mu"/><line x1="230" y1="18" x2="230" y2="282" class="s-mu"/>
+ ${tx(30,168,"Need not met","t-m t-s")}${tx(430,168,"Need fully met","t-m t-s","end")}${tx(238,28,"Satisfied","t-m t-s")}${tx(238,280,"Dissatisfied","t-m t-s")}
+ <path d="M40,285 C150,200 300,160 425,152" class="s-redl" stroke-width="2.4"/><path d="M40,262 L425,40" class="s-accl" stroke-width="2.4"/><path d="M40,147 C260,146 360,118 425,25" class="s-yell"/>
+ <line x1="40" y1="310" x2="62" y2="310" class="s-redl" stroke-width="3"/>${tx(68,314,"Basic: correct bill","t-s")}
+ <line x1="190" y1="310" x2="212" y2="310" class="s-accl" stroke-width="3"/>${tx(218,314,"Performance: speed","t-s")}
+ <line x1="40" y1="332" x2="62" y2="332" class="s-yell" stroke-width="3"/>${tx(68,336,"Delighter: proactive SMS updates","t-s")}`;
+ return fig(svg(460,345,"Kano model with basic, performance and delighter curves",s),"Kano model. Basic needs only cause anger when missing; performance needs scale with how well you do; delighters surprise, and over time become basic.");},
+
+ctq:()=>fig(flow([{t:"Voice of the customer",s:"'I want my refund fast'"},{t:"Driver",s:"Time from request to money back"},{t:"CTQ",s:"Credited within 3 business days, 95% of the time",hl:1}]),"A CTQ tree turns a vague need into a measurable requirement with a target and a hit rate."),
+
+stake:()=>fig(`<div class="quad"><div class="qy">Influence →</div><div class="qgrid">
+ <div><b>Keep satisfied</b><small>High influence, low interest</small><div class="chips"><span>CFO</span><span>IT director</span></div></div>
+ <div class="hot"><b>Manage closely</b><small>High influence, high interest</small><div class="chips"><span>Sponsor</span><span>Process owner</span></div></div>
+ <div><b>Monitor</b><small>Low influence, low interest</small><div class="chips"><span>Other departments</span></div></div>
+ <div><b>Keep informed</b><small>Low influence, high interest</small><div class="chips"><span>Refund clerks</span><span>Call-centre agents</span></div></div>
+ </div><div class="qx">Interest →</div></div>`,"Stakeholder map for the refund project. Front-line staff sit bottom-right but are often the best source of ideas."),
+
+datatree:()=>{const box=(x,y,w,t,sub,hl)=>`<rect x="${x}" y="${y}" width="${w}" height="46" rx="8" class="${hl?"s-soft":"s-box"}"/>`+tx(x+w/2,y+20,t,"t-b","middle")+(sub?tx(x+w/2,y+36,sub,"t-m t-s","middle"):"");
+ let s=`<path d="M260,44V62H135V80M260,62H385V80M385,126V140H310V150M385,140H460V150" class="s-mu"/>`;
+ s+=box(210,4,100,"Data","",1)+box(60,80,150,"Continuous","time, cost, amount")+box(310,80,150,"Discrete","counted, not measured")+box(250,150,120,"Count","errors per invoice")+box(400,150,120,"Attribute","pass/fail, category");
+ s+=`<line x1="20" y1="216" x2="520" y2="216" class="s-mu" marker-start="url(#ar)" marker-end="url(#ar)"/>${tx(20,234,"More information per data point","t-s t-a")}${tx(520,234,"Needs bigger samples","t-s t-m","end")}`;
+ return fig(svg(540,240,"Tree of data types: continuous and discrete (count and attribute)",s,420),"Data types. Measure on a continuous scale when you can; you can always turn it into pass/fail later, never the other way.");},
+
+yfx:()=>{const X=["X₁ Request channel","X₂ Payment method","X₃ Approval rule","X₄ Staffing level","X₅ Data quality at intake"];let s="";
+ X.forEach((t,i)=>{const y=12+i*44;s+=`<rect x="10" y="${y}" width="170" height="32" rx="6" class="s-box"/>`+tx(20,y+20,t,"t-s")+`<line x1="182" y1="${y+16}" x2="266" y2="120" class="s-mu" marker-end="url(#ar)"/>`;});
+ s+=`<rect x="270" y="88" width="130" height="64" rx="10" class="s-soft"/>${tx(335,117,"Process","t-b","middle")}${tx(335,135,"Y = f(X)","t-mono t-s","middle")}<line x1="402" y1="120" x2="446" y2="120" class="s-mu" marker-end="url(#ar)"/>
+ <rect x="450" y="96" width="160" height="48" rx="10" class="s-acc"/>${tx(530,125,"Y: refund lead time","t-b","middle").replace('class="','style="fill:var(--accent-ink)" class="')}`;
+ return fig(svg(620,236,"Inputs X1 to X5 feeding a process that produces output Y",s,500),"Y = f(X). You can't manage Y directly; you manage the X's that drive it. Analyze proves which X's matter.");},
+
+hist:()=>{const sets=[["Normal",i=>npdf((i-5.5)/2)],["Right-skewed (lead times)",i=>{const t=.5+i*.7;return t*Math.exp(-t/1.4);}],["Bimodal (two groups mixed)",i=>npdf((i-2.8)/1.3)+.85*npdf((i-8.6)/1.2)]];let s="";
+ sets.forEach(([n,f],k)=>{const ox=10+k*205,v=[...Array(12)].map((_,i)=>f(i)),m=Math.max(...v);v.forEach((y,i)=>{const h=y/m*100;s+=`<rect x="${ox+i*15}" y="${130-h}" width="13" height="${h}" rx="1.5" class="s-acc" fill-opacity=".8"/>`;});
+  s+=`<line x1="${ox}" y1="130" x2="${ox+180}" y2="130" class="s-mu"/>`+tx(ox+90,150,n,"t-s t-b","middle");});
+ return fig(svg(620,160,"Three histogram shapes: normal, right-skewed and bimodal",s,480),"Read the shape before the numbers. Skewed data calls for the median; two humps mean you should split the data by team, product or channel.");},
+
+capability:()=>{let s="";const b=170,hy=115;
+ // Panel A: centred, specs at ±4σ
+ let cx=160,sx=30;s+=`<path d="${curve(cx,b,sx,hy,-3.6,3.6,0,true)}" class="s-acc" fill-opacity=".2"/><path d="${curve(cx,b,sx,hy,-3.6,3.6)}" class="s-accl"/>`;
+ [-4,4].forEach((k,i)=>{const x=cx+k*sx;s+=`<line x1="${x}" y1="40" x2="${x}" y2="${b}" class="s-redl s-dash"/>`+tx(x,32,i?"USL":"LSL","t-r t-s t-b","middle");});
+ s+=`<line x1="20" y1="${b}" x2="300" y2="${b}" class="s-mu"/>`+tx(160,b+22,"Cp = Cpk = 1.33","t-b t-mono","middle")+tx(160,b+40,"Centred, fits inside the limits","t-m t-s","middle");
+ // Panel B: one-sided, USL at +2.5σ
+ cx=460;sx=38;s+=`<path d="${curve(cx,b,sx,hy,-3.2,3.5,0,true)}" class="s-acc" fill-opacity=".2"/><path d="${curve(cx,b,sx,hy,2.5,3.5,0,true)}" class="s-red" fill-opacity=".55"/><path d="${curve(cx,b,sx,hy,-3.2,3.5)}" class="s-accl"/>`;
+ s+=`<line x1="${cx+2.5*sx}" y1="40" x2="${cx+2.5*sx}" y2="${b}" class="s-redl s-dash"/>`+tx(cx+2.5*sx,32,"USL = 10 min","t-r t-s t-b","middle")+`<line x1="${cx}" y1="${b}" x2="${cx}" y2="${b-hy}" class="s-mu s-dash"/>`+tx(cx,b-hy-6,"μ = 7","t-s t-mono","middle");
+ s+=`<line x1="330" y1="${b}" x2="620" y2="${b}" class="s-mu"/>`+tx(470,b+22,"Cpk = 0.83","t-b t-mono","middle")+tx(470,b+40,"Tail beyond the limit = calls over 10 min","t-m t-s","middle");
+ return fig(svg(630,220,"Two capability examples: a capable centred process and an incapable process with a tail beyond the upper limit",s,500),"Capability compares the voice of the process (the curve) with the voice of the customer (the limits). Right: the call-handling example from this lesson.");},
+
+fishbone:()=>{let s=`<line x1="20" y1="150" x2="578" y2="150" class="s-ink" marker-end="url(#ar)"/><rect x="582" y="122" width="128" height="56" rx="8" class="s-soft"/>${tx(646,146,"Refunds take","t-b t-s","middle")}${tx(646,163,"9.4 days","t-b t-s","middle")}`;
+ const top=[["People","No back-up approver","New staff untrained"],["Process","Twice-weekly batches","Blanket approval rule"],["Systems","Manual return email","CRM not linked to WMS"]],bot=[["Inputs","Missing order number","Wrong bank details"],["Measurement","No ageing report","KPI counts volume only"],["Policy","2 pm bank cut-off","Post-holiday peaks"]];
+ [200,360,520].forEach((bx,i)=>{
+  [[top[i],40,-1],[bot[i],260,1]].forEach(([c,ye,dir])=>{s+=`<line x1="${bx}" y1="150" x2="${bx-70}" y2="${ye}" class="s-mu"/>`+tx(bx-70,dir<0?30:280,c[0],"t-b t-a","middle");
+   [.35,.7].forEach((f,j)=>{const px=bx-70+70*f,py=dir<0?40+110*f:260-110*f;s+=`<line x1="${px-50}" y1="${py}" x2="${px}" y2="${py}" class="s-ln"/>`+tx(px-6,py-3,c[j+1],"t-s t-m","end");});});});
+ return fig(svg(720,290,"Fishbone diagram of causes of slow refunds",s,600),"Fishbone (Ishikawa) diagram for the refund case. These are possible causes only; each still needs data before it counts as a root cause.");},
+
+pareto:()=>{const d=[["Approval","wait",212],["Warehouse","confirm",131],["Payment","details",68],["File","error",39],["Other","",32]],T=482,b=210,H=180,x0=60;let s="",cum=0,pts=[];
+ [0,100,200,300,400].forEach(v=>{const y=b-v/T*H;s+=`<line x1="${x0}" y1="${y}" x2="${x0+500}" y2="${y}" class="s-ln"/>`+tx(x0-8,y+4,v,"t-m t-s t-mono","end");});
+ [0,25,50,75,100].forEach(p=>{s+=tx(x0+508,b-p/100*H+4,p+"%","t-m t-s t-mono");});
+ s+=`<line x1="${x0}" y1="${b-.8*H}" x2="${x0+500}" y2="${b-.8*H}" class="s-redl s-dash"/>`+tx(x0+4,b-.8*H-6,"80%","t-r t-s t-b");
+ d.forEach((r,i)=>{const x=x0+10+i*100,h=r[2]/T*H;cum+=r[2];pts.push([x+80,b-cum/T*H]);s+=`<rect x="${x}" y="${b-h}" width="80" height="${h}" rx="3" class="${i<3?"s-acc":"s-sunk"}" ${i<3?'fill-opacity=".85"':'stroke="var(--line)"'}/>`+tx(x+40,b-h-6,r[2],"t-mono t-s t-b","middle")+tx(x+40,b+16,r[0],"t-s","middle")+tx(x+40,b+30,r[1],"t-s","middle");});
+ s+=`<polyline points="${pts.map(p=>p.join(",")).join(" ")}" class="s-ink"/>`+pts.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="3.5" class="s-inkf"/>`).join("")+`<line x1="${x0}" y1="${b}" x2="${x0+500}" y2="${b}" class="s-mu"/>`;
+ return fig(svg(620,245,"Pareto chart of reasons refunds take over five days",s,500),"Pareto chart of the 482 slow refunds. The first three bars (the vital few) account for 85% of delays; the line is the cumulative percentage.");},
+
+scatter:()=>{let seed=11;const rnd=()=>(seed=seed*16807%2147483647)/2147483647;const P=[];for(let i=0;i<40;i++){const x=1+rnd()*9;P.push([x,4+2.6*x+(rnd()+rnd()+rnd()-1.5)*7]);}
+ const n=P.length,mx=P.reduce((a,p)=>a+p[0],0)/n,my=P.reduce((a,p)=>a+p[1],0)/n;let sxy=0,sxx=0,syy=0;P.forEach(([x,y])=>{sxy+=(x-mx)*(y-my);sxx+=(x-mx)**2;syy+=(y-my)**2;});
+ const b1=sxy/sxx,b0=my-b1*mx,r2=sxy*sxy/(sxx*syy),X=x=>60+(x)/10*500,Y=y=>200-y/40*170;let s="";
+ [0,10,20,30,40].forEach(v=>{s+=`<line x1="60" y1="${Y(v)}" x2="560" y2="${Y(v)}" class="s-ln"/>`+tx(52,Y(v)+4,v,"t-m t-s t-mono","end");});
+ [0,2,4,6,8,10].forEach(v=>{s+=tx(X(v),218,v,"t-m t-s t-mono","middle");});
+ P.forEach(([x,y])=>{s+=`<circle cx="${X(x).toFixed(1)}" cy="${Y(y).toFixed(1)}" r="4" class="s-acc" fill-opacity=".7"/>`;});
+ s+=`<line x1="${X(.5)}" y1="${Y(b0+b1*.5)}" x2="${X(10)}" y2="${Y(b0+b1*10)}" class="s-redl" stroke-width="2"/>`+tx(X(10)-4,Y(b0+b1*10)-10,`R² = ${r2.toFixed(2)}`,"t-r t-b t-mono","end");
+ s+=tx(310,236,"Order lines (X)","t-m t-s","middle")+`<text x="16" y="110" class="t-m t-s" text-anchor="middle" transform="rotate(-90 16 110)">Processing time, min (Y)</text>`;
+ return fig(svg(600,245,"Scatter plot of order lines versus processing time with regression line",s,460),"Scatter plot with a fitted regression line. More order lines means longer processing, and the X explains about "+Math.round(r2*100)+"% of the variation in Y. The rest comes from other X's.");},
+
+hypo:()=>{const cx=320,b=170,sx=75,hy=130;let s=`<path d="${curve(cx,b,sx,hy,-1.96,1.96,0,true)}" class="s-acc" fill-opacity=".15"/><path d="${curve(cx,b,sx,hy,-3.8,-1.96,0,true)}" class="s-red" fill-opacity=".45"/><path d="${curve(cx,b,sx,hy,1.96,3.8,0,true)}" class="s-red" fill-opacity=".45"/><path d="${curve(cx,b,sx,hy,-3.8,3.8)}" class="s-accl"/><line x1="20" y1="${b}" x2="620" y2="${b}" class="s-mu"/>`;
+ [-1.96,0,1.96].forEach(z=>{s+=`<line x1="${cx+z*sx}" y1="${b}" x2="${cx+z*sx}" y2="${b+5}" class="s-mu"/>`+tx(cx+z*sx,b+18,z?(z>0?"+1.96":"−1.96"):"0","t-m t-s t-mono","middle");});
+ s+=tx(cx,120,"Fail to reject H₀","t-b t-s","middle")+tx(cx,136,"95% of results if H₀ is true","t-m t-s","middle")+tx(30,128,"Reject H₀","t-r t-b t-s")+tx(30,143,"2.5%","t-r t-s t-mono")+tx(610,128,"Reject H₀","t-r t-b t-s","end")+tx(610,143,"2.5%","t-r t-s t-mono","end");
+ const zx=cx+2.6*sx;s+=`<line x1="${zx}" y1="${b}" x2="${zx}" y2="70" class="s-ink" marker-start="url(#ar)"/>`+tx(zx,62,"Your result: z = 2.6, p ≈ 0.009","t-b t-s","middle");
+ return fig(svg(640,195,"Two-sided hypothesis test with rejection regions at alpha 0.05",s,480),"A two-sided test at α = 0.05. If the null hypothesis were true, a result this far out would happen less than 1% of the time, so we reject it.");},
+
+causefunnel:()=>fig(ladder([{t:"About 30 possible X's",s:"Fishbone, process map, brainstorming"},{t:"About 8 likely X's",s:"Pareto, stratification, gemba observation"},{t:"2 to 3 verified root causes",s:"Hypothesis tests, regression, 5 Whys with evidence"}],"Many possible causes","The vital few"),"Analyze narrows the field. Only verified causes move on to Improve."),
+
+impact:()=>fig(`<div class="quad"><div class="qy">Impact →</div><div class="qgrid">
+ <div class="hot"><b>Quick wins: do now</b><small>High impact, low effort</small><div class="chips"><span>Auto-approve under $150</span><span>Refund to original card</span></div></div>
+ <div><b>Major projects: plan</b><small>High impact, high effort</small><div class="chips"><span>Scan-to-confirm returns</span><span>CRM–warehouse integration</span></div></div>
+ <div><b>Fill-ins: when convenient</b><small>Low impact, low effort</small><div class="chips"><span>Refund status FAQ page</span></div></div>
+ <div><b>Drop</b><small>Low impact, high effort</small><div class="chips"><span>Rewrite every SOP</span><span>New ERP module</span></div></div>
+ </div><div class="qx">Effort →</div></div>`,"Impact/effort matrix for the refund project's candidate solutions."),
+
+pdca:()=>{const c=170,r=115;let s=`<circle cx="${c}" cy="150" r="${r+12}" class="s-mu s-dash"/>`;
+ const q=[["Plan","What, where, measure",`M${c},150L${c},${150-r}A${r},${r} 0 0 1 ${c+r},150Z`,222,100,1],["Do","Run the pilot",`M${c},150L${c+r},150A${r},${r} 0 0 1 ${c},${150+r}Z`,222,205,0],["Check","Compare to baseline",`M${c},150L${c},${150+r}A${r},${r} 0 0 1 ${c-r},150Z`,118,205,1],["Act","Adopt, adapt, abandon",`M${c},150L${c-r},150A${r},${r} 0 0 1 ${c},${150-r}Z`,118,100,0]];
+ q.forEach(([t,sub,p,x,y,soft])=>{s+=`<path d="${p}" class="${soft?"s-soft":"s-box"}"/>`+tx(x,y,t,"t-b t-l","middle")+tx(x,y+18,sub,"t-m t-s","middle");});
+ s+=`<path d="M${c+70},${150-r-16} A${r+16},${r+16} 0 0 1 ${c+r+16},${150-60}" class="s-ink" marker-end="url(#ar)"/><path d="M${c-70},${150+r+16} A${r+16},${r+16} 0 0 1 ${c-r-16},${150+60}" class="s-ink" marker-end="url(#ar)"/>`;
+ return fig(svg(340,300,"PDCA cycle: Plan, Do, Check, Act",s),"PDCA turns clockwise. Every pilot is one turn; standard work locks in each gain before the next turn.");},
+
+charttree:()=>fig(`<div class="ctree"><div><b>Continuous data</b><small style="color:var(--muted)">time, cost, amount</small>
+ <div class="r"><span>Subgroup size 1</span><b>I-MR</b></div><div class="r"><span>Subgroups of 2–9</span><b>X̄-R</b></div><div class="r"><span>Subgroups of 10+</span><b>X̄-S</b></div></div>
+ <div><b>Attribute data</b><small style="color:var(--muted)">pass/fail units, or counts of defects</small>
+ <div class="r"><span>Defectives, sample size varies</span><b>p</b></div><div class="r"><span>Defectives, constant sample size</span><b>np</b></div><div class="r"><span>Defects, constant opportunity</span><b>c</b></div><div class="r"><span>Defects, varying opportunity</span><b>u</b></div></div></div>`,"Choosing a control chart. First ask what kind of data you have, then how it is grouped."),
+
+adkar:()=>{const A=[["A","Awareness"],["D","Desire"],["K","Knowledge"],["A","Ability"],["R","Reinforcement"]];let s=`<line x1="10" y1="200" x2="600" y2="200" class="s-mu"/>`;
+ A.forEach(([l,w],i)=>{const x=12+i*117,top=160-i*32;s+=`<rect x="${x}" y="${top}" width="112" height="${200-top}" rx="4" class="s-soft" fill-opacity="${.5+i*.12}"/>`+tx(x+12,top+26,l,"t-a t-b t-l")+tx(x+12,top+42,w,"t-s t-b");});
+ return fig(svg(610,210,"ADKAR shown as five ascending steps",s,460),"ADKAR is a staircase: a person stuck on Desire won't be helped by more training (Knowledge).");},
+
+a3:()=>fig(`<div class="a3"><div class="a3h"><b>A3: Month-end close takes 9 days</b><span style="color:var(--muted)">Owner: Finance controller · Rev. 3</span></div>
+ <div class="col2"><div><b>1. Background</b><small>Slow close delays the board pack</small></div><div><b>2. Current condition</b><small>VSM: 9 days, critical path is intercompany</small></div><div><b>3. Goal</b><small>5-day close by Q2</small></div><div><b>4. Root causes</b><small>Mismatches found only at month-end</small></div></div>
+ <div class="col2"><div><b>5. Countermeasures</b><small>Weekly intercompany matching, day-2 cut-off</small></div><div><b>6. Plan</b><small>Who, what, when</small></div><div><b>7. Follow-up</b><small>Days to close, tracked monthly</small></div><div><b>PDCA</b><small>Left side is Plan; right side is Do, Check, Act</small></div></div></div>`,"An A3 tells the whole problem-solving story on one sheet, read left column then right."),
+
+refundflow:()=>fig(flow([{t:"Request logged",s:"CRM"},{t:"Item returned",s:"Customer ships"},{t:"Return confirmed",s:"Manual email"},{t:"Clerk validates",s:"~10 min"},{t:"Manager approves",s:"Tue/Fri batch",hl:1},{t:"Payment file",s:"2 pm cut-off"},{t:"Bank credit",s:"Customer paid"}],["","transit","1–3 d wait","","up to 4 d","0–1 d","1–2 d"]),"Northwind's current refund process. Red labels show where refunds wait.")
+};
+const FIGS={
+"m1|Lean in one sentence":["tps"],"m1|Why combine them?":["venn"],
+"m2|The five Lean principles":["principles"],"m2|Value-added or not?":["vabar"],"m2|The 8 wastes: DOWNTIME":["wastes"],"m2|Muda, mura, muri":["mura"],
+"m3|SIPOC: the 30,000-foot view":["sipoc"],"m3|Swimlane (cross-functional) maps":["swimlane"],"m3|Value stream mapping (VSM)":["vsm"],"m3|The flow metrics":["little"],
+"m4|Pull, kanban and WIP limits":["kanban"],"m4|Batch size and one-piece flow":["batch"],"m4|Bottlenecks: Theory of Constraints":["bottleneck"],"m4|Poka-yoke: error-proofing":["controls"],
+"m5|Sigma levels":["normal","sigma"],"m5|Yield: FPY and RTY":["rty"],"m5|Voice of the customer → CTQ":["ctq","kano"],
+"m6|Stakeholders and communication":["stake"],
+"m7|Y = f(X)":["yfx"],"m7|Types of data":["datatree"],"m7|Describing data":["hist"],"m7|Process capability: Cp and Cpk":["capability"],
+"m8|From many causes to the vital few":["causefunnel"],"m8|Fishbone (Ishikawa) diagram":["fishbone"],"m8|Pareto analysis":["pareto"],"m8|Correlation, causation and regression":["scatter"],"m8|Hypothesis testing":["hypo"],
+"m9|Selecting solutions":["impact"],"m9|Pilot with PDCA":["pdca"],
+"m10|Choosing a control chart":["charttree"],
+"m11|The people side":["adkar"],"m11|A3 thinking":["a3"]
+};
+
+/* ============================== THEME ============================== */
+const ROOT=document.documentElement;
+try{const t=localStorage.getItem("lss-theme");if(t==="light"||t==="dark")ROOT.dataset.theme=t;}catch(e){}
+const curTheme=()=>ROOT.dataset.theme||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");
+const ICON={moon:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>`,sun:`<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>`};
+function paintThemeBtn(){const d=curTheme()==="dark",b=document.getElementById("themeBtn");b.innerHTML=d?ICON.sun:ICON.moon;const l=d?"Switch to light mode":"Switch to dark mode";b.setAttribute("aria-label",l);b.title=l;}
+
+/* ============================== KEY TERMS ============================== */
+const NO_ALIAS=new Set(["sponsor","batch","pull","defect","defective","constraint"]);
+const EXTRA_ALIAS={"Pareto principle":["Pareto chart","Pareto"],"Gemba":["Gemba walk"],"Value-added (VA)":["value-added"],"Non-value-added (NVA)":["non-value-added"],"Business-value-added (BVA)":["business-value-added"],"Hypothesis test":["hypothesis testing"]};
+let TERM_RE=null;const TERM_MAP={};
+function buildTerms(){
+  GLOSSARY.forEach(([t],i)=>{const m=t.match(/^(.*?)\s*\(([^)]+)\)$/);let al=m&&!t.startsWith("Y =")?[m[1],m[2]]:t.split(" / ");
+    al=al.concat(EXTRA_ALIAS[t]||[]);al.forEach(a=>{a=a.trim();const k=a.toLowerCase();if(a&&!NO_ALIAS.has(k)&&!(k in TERM_MAP))TERM_MAP[k]={i,a};});});
+  const keys=Object.values(TERM_MAP).map(v=>v.a).sort((a,b)=>b.length-a.length).map(a=>a.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"));
+  TERM_RE=new RegExp(`(?<![\\w-])(${keys.join("|")})(?:s|es|ing)?(?![\\w])`,"gi");
+}
+function linkTerms(root){
+  if(!TERM_RE)buildTerms();const used=new Set();
+  root.querySelectorAll(".prose").forEach(pr=>{
+    const w=document.createTreeWalker(pr,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement.closest(".term,.formula,code,a,th,figure,button,h1,h2,h3,h4,.eyebrow")?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT});
+    const nodes=[];while(w.nextNode())nodes.push(w.currentNode);
+    nodes.forEach(n=>{const txt=n.nodeValue;TERM_RE.lastIndex=0;let m,last=0,frag=null;
+      while((m=TERM_RE.exec(txt))){const hit=TERM_MAP[m[1].toLowerCase()];if(!hit||used.has(hit.i))continue;if(hit.a.length<=3&&m[1]!==hit.a)continue;
+        used.add(hit.i);frag=frag||document.createDocumentFragment();frag.append(txt.slice(last,m.index));
+        const b=document.createElement("button");b.type="button";b.className="term";b.dataset.g=hit.i;b.setAttribute("aria-expanded","false");b.textContent=m[0];frag.append(b);last=m.index+m[0].length;}
+      if(frag){frag.append(txt.slice(last));n.replaceWith(frag);}});
+  });
+}
+const pop=document.createElement("div");pop.id="pop";pop.setAttribute("role","tooltip");pop.hidden=true;document.body.appendChild(pop);
+let popFor=null,pinned=false;
+function showPop(b,pin){const [t,d]=GLOSSARY[+b.dataset.g];pop.innerHTML=`<b>${esc(t)}</b>${esc(d)}`;pop.hidden=false;
+  if(popFor&&popFor!==b)popFor.setAttribute("aria-expanded","false");popFor=b;pinned=!!pin;b.setAttribute("aria-expanded","true");
+  const r=b.getBoundingClientRect(),pw=pop.offsetWidth,ph=pop.offsetHeight;let x=Math.min(Math.max(12,r.left+r.width/2-pw/2),innerWidth-pw-12),y=r.bottom+8;if(y+ph>innerHeight-8)y=r.top-ph-8;
+  pop.style.left=x+"px";pop.style.top=Math.max(8,y)+"px";}
+function hidePop(){pop.hidden=true;pinned=false;if(popFor)popFor.setAttribute("aria-expanded","false");popFor=null;}
+document.addEventListener("mouseover",e=>{const b=e.target.closest&&e.target.closest(".term");if(b&&!pinned)showPop(b);});
+document.addEventListener("mouseout",e=>{const b=e.target.closest&&e.target.closest(".term");if(b&&!pinned&&!b.contains(e.relatedTarget))hidePop();});
+document.addEventListener("focusin",e=>{if(e.target.classList&&e.target.classList.contains("term"))showPop(e.target);});
+document.addEventListener("focusout",e=>{if(e.target.classList&&e.target.classList.contains("term")&&!pinned)hidePop();});
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest(".term");
+  if(b){e.preventDefault();if(pinned&&popFor===b)hidePop();else showPop(b,true);}else if(!pop.contains(e.target))hidePop();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")hidePop();});
+addEventListener("scroll",()=>{if(!pop.hidden&&popFor){const r=popFor.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)hidePop();else showPop(popFor,pinned);}},{passive:true});
 
 /* Shuffle answer options once per page load so the correct letter isn't predictable */
 function shuffleQ(q){const idx=q.o.map((_,i)=>i);
@@ -1363,7 +1725,9 @@ function viewHome(){
   <li><strong>Quiz</strong>: multiple choice with instant feedback and an explanation for every answer.</li>
   <li><strong>Practice questions</strong>: open-ended and calculation problems. Write your answer first, then open the model answer.</li>
   <li><strong>Capstone</strong>: run a full DMAIC project on a realistic refund-process case.</li>
-  <li><strong>Final exam</strong>: 30 scenario questions. 80% is the pass mark used by many Green Belt exams.</li></ul>
+  <li><strong>Final exam</strong>: 30 scenario questions. 80% is the pass mark used by many Green Belt exams.</li>
+  <li><strong>Diagrams</strong> in every module, and <span style="border-bottom:1.5px dotted var(--accent)">dotted key terms</span>: hover over them, or tap on a phone, to see a definition.</li>
+  <li><strong>Light or dark</strong>: use the sun/moon button at the top of the menu.</li></ul>
   <p>Your progress and quiz scores are saved in this browser only.</p></div>
   <h2>Modules</h2>
   <div class="path">${MODULES.map((m,i)=>`<a class="mod" href="#${m.id}"><div class="top"><span class="eyebrow">Module ${i+1} · ${m.time}</span><span class="belt ${m.belt}"></span></div><h4>${esc(m.title)}</h4><p>${esc(m.summary)}</p>${state.done[m.id]?'<span class="tick">✓ Completed'+(state.best[m.id]!=null?' · quiz best '+state.best[m.id]+'%':'')+'</span>':(state.best[m.id]!=null?'<span class="score">Quiz best '+state.best[m.id]+'%</span>':'')}</a>`).join("")}
@@ -1375,7 +1739,7 @@ function viewModule(m,idx){
   <div class="meta"><span class="chip"><span class="belt ${m.belt}"></span>${beltName[m.belt]}</span><span class="chip">${m.time}</span><span class="chip">${m.quiz.length} quiz questions</span><span class="chip">${m.questions.length} practice questions</span></div>
   <p class="lede">${esc(m.summary)}</p></div>
   <div class="obj"><span class="eyebrow">By the end you can</span><ul>${m.objectives.map(o=>`<li>${esc(o)}</li>`).join("")}</ul></div>
-  ${m.sections.map((s,i)=>`<section class="lesson"><h3><span class="n">${idx+1}.${i+1}</span>${esc(s.h)}</h3><div class="prose">${s.html}</div></section>`).join('<hr class="rule">')}
+  ${m.sections.map((s,i)=>`<section class="lesson"><h3><span class="n">${idx+1}.${i+1}</span>${esc(s.h)}</h3><div class="prose">${s.html}${(FIGS[m.id+"|"+s.h]||[]).map(k=>D[k]()).join("")}</div></section>`).join('<hr class="rule">')}
   <hr class="rule">
   <div class="block" id="quiz"><div class="block-head"><h2>Quiz</h2><div class="row"><span class="score"></span><button class="btn reset">Reset</button></div></div><div class="qlist">${quizHTML(m.quiz)}</div></div>
   <div class="block"><div class="block-head"><h2>Practice questions</h2><span class="reveal-hint">Answer first, then open</span></div>${openQs(m.questions,"P")}</div>
@@ -1389,7 +1753,7 @@ function viewCapstone(){
     <div class="ans"><span class="eyebrow">Model answer</span><p>${esc(t.model)}</p></div></details>`;}).join("");
   return `<div class="head"><span class="eyebrow">Capstone project</span><h1>Northwind Living: refunds that take too long</h1>
   <div class="meta"><span class="chip"><span class="belt black"></span>Apply everything</span><span class="chip">90–120 min</span><span class="chip">${CAPSTONE.tasks.length} tasks across DMAIC</span></div></div>
-  <div class="prose">${CAPSTONE.intro}</div><div class="block">${tasks}</div>${doneBtn("capstone")}${pager("capstone")}`;
+  <div class="prose">${CAPSTONE.intro}${D.refundflow()}</div><div class="block">${tasks}</div>${doneBtn("capstone")}${pager("capstone")}`;
 }
 function viewExam(){
   return `<div class="head"><span class="eyebrow">Final exam</span><h1>Final exam</h1>
@@ -1500,6 +1864,7 @@ function route(keepScroll){
   else if(id==="toolkit"){v.innerHTML=viewToolkit();wireToolkit();}
   else if(id==="glossary"){v.innerHTML=viewGlossary();wireGlossary();}
   else {v.innerHTML=viewHome();}
+  hidePop();if(mi>=0||id==="capstone")linkTerms(v);
   const cur=PAGES.some(p=>p.id===id)?id:"home";
   setCurrent(cur);document.title="Lean Six Sigma Path";
   $("#side").classList.remove("open");$("#menuBtn").setAttribute("aria-expanded","false");
@@ -1507,6 +1872,9 @@ function route(keepScroll){
 }
 $("#menuBtn").addEventListener("click",()=>{const o=$("#side").classList.toggle("open");$("#menuBtn").setAttribute("aria-expanded",o);});
 window.addEventListener("hashchange",route);
+$("#themeBtn").addEventListener("click",()=>{const n=curTheme()==="dark"?"light":"dark";ROOT.dataset.theme=n;try{localStorage.setItem("lss-theme",n);}catch(e){}paintThemeBtn();});
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",paintThemeBtn);
+paintThemeBtn();
 renderNav();route();
 </script>
 </body>
