@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
+<channel>
+  <title>Lean Six Sigma Path Podcast</title>
+  <link>https://skytechnext.github.io/lean-six-sigma-course/#podcast</link>
+  <language>en</language>
+  <description>Twelve episodes that take you from beginner to running a DMAIC project, with a focus on business process optimisation. Each episode ends with a pause-and-answer quiz.</description>
+  <itunes:author>Lean Six Sigma Path</itunes:author>
+  <itunes:category text="Education"/>
+  <itunes:explicit>false</itunes:explicit>
+  <item>
+    <title>01. Fast and Right: What Lean Six Sigma Really Is</title>
+    <description>Welcome to Lean Six Sigma Path, the podcast that takes you from beginner to running real improvement projects. I'm Nadia. I've spent about fifteen years fixing business processes in banks, retailers and hospitals. And I'm Theo. I run an operations team, I've heard the words Lean and Six Sigma in a hundred meetings, and I'm here to finally understand what they mean. Perfect. Let's start with a stor...</description>
+    <enclosure url="https://skytechnext.github.io/lean-six-sigma-course/podcast/ep01.mp3" length="2156637" type="audio/mpeg"/>
+    <guid isPermaLink="false">lss-path-ep01</guid>
+    <pubDate>Fri, 02 Oct 2026 08:00:00 +0000</pubDate>
+    <itunes:duration>359</itunes:duration>
+    <itunes:episode>1</itunes:episode>
+  </item>
+  <item>
+    <title>02. Seeing Waste: The Eight Wastes in Office Work</title>
+    <description>Welcome back to Lean Six Sigma Path. I'm Nadia. I'm Theo. And today Nadia promised to ruin my inbox forever. I did. Once you learn to see waste, you can't unsee it. But first, the five principles of Lean, from Womack and Jones' book Lean Thinking. Number one: value. Define value from the customer's point of view. Meaning what they'd actually pay for. Right. Two: the value stream. Map every step th...</description>
+    <enclosure url="https://skytechnext.github.io/lean-six-sigma-course/podcast/ep02.mp3" length="2158797" type="audio/mpeg"/>
+    <guid isPermaLink="false">lss-path-ep02</guid>
+    <pubDate>Sat, 03 Oct 2026 08:00:00 +0000</pubDate>
+    <itunes:duration>360</itunes:duration>
+    <itunes:episode>2</itunes:episode>
+  </item>
+  <item>
+    <title>03. Mapping the Process and the Numbers That Matter</title>
+    <description>Welcome back to Lean Six Sigma Path. I'm Nadia. I'm Theo. Today is maps and maths. I'm told there's a law. Little's Law. It's the single most useful equation in process improvement, and it fits on a sticky note. But let's start with maps. The first one is called a SIPOC. Sounds like a sneeze. It stands for Suppliers, Inputs, Process, Outputs, Customers. It's a one-page, high-level view that sets t...</description>
+    <enclosure url="https://skytechnext.github.io/lean-six-sigma-course/podcast/ep03.mp3" length="2088527" type="audio/mpeg"/>
+    <guid isPermaLink="false">lss-path-ep03</guid>
+    <pubDate>Sun, 04 Oct 2026 08:00:00 +0000</pubDate>
+    <itunes:duration>348</itunes:duration>
+    <itunes:episode>3</itunes:episode>
+  </item>
+  <item>
+    <title>04. The Lean Toolbox: Flow, Bottlenecks and Error-Proofing</title>
+    <description>Welcome back. I'm Nadia. I'm Theo. Last time we found the waste. Today we fix it? Today we open the Lean toolbox. First tool: 5S. Sort, set in order, shine, standardise, sustain. That's tidying the office, isn't it? It looks like tidying, but the real purpose is to make problems visible and stop people wasting time searching. In a digital workplace, sort means archiving obsolete files and template...</description>
+    <enclosure url="https://skytechnext.github.io/lean-six-sigma-course/podcast/ep04.mp3" length="2221014" type="audio/mpeg"/>
+    <guid isPermaLink="false">lss-path-ep04</guid>
+    <pubDate>Mon, 05 Oct 2026 08:00:00 +0000</pubDate>
+    <itunes:duration>370</itunes:duration>
+    <itunes:episode>4</itunes:episode>
+  </item>
+  <item>
+    <title>05. Counting Defects: Sigma, Yield and the Hidden Factory</title>
+    <description>Welcome back to Lean Six Sigma Path. I'm Nadia. I'm Theo, and I'm slightly nervous because today has numbers. Friendly numbers, I promise. Let's define some words. A unit is the thing being processed: an invoice, a call, an order. A defect is any failure to meet a customer requirement. A defective is a unit with one or more defects. So an invoice with three errors is three defects but one defectiv...</description>
+    <enclosure url="https://skytechnext.github.io/lean-six-sigma-course/podcast/ep05.mp3" length="2148149" type="audio/mpeg"/>
+    <guid isPermaLink="false">lss-path-ep05</guid>
+    <pubDate>Tue, 06 Oct 2026 08:00:00 +0000</pubDate>
+    <itunes:duration>358</itunes:duration>
+    <itunes:episode>5</itunes:episode>
+  </item>
+  <item>
+    <title>06. Define: Choosing and Framing the Right Problem</title>
+    <description>Welcome back. I'm Nadia. I'm Theo. We're officially in DMAIC. Phase one, Define. And Define is where most projects are won or lost. Let's start with picking the project. A good one connects to strategy, has a measurable problem, an unknown root cause, a scope you can finish in three to six months, and a sponsor who cares. And a bad one? A solution in disguise. Implement a new CRM. Or a scope like ...</description>
+    <enclosure url="https://skytechnext.github.io/lean-six-sigma-course/podcast/ep06.mp3" length="1813054" type="audio/mpeg"/>
+    <guid isPermaLink="false">lss-path-ep06</guid>
+    <pubDate>Wed, 07 Oct 2026 08:00:00 +0000</pubDate>
+    <itunes:duration>302</itunes:duration>
+    <itunes:episode>6</itunes:episode>
+  </item>
+  <item>
+    <title>07. Measure: Trustworthy Data, Baselines and Capability</title>
+    <description>Welcome back to Lean Six Sigma Path. I'm Nadia. I'm Theo. Measure phase. I already have a dashboard. Am I done? Maybe. But can you trust it? Let's find out. Start with the core idea of Six Sigma: Y equals f of X. Y is the outcome you care about, like refund lead time. The X's are the inputs and factors that drive it: channel, payment method, approval rules, staffing. You can't manage Y directly. Y...</description>
+    <enclosure url="https://skytechnext.github.io/lean-six-sigma-course/podcast/ep07.mp3" length="2193075" type="audio/mpeg"/>
+    <guid isPermaLink="false">lss-path-ep07</guid>
+    <pubDate>Thu, 08 Oct 2026 08:00:00 +0000</pubDate>
+    <itunes:duration>365</itunes:duration>
+    <itunes:episode>7</itunes:episode>
+  </item>
+  <item>
+    <title>08. Analyze: Finding and Proving Root Causes</title>
+    <description>Welcome back. I'm Nadia. I'm Theo. Today we play detective. We do. Analyze works like a funnel. Brainstorm many possible causes, then narrow them with data and logic to a few verified root causes. The most common mistake is fixing the cause everyone believes in, instead of the one the data supports. Where do I start? A fishbone diagram, also called an Ishikawa diagram. Write the problem at the hea...</description>
+    <enclosure url="https://skytechnext.github.io/lean-six-sigma-course/podcast/ep08.mp3" length="2133448" type="audio/mpeg"/>
+    <guid isPermaLink="false">lss-path-ep08</guid>
+    <pubDate>Fri, 09 Oct 2026 08:00:00 +0000</pubDate>
+    <itunes:duration>355</itunes:duration>
+    <itunes:episode>8</itunes:episode>
+  </item>
+  <item>
+    <title>09. Improve: Designing and Piloting Solutions</title>
+    <description>Welcome back to Lean Six Sigma Path. I'm Nadia. I'm Theo. Improve phase. I have about thirty ideas already. Hold them for a moment. The first rule of Improve: every solution must link to a verified root cause. If it doesn't, it's a pet idea. Make a simple table. Root cause, solution, expected effect on Y. For the refund case? Root cause: blanket approval on all refunds. Solution: auto-approve refu...</description>
+    <enclosure url="https://skytechnext.github.io/lean-six-sigma-course/podcast/ep09.mp3" length="1900313" type="audio/mpeg"/>
+    <guid isPermaLink="false">lss-path-ep09</guid>
+    <pubDate>Sat, 10 Oct 2026 08:00:00 +0000</pubDate>
+    <itunes:duration>317</itunes:duration>
+    <itunes:episode>9</itunes:episode>
+  </item>
+  <item>
+    <title>10. Control: Making the Gains Stick</title>
+    <description>Welcome back. I'm Nadia. I'm Theo. Control phase. I've seen too many improvements quietly die. So have I. People leave. Workarounds creep back. A system update reverses a setting. And the old KPI still rewards the old behaviour. Control is about making the new way the easy way, and spotting quickly when something changes. Where do we start? With two kinds of variation. Common cause is the natural ...</description>
+    <enclosure url="https://skytechnext.github.io/lean-six-sigma-course/podcast/ep10.mp3" length="1792880" type="audio/mpeg"/>
+    <guid isPermaLink="false">lss-path-ep10</guid>
+    <pubDate>Sun, 11 Oct 2026 08:00:00 +0000</pubDate>
+    <itunes:duration>299</itunes:duration>
+    <itunes:episode>10</itunes:episode>
+  </item>
+  <item>
+    <title>11. Leading Change: People, A3 and Strategy</title>
+    <description>Welcome back to Lean Six Sigma Path. I'm Nadia. I'm Theo. Today's topic might matter more than all the statistics. It often does. Many practitioners use a simple formula: E equals Q times A. The effectiveness of a change equals the quality of the solution times its acceptance. A brilliant solution with zero acceptance delivers zero. So how do I get acceptance? Start with each person. The ADKAR mod...</description>
+    <enclosure url="https://skytechnext.github.io/lean-six-sigma-course/podcast/ep11.mp3" length="1778056" type="audio/mpeg"/>
+    <guid isPermaLink="false">lss-path-ep11</guid>
+    <pubDate>Mon, 12 Oct 2026 08:00:00 +0000</pubDate>
+    <itunes:duration>296</itunes:duration>
+    <itunes:episode>11</itunes:episode>
+  </item>
+  <item>
+    <title>12. Capstone: A Full DMAIC Project, Start to Finish</title>
+    <description>Welcome to the final episode of Lean Six Sigma Path. I'm Nadia. I'm Theo. And today I'm the Green Belt. Nadia is my coach. Let's set the scene. Northwind Living is an online furniture and homeware retailer with about one hundred eighty thousand orders a year. Refunds have become the top complaint. About twelve hundred refund requests a month. Average lead time from request to money credited: nine ...</description>
+    <enclosure url="https://skytechnext.github.io/lean-six-sigma-course/podcast/ep12.mp3" length="1947264" type="audio/mpeg"/>
+    <guid isPermaLink="false">lss-path-ep12</guid>
+    <pubDate>Tue, 13 Oct 2026 08:00:00 +0000</pubDate>
+    <itunes:duration>324</itunes:duration>
+    <itunes:episode>12</itunes:episode>
+  </item>
+</channel>
+</rss>

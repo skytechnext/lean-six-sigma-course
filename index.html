@@ -142,6 +142,41 @@ main{padding-block:40px 80px;padding-left:max(16px,env(safe-area-inset-left,0px)
 .ctree .r{display:flex;justify-content:space-between;gap:8px;border-top:1px dashed var(--line);padding-top:6px}
 .ctree .r b{font-family:var(--mono);color:var(--accent);font-weight:500;white-space:nowrap}
 
+/* Podcast */
+.listen{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;text-decoration:none;font-size:.88rem;font-weight:500;padding:6px 12px 6px 8px;border-radius:999px;background:var(--accent-soft);color:var(--ink);border:1px solid var(--accent)}
+.listen svg,.ic{width:18px;height:18px;fill:currentColor;flex:none}
+.pod-sub{display:flex;flex-direction:column;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.feed{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.feed code{background:var(--sunk);padding:6px 10px;border-radius:6px;overflow-wrap:anywhere;flex:1 1 260px;user-select:all}
+.eps{display:flex;flex-direction:column;gap:8px}
+.ep{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;grid-template-columns:48px minmax(0,1fr);gap:4px 12px;align-items:start}
+.ep.cur{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.ep .pp{width:48px;height:48px;border-radius:50%;border:0;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;grid-row:span 2}
+.ep .pp svg{width:20px;height:20px;fill:currentColor}
+.ep h4{font-size:1rem;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.ep h4 .n{font-family:var(--mono);color:var(--muted);font-weight:500;font-size:.8rem}
+.ep .em{display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-size:.8rem;color:var(--muted)}
+.ep .em a{color:var(--muted)}
+.ep .prog{height:4px;border-radius:2px;background:var(--sunk);overflow:hidden;width:120px}
+.ep .prog i{display:block;height:100%;background:var(--accent)}
+.ep details{grid-column:1/-1;margin-top:4px}
+.ep summary{cursor:pointer;font-size:.84rem;color:var(--accent);font-weight:500}
+.tr{display:flex;flex-direction:column;gap:8px;margin-top:10px;font-size:.92rem;max-height:420px;overflow-y:auto;padding-right:6px}
+.tr p b{font-family:var(--mono);font-size:.74rem;text-transform:uppercase;letter-spacing:.06em;margin-right:8px}
+.tr p.h-N b{color:var(--accent)} .tr p.h-T b{color:var(--belt-yellow)}
+.tr p.pz{color:var(--muted);font-style:italic;font-size:.84rem}
+#mini{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--surface);border-top:1px solid var(--line);box-shadow:0 -6px 24px rgb(0 0 0 / .08);
+  padding-block:10px calc(10px + env(safe-area-inset-bottom,0px));padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;gap:10px;align-items:center}
+#mini .mi{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+#mini .mi b{font-size:.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#mini .mrow{display:flex;gap:10px;align-items:center}
+#mini input[type=range]{flex:1;min-width:0;accent-color:var(--accent)}
+#mini .btn{padding:8px 10px;justify-content:center}
+#mini .btn svg{width:18px;height:18px;fill:currentColor}
+#mPlay{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);width:44px}
+body.has-mini main{padding-bottom:140px}
+
 /* Key-term definitions */
 .term{background:none;border:0;padding:0;margin:0;font:inherit;color:inherit;line-height:inherit;text-align:inherit;border-bottom:1.5px dotted var(--accent);cursor:help;border-radius:0}
 .term:hover,.term[aria-expanded="true"]{color:var(--accent)}
@@ -291,6 +326,16 @@ dl.gl dd{margin:0;color:var(--muted)}
     <nav class="nav" id="nav"></nav>
   </aside>
   <main><div class="col" id="view"></div></main>
+</div>
+<div id="mini" hidden>
+  <button class="btn" id="mPlay" type="button" aria-label="Play"></button>
+  <div class="mi">
+    <b id="mTitle"></b>
+    <div class="mrow"><input id="mSeek" type="range" min="0" max="100" step="1" value="0" aria-label="Seek"><span class="score" id="mTime">0:00</span></div>
+  </div>
+  <button class="btn" id="mRate" type="button" aria-label="Playback speed">1×</button>
+  <a class="btn" href="#podcast" aria-label="All episodes" title="All episodes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h10v2H4z"/></svg></a>
+  <button class="btn" id="mClose" type="button" aria-label="Close player" title="Close player"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.4 5 12 10.6 17.6 5 19 6.4 13.4 12l5.6 5.6-1.4 1.4L12 13.4 6.4 19 5 17.6 10.6 12 5 6.4z"/></svg></button>
 </div>
 
 <script>
@@ -1639,6 +1684,7 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
 
 const PAGES=[
  {id:"home",title:"Course home",group:"Start"},
+ {id:"podcast",title:"Podcast: 12 episodes",group:"Start"},
  ...MODULES.map((m,i)=>({id:m.id,title:m.title,belt:m.belt,group:i<2?"White belt: awareness":i<5?"Yellow belt: core tools":"Green belt: DMAIC and leading change",n:i+1})),
  {id:"capstone",title:"Capstone case: Northwind refunds",group:"Prove it",belt:"black"},
  {id:"exam",title:"Final exam (30 questions)",group:"Prove it",belt:"black"},
@@ -1714,7 +1760,7 @@ function viewHome(){
   return `<div class="head"><span class="eyebrow">A self-paced course · 11 modules · about 13 hours</span>
   <h1>Lean Six Sigma, from first principles to running a DMAIC project</h1>
   <p class="lede">Learn to see waste, measure processes, find root causes with data and make improvements stick. Every module uses business and office processes: invoices, refunds, onboarding, claims, support tickets.</p>
-  <div class="row"><a class="btn primary" href="#m1" style="text-decoration:none">Start module 1</a><a class="btn" href="#exam" style="text-decoration:none">Take the final exam</a></div></div>
+  <div class="row"><a class="btn primary" href="#m1" style="text-decoration:none">Start module 1</a><a class="btn" href="#podcast" style="text-decoration:none">Listen to the podcast</a><a class="btn" href="#exam" style="text-decoration:none">Take the final exam</a></div></div>
   <div class="belts">
    <div><span class="belt white"></span><h4>White belt</h4><p>Modules 1–2. Vocabulary, Lean thinking, the 8 wastes.</p></div>
    <div><span class="belt yellow"></span><h4>Yellow belt</h4><p>Modules 3–5. Mapping, flow metrics, Lean tools, Six Sigma basics.</p></div>
@@ -1727,7 +1773,8 @@ function viewHome(){
   <li><strong>Capstone</strong>: run a full DMAIC project on a realistic refund-process case.</li>
   <li><strong>Final exam</strong>: 30 scenario questions. 80% is the pass mark used by many Green Belt exams.</li>
   <li><strong>Diagrams</strong> in every module, and <span style="border-bottom:1.5px dotted var(--accent)">dotted key terms</span>: hover over them, or tap on a phone, to see a definition.</li>
-  <li><strong>Light or dark</strong>: use the sun/moon button at the top of the menu.</li></ul>
+  <li><strong>Light or dark</strong>: use the sun/moon button at the top of the menu.</li>
+  <li><strong>Podcast</strong>: 12 episodes, about 6–8 minutes each, one per module. The player keeps going while you read, and remembers where you stopped.</li></ul>
   <p>Your progress and quiz scores are saved in this browser only.</p></div>
   <h2>Modules</h2>
   <div class="path">${MODULES.map((m,i)=>`<a class="mod" href="#${m.id}"><div class="top"><span class="eyebrow">Module ${i+1} · ${m.time}</span><span class="belt ${m.belt}"></span></div><h4>${esc(m.title)}</h4><p>${esc(m.summary)}</p>${state.done[m.id]?'<span class="tick">✓ Completed'+(state.best[m.id]!=null?' · quiz best '+state.best[m.id]+'%':'')+'</span>':(state.best[m.id]!=null?'<span class="score">Quiz best '+state.best[m.id]+'%</span>':'')}</a>`).join("")}
@@ -1737,7 +1784,8 @@ function viewHome(){
 function viewModule(m,idx){
   return `<div class="head"><span class="eyebrow">Module ${idx+1} of ${MODULES.length}</span><h1>${esc(m.title)}</h1>
   <div class="meta"><span class="chip"><span class="belt ${m.belt}"></span>${beltName[m.belt]}</span><span class="chip">${m.time}</span><span class="chip">${m.quiz.length} quiz questions</span><span class="chip">${m.questions.length} practice questions</span></div>
-  <p class="lede">${esc(m.summary)}</p></div>
+  <p class="lede">${esc(m.summary)}</p>
+  <a class="listen" href="#podcast" data-ep="${idx+1}">${PLAY}Listen to episode ${idx+1} of the podcast</a></div>
   <div class="obj"><span class="eyebrow">By the end you can</span><ul>${m.objectives.map(o=>`<li>${esc(o)}</li>`).join("")}</ul></div>
   ${m.sections.map((s,i)=>`<section class="lesson"><h3><span class="n">${idx+1}.${i+1}</span>${esc(s.h)}</h3><div class="prose">${s.html}${(FIGS[m.id+"|"+s.h]||[]).map(k=>D[k]()).join("")}</div></section>`).join('<hr class="rule">')}
   <hr class="rule">
@@ -1752,7 +1800,8 @@ function viewCapstone(){
     <textarea id="cap-${i}" placeholder="Draft your answer" aria-label="Your answer"></textarea>
     <div class="ans"><span class="eyebrow">Model answer</span><p>${esc(t.model)}</p></div></details>`;}).join("");
   return `<div class="head"><span class="eyebrow">Capstone project</span><h1>Northwind Living: refunds that take too long</h1>
-  <div class="meta"><span class="chip"><span class="belt black"></span>Apply everything</span><span class="chip">90–120 min</span><span class="chip">${CAPSTONE.tasks.length} tasks across DMAIC</span></div></div>
+  <div class="meta"><span class="chip"><span class="belt black"></span>Apply everything</span><span class="chip">90–120 min</span><span class="chip">${CAPSTONE.tasks.length} tasks across DMAIC</span></div>
+  <a class="listen" href="#podcast" data-ep="12">${PLAY}Listen to episode 12: the capstone walk-through</a></div>
   <div class="prose">${CAPSTONE.intro}${D.refundflow()}</div><div class="block">${tasks}</div>${doneBtn("capstone")}${pager("capstone")}`;
 }
 function viewExam(){
@@ -1852,6 +1901,71 @@ function wireGlossary(){
     document.querySelectorAll("#gl>div").forEach(r=>r.hidden=q&&!r.dataset.s.includes(q));});
 }
 
+/* ============================== PODCAST ============================== */
+const FEED_URL="https://skytechnext.github.io/lean-six-sigma-course/podcast/feed.xml";
+const PLAY=`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>`,PAUSE=`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>`;
+const RATES=[0.8,1,1.25,1.5,1.75,2];
+const AUDIO=new Audio();AUDIO.preload="metadata";
+let POD=null,podLoading=null,lastSave=0;
+const fmtT=s=>{s=Math.max(0,Math.floor(s||0));return Math.floor(s/60)+":"+String(s%60).padStart(2,"0");};
+function loadPod(){return podLoading||(podLoading=fetch("podcast/episodes.json").then(r=>{if(!r.ok)throw 0;return r.json();}).then(d=>POD=d).catch(()=>POD={episodes:[],error:true}));}
+const podState=n=>(state.pod=state.pod||{},state.pod[n]=state.pod[n]||{t:0,done:false});
+function playEp(n,go=true){
+  const ep=POD.episodes.find(e=>e.num===n);if(!ep)return;
+  if(AUDIO.dataset.n!=n){AUDIO.src=ep.file;AUDIO.dataset.n=n;const pos=podState(n).t;
+    AUDIO.addEventListener("loadedmetadata",()=>{if(pos>2&&pos<AUDIO.duration-5)AUDIO.currentTime=pos;},{once:true});}
+  AUDIO.playbackRate=state.podRate||1;
+  if(go)AUDIO.play().catch(()=>{});else AUDIO.pause();
+  state.podSel=n;save();syncPod();
+}
+function syncPod(){
+  const n=+AUDIO.dataset.n||0,ep=POD&&POD.episodes.find(e=>e.num===n),mini=$("#mini");
+  mini.hidden=!ep;document.body.classList.toggle("has-mini",!!ep);
+  if(ep){$("#mTitle").textContent=`${ep.num}. ${ep.title}`;$("#mPlay").innerHTML=AUDIO.paused?PLAY:PAUSE;$("#mPlay").setAttribute("aria-label",AUDIO.paused?"Play":"Pause");
+    $("#mRate").textContent=(state.podRate||1)+"×";}
+  document.querySelectorAll(".ep").forEach(row=>{const k=+row.dataset.n,on=k===n,st=podState(k),e=POD.episodes.find(x=>x.num===k);
+    row.classList.toggle("cur",on);const b=row.querySelector(".pp");b.innerHTML=on&&!AUDIO.paused?PAUSE:PLAY;b.setAttribute("aria-label",(on&&!AUDIO.paused?"Pause":"Play")+" episode "+k);
+    row.querySelector(".prog i").style.width=(st.done?100:Math.min(100,st.t/e.duration*100))+"%";
+    row.querySelector(".st").textContent=st.done?"✓ Listened":st.t>5?fmtT(st.t)+" of "+fmtT(e.duration):fmtT(e.duration);});
+}
+AUDIO.addEventListener("play",syncPod);AUDIO.addEventListener("pause",()=>{const n=+AUDIO.dataset.n;if(n){podState(n).t=AUDIO.currentTime;save();}syncPod();});
+AUDIO.addEventListener("timeupdate",()=>{const s=$("#mSeek");if(AUDIO.duration){s.max=Math.floor(AUDIO.duration);if(document.activeElement!==s)s.value=Math.floor(AUDIO.currentTime);}
+  $("#mTime").textContent=fmtT(AUDIO.currentTime)+" / "+fmtT(AUDIO.duration);
+  const now=Date.now();if(now-lastSave>5000){lastSave=now;const n=+AUDIO.dataset.n;if(n){podState(n).t=AUDIO.currentTime;save();syncPod();}}});
+AUDIO.addEventListener("ended",()=>{const n=+AUDIO.dataset.n;const st=podState(n);st.done=true;st.t=0;save();
+  const nx=POD.episodes.find(e=>e.num===n+1);if(nx)playEp(nx.num);else syncPod();});
+$("#mPlay").addEventListener("click",()=>{AUDIO.paused?AUDIO.play().catch(()=>{}):AUDIO.pause();});
+$("#mSeek").addEventListener("input",e=>{AUDIO.currentTime=+e.target.value;});
+$("#mRate").addEventListener("click",()=>{const i=RATES.indexOf(state.podRate||1);state.podRate=RATES[(i+1)%RATES.length];AUDIO.playbackRate=state.podRate;save();syncPod();});
+$("#mClose").addEventListener("click",()=>{AUDIO.pause();const n=+AUDIO.dataset.n;if(n){podState(n).t=AUDIO.currentTime;save();}AUDIO.removeAttribute("src");AUDIO.dataset.n="";AUDIO.load();syncPod();});
+let pendingEp=null;
+document.addEventListener("click",e=>{const a=e.target.closest&&e.target.closest("a.listen");if(a)pendingEp=+a.dataset.ep;});
+
+function viewPodcast(){
+  return `<div class="head"><span class="eyebrow">Listen</span><h1>Lean Six Sigma Path Podcast</h1>
+  <p class="lede">Twelve conversations between Nadia, an experienced Black Belt, and Theo, an operations manager learning the ropes. One episode per module, plus the capstone. Each ends with three quiz questions: pause, answer in your head, then hear the answer.</p></div>
+  <div id="podList"><p class="score">Loading episodes…</p></div>
+  <div class="pod-sub"><h3>Listen in a podcast app</h3><p>Copy this feed address into any app that lets you add a show by URL (Apple Podcasts on Mac, Pocket Casts, Overcast, AntennaPod). Spotify doesn't accept custom feeds.</p>
+  <div class="feed"><code id="feedUrl">${FEED_URL}</code><button class="btn" id="copyFeed" type="button">Copy</button></div></div>${pager("podcast")}`;
+}
+async function wirePodcast(){
+  $("#copyFeed").addEventListener("click",()=>{const b=$("#copyFeed");
+    navigator.clipboard.writeText(FEED_URL).then(()=>{b.textContent="Copied";},()=>{const r=document.createRange();r.selectNodeContents($("#feedUrl"));const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent="Selected: press Ctrl+C";});});
+  await loadPod();const box=$("#podList");if(!box)return;
+  if(POD.error||!POD.episodes.length){box.innerHTML=`<p class="callout">The episodes couldn't load here. Open the course from its website to listen.</p>`;return;}
+  const H=POD.hosts;
+  box.innerHTML=`<div class="eps">${POD.episodes.map(e=>{const mod=e.module==="capstone"?"Capstone":"Module "+e.module.slice(1);
+    return `<div class="ep" data-n="${e.num}"><button class="pp" type="button"></button>
+    <h4><span class="n">EP ${String(e.num).padStart(2,"0")}</span>${esc(e.title)}</h4>
+    <div class="em"><span class="st"></span><span class="prog"><i></i></span><a href="#${e.module}">${mod}</a></div>
+    <details><summary>Transcript</summary><div class="tr">${e.lines.map(l=>l.s==="P"?`<p class="pz">Pause and answer (${l.t} seconds)</p>`:`<p class="h-${l.s}"><b>${H[l.s]}</b>${esc(l.t)}</p>`).join("")}</div></details></div>`;}).join("")}</div>`;
+  box.querySelectorAll(".pp").forEach(b=>b.addEventListener("click",()=>{const n=+b.closest(".ep").dataset.n;
+    if(+AUDIO.dataset.n===n&&!AUDIO.paused)AUDIO.pause();else playEp(n);}));
+  const pick=pendingEp||(!AUDIO.dataset.n&&state.podSel);pendingEp=null;
+  if(pick&&+AUDIO.dataset.n!==pick){playEp(pick,false);const row=box.querySelector(`.ep[data-n="${pick}"]`);if(row)row.scrollIntoView({block:"center",behavior:"instant"});}
+  syncPod();
+}
+
 /* ============================== ROUTER ============================== */
 function setCurrent(id){
   document.querySelectorAll("#nav a").forEach(a=>{if(a.dataset.id===id)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");});}
@@ -1862,6 +1976,7 @@ function route(keepScroll){
   else if(id==="capstone"){v.innerHTML=viewCapstone();wireDone("capstone");}
   else if(id==="exam"){v.innerHTML=viewExam();wireExam();}
   else if(id==="toolkit"){v.innerHTML=viewToolkit();wireToolkit();}
+  else if(id==="podcast"){v.innerHTML=viewPodcast();wirePodcast();}
   else if(id==="glossary"){v.innerHTML=viewGlossary();wireGlossary();}
   else {v.innerHTML=viewHome();}
   hidePop();if(mi>=0||id==="capstone")linkTerms(v);
