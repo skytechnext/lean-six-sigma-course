@@ -1,0 +1,1513 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lean Six Sigma Path</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: sticky belt-path sidebar + a single reading column; modules render into the column by hash. */
+:root{
+  --bg:#f3f5f7; --surface:#ffffff; --sunk:#e9edf1; --ink:#15212c; --muted:#56646f; --line:#d6dde4;
+  --accent:#0d6b73; --accent-ink:#ffffff; --accent-soft:#dcefef;
+  --ok:#1d7446; --ok-soft:#dff2e6; --bad:#b0352c; --bad-soft:#f8e1de;
+  --belt-white:#c9d2da; --belt-yellow:#d9a514; --belt-green:#2e8a4f; --belt-black:#1b2026;
+  --ucl:#b0352c;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e1419; --surface:#151e26; --sunk:#1b2630; --ink:#e2e8ee; --muted:#93a1ae; --line:#28343f;
+  --accent:#55c2c9; --accent-ink:#06282b; --accent-soft:#16363a;
+  --ok:#5fcf8c; --ok-soft:#163626; --bad:#f08a80; --bad-soft:#3d1d1a;
+  --belt-white:#8794a0; --belt-yellow:#e9b934; --belt-green:#4fb873; --belt-black:#cfd6dc;
+  --ucl:#f08a80; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0e1419; --surface:#151e26; --sunk:#1b2630; --ink:#e2e8ee; --muted:#93a1ae; --line:#28343f;
+  --accent:#55c2c9; --accent-ink:#06282b; --accent-soft:#16363a;
+  --ok:#5fcf8c; --ok-soft:#163626; --bad:#f08a80; --bad-soft:#3d1d1a;
+  --belt-white:#8794a0; --belt-yellow:#e9b934; --belt-green:#4fb873; --belt-black:#cfd6dc;
+  --ucl:#f08a80; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6}
+h1,h2,h3,h4{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(2rem,5vw,2.9rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:1.6rem;font-weight:700;letter-spacing:-.01em}
+h3{font-size:1.2rem;font-weight:700}
+h4{font-size:1rem;font-weight:700}
+p{margin:0}
+a{color:var(--accent)}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+code,.mono{font-family:var(--mono);font-size:.9em}
+.eyebrow{font-family:var(--mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+.app{display:grid;grid-template-columns:290px minmax(0,1fr);min-height:100vh}
+.side{position:sticky;top:0;height:100vh;overflow-y:auto;border-right:1px solid var(--line);background:var(--surface);
+  padding-block:24px;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:20px;display:flex;flex-direction:column;gap:18px}
+.brand{display:flex;flex-direction:column;gap:4px}
+.brand b{font-family:var(--display);font-size:1.35rem;font-weight:800;letter-spacing:-.01em}
+.overall{display:flex;flex-direction:column;gap:6px}
+.bar{height:6px;border-radius:3px;background:var(--sunk);overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav .grp{margin-top:10px;margin-bottom:4px}
+.nav a{display:grid;grid-template-columns:14px minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 10px;border-radius:7px;
+  color:var(--ink);text-decoration:none;font-size:.93rem;line-height:1.3}
+.nav a:hover{background:var(--sunk)}
+.nav a[aria-current="page"]{background:var(--accent-soft);font-weight:600}
+.belt{width:14px;height:5px;border-radius:2px;background:var(--belt-white)}
+.belt.yellow{background:var(--belt-yellow)} .belt.green{background:var(--belt-green)} .belt.black{background:var(--belt-black)}
+.tick{font-family:var(--mono);font-size:.75rem;color:var(--ok)}
+.menu-btn{display:none}
+
+main{padding-block:40px 80px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.col{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+.lede{font-size:1.12rem;color:var(--muted);max-width:62ch}
+.prose{display:flex;flex-direction:column;gap:14px;max-width:68ch}
+.prose ul,.prose ol{margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:6px}
+.prose strong{font-weight:600}
+section.lesson{display:flex;flex-direction:column;gap:14px;padding-top:6px}
+section.lesson>h3{display:flex;gap:10px;align-items:baseline}
+section.lesson>h3 .n{font-family:var(--mono);font-size:.8rem;color:var(--muted);font-weight:500}
+hr.rule{border:0;border-top:1px solid var(--line);margin:0}
+
+.head{display:flex;flex-direction:column;gap:14px}
+.meta{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:7px;padding:3px 10px;border:1px solid var(--line);border-radius:999px;font-size:.8rem;color:var(--muted);background:var(--surface)}
+.obj{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+.obj ul{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:4px}
+
+.callout{border-left:3px solid var(--accent);background:var(--accent-soft);padding:14px 16px;border-radius:0 8px 8px 0;display:flex;flex-direction:column;gap:6px}
+.callout.example{border-left-color:var(--belt-yellow);background:var(--sunk)}
+.callout .eyebrow{color:var(--ink);opacity:.75}
+.formula{font-family:var(--mono);background:var(--sunk);border-radius:8px;padding:12px 14px;font-size:.92rem;overflow-x:auto;white-space:pre}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500;background:var(--sunk)}
+tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--mono)}
+
+.dmaic{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.dmaic>div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:6px;font-size:.85rem}
+.dmaic b{font-family:var(--display);font-size:1.6rem;color:var(--accent);line-height:1}
+.dmaic .q{font-weight:600}
+.dmaic .t{color:var(--muted)}
+.chart{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px;overflow-x:auto}
+.chart svg{display:block;width:100%;min-width:520px;height:auto}
+
+/* Quiz */
+.block{display:flex;flex-direction:column;gap:14px}
+.block-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.score{font-family:var(--mono);font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.qcard{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:12px}
+.qcard .qt{font-weight:600;display:flex;gap:10px}
+.qcard .qt .n{font-family:var(--mono);color:var(--muted);font-weight:500;flex:none}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opt{text-align:left;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 12px;display:flex;gap:10px;line-height:1.4}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt .k{font-family:var(--mono);color:var(--muted);flex:none}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt:disabled{cursor:default}
+.why{font-size:.92rem;padding:10px 12px;border-radius:8px;background:var(--sunk)}
+.why b{font-weight:600}
+.why.ok b{color:var(--ok)} .why.no b{color:var(--bad)}
+details.oq{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 18px}
+details.oq>summary{cursor:pointer;font-weight:600;list-style:none;display:flex;gap:10px}
+details.oq>summary::-webkit-details-marker{display:none}
+details.oq>summary .n{font-family:var(--mono);color:var(--muted);font-weight:500;flex:none}
+details.oq .ans{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);display:flex;flex-direction:column;gap:8px;font-size:.95rem}
+details.oq textarea{width:100%;min-height:80px;margin-top:12px;font:inherit;font-size:.92rem;padding:10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);resize:vertical}
+.reveal-hint{font-size:.8rem;color:var(--muted);font-family:var(--mono)}
+
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 14px;font-weight:500}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.pager{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding-top:8px;border-top:1px solid var(--line)}
+.pager a{text-decoration:none;display:flex;flex-direction:column;gap:2px;padding:10px 14px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);max-width:48%}
+.pager a span{font-size:.75rem;color:var(--muted);font-family:var(--mono)}
+
+/* Home */
+.path{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.mod{display:flex;flex-direction:column;gap:8px;padding:14px 16px;border:1px solid var(--line);border-radius:10px;background:var(--surface);text-decoration:none;color:var(--ink)}
+.mod{transition:border-color .2s,transform .2s}
+.mod:hover{border-color:var(--accent);transform:translateY(-2px)}
+.btn,.opt,.nav a{transition:border-color .2s,background-color .2s;min-height:44px}
+.btn{display:inline-flex;align-items:center}
+.mod .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.mod h4{font-size:1rem}
+.mod p{font-size:.86rem;color:var(--muted);line-height:1.45}
+.belts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.belts>div{border:1px solid var(--line);border-radius:10px;padding:14px;background:var(--surface);display:flex;flex-direction:column;gap:6px;font-size:.9rem}
+.belts .belt{width:40px;height:8px}
+
+/* Toolkit */
+.tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.tool{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.tool label{display:flex;flex-direction:column;gap:3px;font-size:.82rem;color:var(--muted)}
+.tool input{font:inherit;font-family:var(--mono);font-size:.95rem;padding:7px 9px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);width:100%}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.out{font-family:var(--mono);font-size:.9rem;background:var(--sunk);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:3px;font-variant-numeric:tabular-nums}
+.out b{color:var(--accent);font-weight:500}
+.search{font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);width:100%}
+dl.gl{margin:0;display:flex;flex-direction:column}
+dl.gl>div{padding:10px 0;border-bottom:1px solid var(--line);display:grid;grid-template-columns:200px minmax(0,1fr);gap:14px}
+dl.gl dt{font-weight:600}
+dl.gl dd{margin:0;color:var(--muted)}
+.result{padding:18px 20px;border-radius:10px;border:1px solid var(--line);background:var(--surface);display:flex;flex-direction:column;gap:6px}
+.result .big{font-family:var(--display);font-size:2.4rem;font-weight:800;font-variant-numeric:tabular-nums}
+
+@media (max-width:900px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .side{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:14px}
+  .side .nav,.side .overall{display:none}
+  .side.open .nav,.side.open .overall{display:flex}
+  .brand-row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .menu-btn{display:inline-block}
+  main{padding-block:24px 60px}
+  .dmaic{grid-template-columns:minmax(0,1fr)}
+  .tools,.belts{grid-template-columns:minmax(0,1fr)}
+  dl.gl>div{grid-template-columns:minmax(0,1fr);gap:2px}
+  .pager a{max-width:100%;flex:1 1 100%}
+}
+@media (max-width:480px){
+  h1{font-size:1.75rem} h2{font-size:1.35rem}
+  .qcard,details.oq,.obj,.tool{padding:14px}
+  .fields{grid-template-columns:minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <aside class="side" id="side">
+    <div class="brand-row">
+      <div class="brand">
+        <span class="eyebrow">Beginner → Intermediate</span>
+        <b>Lean Six Sigma Path</b>
+      </div>
+      <button class="btn menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">Modules</button>
+    </div>
+    <div class="overall">
+      <div class="row" style="justify-content:space-between"><span class="eyebrow">Your progress</span><span class="score" id="pct">0%</span></div>
+      <div class="bar"><i id="pctBar"></i></div>
+    </div>
+    <nav class="nav" id="nav"></nav>
+  </aside>
+  <main><div class="col" id="view"></div></main>
+</div>
+
+<script>
+/* ============================== CONTENT ============================== */
+const MODULES = [
+/* ---------------------------------------------------------------- 1 */
+{id:"m1", belt:"white", title:"Foundations of Lean Six Sigma", time:"45 min",
+summary:"Where Lean and Six Sigma came from, what each one fixes, and why businesses combine them.",
+objectives:[
+ "Explain Lean and Six Sigma in one sentence each",
+ "Describe what a business process is and why optimising processes beats blaming people",
+ "Name the main roles and belt levels in a Lean Six Sigma program",
+ "Distinguish speed problems (Lean) from variation and defect problems (Six Sigma)"],
+sections:[
+{h:"What is a business process?", html:`
+<p>A <strong>process</strong> is a repeatable set of steps that turns inputs into outputs for a customer. Hiring a new employee, approving an invoice, onboarding a client, resolving a support ticket and shipping an order are all processes. Most of a company's cost, delay and customer frustration lives inside these everyday processes, not in one-off events.</p>
+<p>W. Edwards Deming put it bluntly: most problems come from the system, not the people working in it. Lean Six Sigma starts from that assumption. When an invoice is paid late, the question is "what about the process allowed this?" rather than "who messed up?"</p>
+<div class="callout"><span class="eyebrow">Key idea</span><p>Every process has a customer (internal or external), a purpose, inputs, steps, outputs and measurable performance. If you can't name the customer, you can't define value.</p></div>`},
+{h:"Lean in one sentence", html:`
+<p><strong>Lean</strong> is a way of delivering more value to customers with less waste by making work flow smoothly from request to delivery.</p>
+<p>Lean grew out of the <strong>Toyota Production System (TPS)</strong>, developed by Taiichi Ohno and Eiji Toyoda from the 1940s to the 1970s. TPS rests on two pillars: <strong>Just-in-Time</strong> (make only what is needed, when it is needed) and <strong>Jidoka</strong> (build in quality by stopping when something goes wrong). The term "Lean" was popularised in 1990 by <em>The Machine That Changed the World</em> (Womack, Jones and Roos) and in 1996 by <em>Lean Thinking</em>.</p>
+<p>Lean's main question: <em>how long does it take, and how much of that time adds value?</em></p>`},
+{h:"Six Sigma in one sentence", html:`
+<p><strong>Six Sigma</strong> is a data-driven method for reducing variation and defects so a process produces the right result consistently.</p>
+<p>It was developed at <strong>Motorola</strong> in 1986 (engineer Bill Smith is usually credited) and became famous when Jack Welch made it a company-wide strategy at <strong>General Electric</strong> in 1995. "Sigma" (σ) is the statistical symbol for standard deviation. A process running at "six sigma" produces about <strong>3.4 defects per million opportunities</strong>.</p>
+<p>Six Sigma's main question: <em>how often do we get it wrong, and why?</em></p>`},
+{h:"Why combine them?", html:`
+<p>Lean is fast but can be imprecise: it removes delay and waste, but it doesn't always explain why a result varies. Six Sigma is precise but can be slow: statistical analysis on a process full of obvious waste wastes effort. Together they cover both speed and quality.</p>
+<div class="tbl"><table>
+<tr><th></th><th>Lean</th><th>Six Sigma</th></tr>
+<tr><td>Main enemy</td><td>Waste and delay</td><td>Variation and defects</td></tr>
+<tr><td>Core question</td><td>Where does time go?</td><td>Why does the result vary?</td></tr>
+<tr><td>Typical tools</td><td>Value stream map, 5S, kanban, kaizen</td><td>DMAIC, statistics, control charts</td></tr>
+<tr><td>Pace</td><td>Days to weeks (kaizen events)</td><td>Weeks to months (projects)</td></tr>
+<tr><td>Measure of success</td><td>Lead time, flow, productivity</td><td>Defect rate, capability, sigma level</td></tr>
+</table></div>
+<p>In practice: use Lean to strip out the obvious waste first, then use Six Sigma on the problems that remain stubborn and data-heavy.</p>`},
+{h:"Roles and belts", html:`
+<p>Lean Six Sigma programs borrow martial-arts belts to describe skill levels. They are not legally standardised; bodies like ASQ and IASSC each publish their own bodies of knowledge.</p>
+<div class="tbl"><table>
+<tr><th>Role</th><th>What they do</th></tr>
+<tr><td>Executive sponsor / Champion</td><td>Chooses projects that matter to strategy, removes roadblocks, provides resources</td></tr>
+<tr><td>Process owner</td><td>Owns the process day to day and keeps the improvement in place after the project ends</td></tr>
+<tr><td>Master Black Belt</td><td>Coach and trainer; guides the program and reviews complex analysis</td></tr>
+<tr><td>Black Belt</td><td>Full-time project leader on complex, cross-functional projects</td></tr>
+<tr><td>Green Belt</td><td>Leads smaller projects part-time while doing their normal job. <em>This course takes you toward this level.</em></td></tr>
+<tr><td>Yellow Belt</td><td>Team member who understands the basics and contributes data and ideas</td></tr>
+<tr><td>White Belt</td><td>Awareness of the concepts and vocabulary</td></tr>
+</table></div>`},
+{h:"Where it works in business", html:`
+<p>Lean Six Sigma started in factories but most of today's opportunities are in <strong>transactional and service processes</strong>: finance, HR, sales operations, customer service, healthcare administration, IT service management, procurement and logistics. These processes are often invisible (work sits in inboxes and queues, not on a shop floor), which is exactly why they hide so much waste.</p>
+<div class="callout example"><span class="eyebrow">Business example</span><p>A bank's mortgage approval took 32 days. Applicants spent less than 4 hours in actual review; the rest was waiting for documents, hand-offs between teams, and rework when forms were incomplete. A Lean Six Sigma project that added a completeness check at intake and parallelised two review steps cut the lead time to 11 days.</p></div>`}
+],
+quiz:[
+{q:"Which statement best describes Lean?", o:["A statistical method to reach 3.4 defects per million","A way to deliver more customer value with less waste by improving flow","A software tool for process automation","A quality inspection technique"], a:1, why:"Lean focuses on value and flow. The 3.4 DPMO target belongs to Six Sigma."},
+{q:"Six Sigma was first developed at:", o:["Toyota","Ford","Motorola","General Electric"], a:2, why:"Motorola developed Six Sigma in 1986. GE made it famous from 1995 under Jack Welch."},
+{q:"What does the Greek letter sigma (σ) represent in statistics?", o:["The mean","Standard deviation","The median","The defect count"], a:1, why:"Sigma is standard deviation, a measure of how spread out results are."},
+{q:"A process running at six sigma produces about how many defects per million opportunities?", o:["3.4","34","233","6,210"], a:0, why:"3.4 DPMO (with the conventional 1.5σ long-term shift). 233 is five sigma; 6,210 is four sigma."},
+{q:"The two pillars of the Toyota Production System are:", o:["Kaizen and Kanban","Just-in-Time and Jidoka","DMAIC and PDCA","Takt and Flow"], a:1, why:"Just-in-Time (produce what's needed when it's needed) and Jidoka (build in quality, stop on abnormality)."},
+{q:"Who usually ensures an improvement is sustained after the project team disbands?", o:["The Black Belt","The Master Black Belt","The process owner","The Yellow Belt"], a:2, why:"The process owner runs the process day to day, so they own the control plan after handover."},
+{q:"A customer service process has wildly inconsistent resolution quality. Which approach is the stronger first fit?", o:["Lean, because the issue is speed","Six Sigma, because the issue is variation in the result","Neither, it's a people problem","5S, because the desk is messy"], a:1, why:"Inconsistent output is a variation problem, which is Six Sigma's specialty. You'd still look for waste along the way."},
+{q:"Deming's view that most problems come from the system leads Lean Six Sigma practitioners to:", o:["Replace underperforming staff first","Ask what in the process allowed the problem","Add more inspectors","Increase targets"], a:1, why:"Focus on the process, not blame. Blame hides root causes and discourages reporting."}
+],
+questions:[
+{q:"Pick a process you use at work or in daily life. Name its customer, inputs, outputs and one measure of how well it performs.", model:"Example: Expense reimbursement. Customer: the employee who paid. Inputs: receipts, expense form, policy rules, approver time. Outputs: reimbursement paid into the employee's account. Measures: days from submission to payment; percentage of claims returned for correction."},
+{q:"Explain to a sceptical manager, in three sentences, why Lean and Six Sigma are stronger together than apart.", model:"Lean removes waste and delay quickly, so we stop analysing steps that shouldn't exist. Six Sigma then uses data to fix the defects and variation that Lean alone can't explain. The result is a process that is both fast and reliable, and the gains are held in place with measurement and control."},
+{q:"Why do service and office processes often contain more waste than factory processes?", model:"Office work is largely invisible: it waits in inboxes, queues and shared drives, so nobody sees the pile-ups the way they'd see stacked inventory on a factory floor. Hand-offs between departments are rarely mapped, ownership of the end-to-end process is unclear, and performance is often measured per department rather than from the customer's point of view."}
+]},
+
+/* ---------------------------------------------------------------- 2 */
+{id:"m2", belt:"white", title:"Lean Thinking and the 8 Wastes", time:"60 min",
+summary:"The five Lean principles, value from the customer's point of view, and how to spot the 8 wastes in office work.",
+objectives:[
+ "Apply the five Lean principles to a business process",
+ "Classify steps as value-added, business-value-added or non-value-added",
+ "Identify all 8 wastes (DOWNTIME) in transactional processes",
+ "Explain muda, mura and muri and how they interact"],
+sections:[
+{h:"The five Lean principles", html:`
+<p>Womack and Jones summarised Lean into five principles that work as a cycle:</p>
+<ol>
+<li><strong>Value</strong>: define value from the customer's point of view. What would they pay for?</li>
+<li><strong>Value stream</strong>: map every step that delivers that value, from request to delivery, across departments.</li>
+<li><strong>Flow</strong>: make the remaining steps flow without interruptions, queues or batches.</li>
+<li><strong>Pull</strong>: produce or process only when the next step (or customer) asks for it.</li>
+<li><strong>Perfection</strong>: repeat. Each cycle reveals more waste to remove.</li>
+</ol>`},
+{h:"Value-added or not?", html:`
+<p>A step is <strong>value-added (VA)</strong> only if all three are true:</p>
+<ul>
+<li>The customer cares about it (would pay for it).</li>
+<li>It physically or informationally changes the product or service.</li>
+<li>It is done right the first time.</li>
+</ul>
+<p><strong>Business-value-added (BVA)</strong> steps don't satisfy the customer directly but are required, for example by law, audit or risk control (a KYC check in banking, tax calculation on an invoice). Minimise them; don't remove them blindly.</p>
+<p><strong>Non-value-added (NVA)</strong> steps are pure waste: waiting, re-entering data, chasing approvals, correcting errors. Eliminate them.</p>
+<div class="callout"><span class="eyebrow">Reality check</span><p>In typical office processes, value-added time is often below 10% of total lead time. Most of the elapsed time is work waiting in a queue.</p></div>`},
+{h:"The 8 wastes: DOWNTIME", html:`
+<p>Ohno described seven wastes; the eighth (unused talent) was added later. The acronym <strong>DOWNTIME</strong> helps you remember them.</p>
+<div class="tbl"><table>
+<tr><th>Waste</th><th>Definition</th><th>Office / service example</th></tr>
+<tr><td><strong>D</strong>efects</td><td>Errors that need rework or cause complaints</td><td>Wrong invoice amount, missing data on a form, incorrect shipment address</td></tr>
+<tr><td><strong>O</strong>verproduction</td><td>Producing more or earlier than needed</td><td>Reports nobody reads, printing copies "just in case", processing requests before they're due</td></tr>
+<tr><td><strong>W</strong>aiting</td><td>Idle time for people or work</td><td>Approvals stuck in an inbox, waiting for system access, customer on hold</td></tr>
+<tr><td><strong>N</strong>on-utilised talent</td><td>Not using people's skills and ideas</td><td>Experts doing data entry; staff never asked how to improve their work</td></tr>
+<tr><td><strong>T</strong>ransportation</td><td>Moving work or information unnecessarily</td><td>Emailing files between five teams, physical routing of paper forms</td></tr>
+<tr><td><strong>I</strong>nventory</td><td>Work piled up beyond what's needed</td><td>Backlog of unprocessed tickets, 400 unread emails, stock of unused forms</td></tr>
+<tr><td><strong>M</strong>otion</td><td>Unnecessary movement by people</td><td>Switching between six apps, searching for files, walking to a shared printer</td></tr>
+<tr><td><strong>E</strong>xtra-processing</td><td>Doing more than the customer requires</td><td>Three signatures on a low-value purchase, re-keying data, gold-plated formatting</td></tr>
+</table></div>
+<p>Note the difference between <strong>transportation</strong> (moving the <em>work</em>) and <strong>motion</strong> (moving the <em>person</em>).</p>`},
+{h:"Muda, mura, muri", html:`
+<p>Toyota describes three related forms of waste:</p>
+<ul>
+<li><strong>Muda</strong>: waste, the 8 wastes above.</li>
+<li><strong>Mura</strong>: unevenness. Workload that spikes and drops (month-end close crunch, Monday-morning call surges).</li>
+<li><strong>Muri</strong>: overburden. Pushing people or systems beyond reasonable capacity.</li>
+</ul>
+<p>They feed each other: uneven demand (mura) creates overburden at peaks (muri), which causes errors and rework (muda). That's why levelling the workload (<em>heijunka</em>) is often a powerful fix in office processes.</p>`},
+{h:"Seeing waste: the Gemba walk", html:`
+<p><em>Gemba</em> means "the real place", where the work happens. For an office process, the gemba might be a claims team's queue, the ERP screen or the shared inbox. A <strong>Gemba walk</strong> is going there to observe, ask questions and listen, not to judge.</p>
+<ul>
+<li>Follow one unit of work (an order, a claim) from start to end.</li>
+<li>Ask "what are you waiting for?" and "what makes this step hard?"</li>
+<li>Count queues, hand-offs, systems used and workarounds.</li>
+<li>Thank people. Never use a Gemba walk to assign blame.</li>
+</ul>
+<div class="callout example"><span class="eyebrow">Business example</span><p>A procurement team followed one purchase request through the process. It touched 4 systems, was printed twice, waited 6 days for a signature from a manager who approved 99% of requests unchanged, and was re-keyed into the ERP by a buyer. Waste found: waiting, extra-processing, transportation, defects (re-keying errors) and motion.</p></div>`}
+],
+quiz:[
+{q:"What is the first Lean principle?", o:["Flow","Pull","Specify value from the customer's view","Perfection"], a:2, why:"Everything starts with defining value as the customer sees it."},
+{q:"An employee emails the same spreadsheet through five departments for comments. Which waste is this mainly?", o:["Motion","Transportation","Overproduction","Inventory"], a:1, why:"Moving the work (information) between places is transportation. Motion is the person moving."},
+{q:"A team prepares a weekly 40-page report that no one reads. This is:", o:["Overproduction","Defects","Waiting","Non-utilised talent"], a:0, why:"Producing something before or beyond what's needed is overproduction, often called the worst waste because it creates others."},
+{q:"A mandatory anti-money-laundering check in account opening is best classified as:", o:["Value-added","Business-value-added","Non-value-added","Overproduction"], a:1, why:"The customer doesn't value it, but law requires it. Keep it, make it as efficient as possible."},
+{q:"Month-end close creates a massive spike in accounting workload. This unevenness is called:", o:["Muda","Mura","Muri","Kaizen"], a:1, why:"Mura is unevenness. The overburden that results at peak is muri."},
+{q:"Which of these is NOT one of the three tests for a value-added step?", o:["The customer cares about it","It changes the product or service","It's done right the first time","It is required by an auditor"], a:3, why:"Required-by-audit makes it business-value-added, not value-added."},
+{q:"A senior analyst spends half her week copy-pasting data between systems. The most specific waste is:", o:["Inventory","Non-utilised talent","Overproduction","Transportation"], a:1, why:"A skilled person doing low-skill work is non-utilised talent (re-keying is also extra-processing)."},
+{q:"The main purpose of a Gemba walk is to:", o:["Audit employee performance","Observe the real work and understand the process","Present the future state","Train new hires"], a:1, why:"Go see, ask why, show respect. It's observation, not inspection."},
+{q:"Which waste best describes 1,800 support tickets sitting in a backlog?", o:["Inventory","Motion","Defects","Extra-processing"], a:0, why:"Work piled up waiting to be processed is inventory (it also causes waiting for the customer)."}
+],
+questions:[
+{q:"Walk through your own email inbox. Find at least four of the 8 wastes and give a concrete example of each.", model:"Inventory: hundreds of unread messages. Waiting: emails waiting on someone else's reply before you can act. Transportation: forwarding attachments back and forth instead of sharing one live document. Extra-processing: reply-all threads with 15 people who only need the outcome. Motion: switching between email, chat and three tools to find one file. Defects: missing information that triggers a clarification round."},
+{q:"A sales quote process takes 5 days. Actual work by the sales engineer is 2 hours. List what is likely happening in the remaining time and which wastes those represent.", model:"Waiting for pricing approval from a manager (waiting); waiting for technical specs from engineering (waiting, transportation of the request); quote rejected because of a wrong discount code and redone (defects); re-entering customer data from CRM into the quoting tool (extra-processing); quotes queued behind larger deals (inventory). Value-added time is 2 of ~40 working hours, about 5%."},
+{q:"Why is overproduction often called the worst of the wastes?", model:"Because it creates the others. Producing too much or too early generates inventory, needs storage and transportation, hides defects in the pile, ties up people and cash, and consumes capacity that could have served real demand. In offices, unneeded reports and early processing clog queues the same way excess stock clogs a warehouse."}
+]},
+
+/* ---------------------------------------------------------------- 3 */
+{id:"m3", belt:"yellow", title:"Mapping and Measuring Business Processes", time:"75 min",
+summary:"SIPOC, swimlane maps and value stream maps, plus the flow metrics every process improver must know.",
+objectives:[
+ "Build a SIPOC to scope a process",
+ "Draw a swimlane map that exposes hand-offs",
+ "Create a simple current-state value stream map",
+ "Calculate lead time, cycle time, takt time, process cycle efficiency and use Little's Law"],
+sections:[
+{h:"SIPOC: the 30,000-foot view", html:`
+<p>A <strong>SIPOC</strong> lists Suppliers, Inputs, Process (5–7 high-level steps), Outputs and Customers. It fits on one page and sets the boundaries of what you're improving.</p>
+<div class="tbl"><table>
+<tr><th>Suppliers</th><th>Inputs</th><th>Process</th><th>Outputs</th><th>Customers</th></tr>
+<tr><td>Vendors<br>Purchasing<br>Receiving dock</td><td>Invoice<br>Purchase order<br>Goods receipt</td><td>1. Receive invoice<br>2. Scan and index<br>3. 3-way match<br>4. Resolve exceptions<br>5. Approve<br>6. Schedule payment</td><td>Paid invoice<br>Ledger entry<br>Remittance advice</td><td>Vendors<br>Finance controller<br>Auditors</td></tr>
+</table></div>
+<p>Tip: fill it in the order <strong>P → O → C → I → S</strong>. Start with the process steps, then ask what they produce and who receives it.</p>`},
+{h:"Swimlane (cross-functional) maps", html:`
+<p>A <strong>swimlane map</strong> puts each role or department in its own horizontal lane and draws steps in sequence. Every time the flow crosses a lane, you have a <strong>hand-off</strong>, which is where delays, lost information and errors cluster.</p>
+<ul>
+<li>Use standard symbols: oval (start/end), rectangle (activity), diamond (decision), arrow (flow).</li>
+<li>Map the process <strong>as it really is</strong>, including workarounds, not as the procedure manual says.</li>
+<li>Mark pain points with sticky-note "red dots": rework loops, waits, duplicated checks.</li>
+</ul>`},
+{h:"Value stream mapping (VSM)", html:`
+<p>A <strong>value stream map</strong> adds data to the map. For each step you record:</p>
+<ul>
+<li><strong>Process time (PT)</strong> or touch time: hands-on work time for one unit.</li>
+<li><strong>Wait time</strong> before the step (queue time).</li>
+<li><strong>% Complete & Accurate (%C&A)</strong>: share of work the next step receives without needing to correct or chase it.</li>
+<li>Number of people, systems used, batch sizes, WIP in the queue.</li>
+</ul>
+<p>At the bottom, a <strong>timeline ladder</strong> separates process time from wait time so the waste is obvious.</p>
+<div class="callout example"><span class="eyebrow">Worked example: supplier invoice approval</span>
+<div class="tbl"><table>
+<tr><th>Step</th><th class="num">Wait before</th><th class="num">Process time</th><th class="num">%C&A</th></tr>
+<tr><td>Receive and scan</td><td class="num">1.0 day</td><td class="num">5 min</td><td class="num">95%</td></tr>
+<tr><td>3-way match</td><td class="num">2.0 days</td><td class="num">10 min</td><td class="num">70%</td></tr>
+<tr><td>Resolve exceptions</td><td class="num">3.5 days</td><td class="num">25 min</td><td class="num">80%</td></tr>
+<tr><td>Manager approval</td><td class="num">4.0 days</td><td class="num">3 min</td><td class="num">98%</td></tr>
+<tr><td>Schedule payment</td><td class="num">1.5 days</td><td class="num">7 min</td><td class="num">99%</td></tr>
+<tr><td><strong>Total</strong></td><td class="num"><strong>12.0 days</strong></td><td class="num"><strong>50 min</strong></td><td class="num">RTY ≈ 52%</td></tr>
+</table></div>
+<p>Rolled %C&A = 0.95 × 0.70 × 0.80 × 0.98 × 0.99 ≈ 0.52. Only about half of invoices pass through without someone fixing something.</p></div>`},
+{h:"The flow metrics", html:`
+<div class="tbl"><table>
+<tr><th>Metric</th><th>Definition</th><th>Formula</th></tr>
+<tr><td>Lead time</td><td>Total elapsed time from customer request to delivery (what the customer feels)</td><td>End time − start time</td></tr>
+<tr><td>Cycle time</td><td>Time between completions of consecutive units at a step (how often one comes out). Some organisations use it to mean processing time; always define it.</td><td>Available time ÷ units completed</td></tr>
+<tr><td>Process (touch) time</td><td>Hands-on time actually working on a unit</td><td>Sum of task times</td></tr>
+<tr><td>Takt time</td><td>The pace of customer demand</td><td>Available time ÷ customer demand</td></tr>
+<tr><td>Process cycle efficiency (PCE)</td><td>Share of lead time that is value-added</td><td>VA time ÷ lead time</td></tr>
+<tr><td>Throughput</td><td>Units completed per period</td><td>Count ÷ time</td></tr>
+<tr><td>WIP</td><td>Units started but not finished</td><td>Count at a point in time</td></tr>
+</table></div>
+<p><strong>Little's Law</strong> links three of them and is the single most useful equation in process improvement:</p>
+<div class="formula">Lead time = WIP ÷ Throughput</div>
+<p>If 600 claims are in progress and the team completes 50 per day, the average claim takes 600 ÷ 50 = <strong>12 days</strong>. To cut lead time you either increase throughput or, usually cheaper, <strong>reduce WIP</strong> (stop starting, start finishing).</p>
+<p>Using the invoice example: lead time ≈ 12 days = 96 working hours (8-hour days); process time 50 min ≈ 0.83 h. PCE ≈ 0.83 ÷ 96 ≈ <strong>0.9%</strong>.</p>`},
+{h:"Takt time in an office", html:`
+<p>A customer onboarding team works 7.5 productive hours a day (450 minutes) and receives 90 new client requests per day.</p>
+<div class="formula">Takt = 450 min ÷ 90 requests = 5 min per request</div>
+<p>If onboarding one client takes 20 minutes of touch time, the team needs at least 20 ÷ 5 = <strong>4 people</strong> working the process to keep pace, before allowing for breaks, rework or absence. If the cycle time of the team is slower than takt, a backlog will grow every day.</p>`},
+{h:"Mapping traps to avoid", html:`
+<ul>
+<li>Mapping the "should be" process instead of the real one. Walk it; don't map from a meeting room.</li>
+<li>Too much detail too early. Start with SIPOC, then 10–20 steps, then zoom into the problem area.</li>
+<li>Ignoring the information flow. In offices, the "material" is information; map systems and data too.</li>
+<li>Using averages only. A step averaging 2 days may range from 1 hour to 3 weeks; record the range.</li>
+<li>Mapping without the people who do the work. They know the workarounds.</li>
+</ul>`}
+],
+quiz:[
+{q:"In a SIPOC, the 'P' section should contain about how many steps?", o:["1–2","5–7","20–30","As many as possible"], a:1, why:"SIPOC is a high-level scoping tool. 5–7 steps keeps it readable."},
+{q:"Where do delays and errors most often cluster on a swimlane map?", o:["At the start oval","At hand-offs between lanes","Inside decision diamonds only","At the end oval"], a:1, why:"Each lane crossing is a hand-off with queues, lost context and miscommunication."},
+{q:"A team has 300 open requests and finishes 25 per day. What is the average lead time?", o:["7.5 days","12 days","25 days","275 days"], a:1, why:"Little's Law: 300 ÷ 25 = 12 days."},
+{q:"Takt time is:", o:["The time to complete one unit","The pace of customer demand: available time ÷ demand","Lead time minus wait time","The time a step waits for input"], a:1, why:"Takt sets the rhythm the process must match to meet demand."},
+{q:"A process has 30 minutes of value-added time and a lead time of 5 working days (40 hours). PCE is about:", o:["1.25%","12.5%","30%","75%"], a:0, why:"30 min = 0.5 h; 0.5 ÷ 40 = 1.25%."},
+{q:"Which change usually reduces lead time most cheaply, according to Little's Law?", o:["Hiring more staff","Reducing work-in-progress","Adding a quality check","Working overtime"], a:1, why:"With throughput constant, lower WIP means shorter lead time, and limiting WIP costs little."},
+{q:"%C&A on a value stream map measures:", o:["Percent of time spent on value-added work","Share of work the next step can use without correction","Customer satisfaction score","Capacity utilisation"], a:1, why:"Percent Complete and Accurate is quality as judged by the downstream step."},
+{q:"Four steps have %C&A of 90%, 80%, 95% and 90%. Roughly what share flows through with no rework anywhere?", o:["About 62%","About 80%","About 89%","About 95%"], a:0, why:"0.9 × 0.8 × 0.95 × 0.9 ≈ 0.616."},
+{q:"Customer demand is 240 orders per 8-hour shift (480 min). Takt time is:", o:["0.5 min","2 min","4 min","8 min"], a:1, why:"480 ÷ 240 = 2 minutes per order."}
+],
+questions:[
+{q:"Create a SIPOC for an employee onboarding process (from signed offer to first productive day).", model:"Suppliers: recruiting, HR, IT, hiring manager, facilities, payroll provider. Inputs: signed offer, personal details, role profile, equipment, system access requests. Process: 1) Confirm hire and start date 2) Collect documents and set up in HRIS 3) Order equipment and accounts 4) Prepare workspace and induction plan 5) Day-one induction 6) Role training and first assignment. Outputs: employee record, working laptop and access, completed induction, first task assigned. Customers: new hire, hiring manager, payroll/compliance."},
+{q:"Practice calculation: A loan-processing team has 450 applications in progress and completes 30 per day. Management wants a 5-day lead time. What must WIP be at the current throughput, and what throughput would you need at the current WIP?", model:"Current lead time = 450 ÷ 30 = 15 days. For 5 days at 30/day, WIP must fall to 5 × 30 = 150 applications. Keeping WIP at 450 would require throughput of 450 ÷ 5 = 90 per day, triple the capacity. Reducing WIP (limit new starts, clear stuck items) is far cheaper."},
+{q:"Practice calculation: A help desk is open 8 hours with 60 minutes of breaks per agent. It receives 140 tickets a day, and each ticket takes 12 minutes of agent work. Calculate takt time and the minimum number of agents.", model:"Available time = 480 − 60 = 420 min. Takt = 420 ÷ 140 = 3 min per ticket. Agents needed = work content ÷ takt = 12 ÷ 3 = 4 agents (minimum, with no allowance for variation, rework or absence; in practice plan for more)."},
+{q:"Why can't you rely on average times when building a value stream map?", model:"Averages hide variation. A step with a 2-day average might usually take 2 hours but occasionally 3 weeks when an approver is on leave. Customers experience the spread, not the average, and the long tail often points to the real root cause. Record ranges or percentiles (e.g. median and 90th percentile) alongside the average."}
+]},
+
+/* ---------------------------------------------------------------- 4 */
+{id:"m4", belt:"yellow", title:"Lean Tools for Flow", time:"80 min",
+summary:"5S, standard work, pull and kanban, batch reduction, bottlenecks, error-proofing, visual management and kaizen.",
+objectives:[
+ "Apply 5S to physical and digital workspaces",
+ "Use pull, WIP limits and smaller batches to improve flow",
+ "Find and manage a bottleneck with the Theory of Constraints",
+ "Design poka-yoke (error-proofing) for office processes",
+ "Plan and run a kaizen event"],
+sections:[
+{h:"5S: organise the workplace", html:`
+<div class="tbl"><table>
+<tr><th>S</th><th>Japanese</th><th>Meaning</th><th>Digital workplace example</th></tr>
+<tr><td>Sort</td><td>Seiri</td><td>Remove what isn't needed</td><td>Archive obsolete files and templates</td></tr>
+<tr><td>Set in order</td><td>Seiton</td><td>A place for everything</td><td>Agreed folder structure and naming convention</td></tr>
+<tr><td>Shine</td><td>Seiso</td><td>Clean and inspect</td><td>Fix broken links, clean master data</td></tr>
+<tr><td>Standardise</td><td>Seiketsu</td><td>Make the first three routine</td><td>Templates, checklists, ownership per folder</td></tr>
+<tr><td>Sustain</td><td>Shitsuke</td><td>Build the habit</td><td>Monthly 15-minute audit with a simple score</td></tr>
+</table></div>
+<p>5S is not tidying for its own sake. Its purpose is to make abnormalities visible and cut search time (motion waste). Office workers often spend significant time each week looking for information.</p>`},
+{h:"Standard work", html:`
+<p><strong>Standard work</strong> is the current best-known way to do a task, written down and used by everyone. It includes the sequence of steps, the time each takes and the key quality points.</p>
+<ul>
+<li>It's the baseline for improvement: "without a standard there can be no improvement" (often attributed to Taiichi Ohno).</li>
+<li>It reduces variation between people and shifts, which is a Six Sigma goal too.</li>
+<li>It's owned and updated by the people doing the work. A standard that never changes means improvement stopped.</li>
+</ul>
+<p>In offices, standard work looks like checklists, templates, decision rules ("approve automatically if under $500 and on contract") and short how-to videos.</p>`},
+{h:"Pull, kanban and WIP limits", html:`
+<p>In a <strong>push</strong> system, work is started whenever it arrives and pushed onto the next step regardless of whether it can cope. Queues grow, lead times stretch and priorities get lost.</p>
+<p>In a <strong>pull</strong> system, a step only starts new work when the next step signals capacity. A <strong>kanban</strong> ("signal card") board makes this visible: columns for each stage, cards for each item, and a <strong>WIP limit</strong> per column.</p>
+<div class="callout example"><span class="eyebrow">Business example</span><p>A marketing team had 46 campaigns "in progress" and delivered each in about 9 weeks. They introduced a kanban board with a WIP limit of 12. Throughput stayed the same (about 5 per week), so by Little's Law the average lead time dropped to roughly 12 ÷ 5 ≈ 2.4 weeks. Stakeholders got campaigns earlier, and fewer were cancelled halfway.</p></div>`},
+{h:"Batch size and one-piece flow", html:`
+<p>Processing work in large batches (approving invoices once a week, running payroll corrections monthly) creates waiting for every item in the batch. <strong>Smaller batches</strong> or <strong>one-piece flow</strong> let each item move to the next step as soon as it's done.</p>
+<p>Example: 10 forms, three steps, 1 minute each. In a batch of 10, the first form is finished after 21 minutes and the last after 30. In one-piece flow, the first is done after 3 minutes and the last after 12.</p>
+<p>Batches exist because switching between tasks has a cost (setup or changeover). Reduce that cost and smaller batches become economical. That's the idea behind <strong>SMED</strong> (Single-Minute Exchange of Die, by Shigeo Shingo): convert <em>internal</em> setup (done while the process is stopped) into <em>external</em> setup (done in advance). Office version: prepare templates, access and data before the meeting or month-end, not during it.</p>`},
+{h:"Bottlenecks: Theory of Constraints", html:`
+<p>A process can only go as fast as its slowest step, the <strong>constraint</strong> or bottleneck. Eliyahu Goldratt's <strong>five focusing steps</strong>:</p>
+<ol>
+<li><strong>Identify</strong> the constraint (look for the biggest queue in front of a step).</li>
+<li><strong>Exploit</strong> it: make sure it never waits and only does work only it can do.</li>
+<li><strong>Subordinate</strong> everything else to it: don't flood it; feed it at its pace.</li>
+<li><strong>Elevate</strong> it: add capacity, automate, cross-train.</li>
+<li><strong>Repeat</strong>: the constraint will move; find the next one.</li>
+</ol>
+<p>An hour lost at the bottleneck is an hour lost for the whole system. An hour saved at a non-bottleneck is often an illusion.</p>`},
+{h:"Poka-yoke: error-proofing", html:`
+<p><strong>Poka-yoke</strong> (Shingo again) designs the process so mistakes are impossible or immediately obvious. It beats inspection because it prevents the defect instead of catching it later.</p>
+<ul>
+<li><strong>Prevention</strong>: drop-down lists instead of free text; mandatory fields; date pickers that block weekend delivery dates.</li>
+<li><strong>Detection</strong>: duplicate-invoice warnings; IBAN checksum validation; a red banner when an order exceeds credit limit.</li>
+</ul>
+<p>Hierarchy of controls from strongest to weakest: eliminate the step → make the error impossible → make it obvious → rely on inspection → rely on training and memory.</p>`},
+{h:"Visual management, jidoka and heijunka", html:`
+<ul>
+<li><strong>Visual management</strong>: anyone should see the state of the process in seconds. Team boards with today's demand, backlog and red/green status are common in service teams.</li>
+<li><strong>Jidoka / andon</strong>: when something is wrong, stop and signal. In an office, that's a clear way to flag a blocked item and get help fast, instead of quietly working around it.</li>
+<li><strong>Heijunka</strong>: level the mix and volume of work. Spread month-end tasks across the month, or route a share of simple requests to a fast lane.</li>
+</ul>`},
+{h:"Kaizen and kaizen events", html:`
+<p><strong>Kaizen</strong> means "change for the better": small, continuous, everyone-involved improvement. A <strong>kaizen event</strong> (or rapid improvement workshop) is a focused 3–5 day session where a cross-functional team maps, redesigns and implements improvements to one process.</p>
+<div class="tbl"><table>
+<tr><th>Phase</th><th>What happens</th></tr>
+<tr><td>Prep (2–4 weeks before)</td><td>Charter, scope, team, baseline data, sponsor agreement</td></tr>
+<tr><td>Day 1</td><td>Train the team, walk the gemba, map the current state</td></tr>
+<tr><td>Day 2</td><td>Find waste and root causes, design the future state</td></tr>
+<tr><td>Day 3–4</td><td>Implement and test changes, write standard work</td></tr>
+<tr><td>Day 5</td><td>Report out to leadership, agree the 30-day action list</td></tr>
+<tr><td>Follow-up</td><td>Track metrics for 30/60/90 days</td></tr>
+</table></div>`}
+],
+quiz:[
+{q:"Which 5S step involves removing items that aren't needed?", o:["Shine","Sort","Standardise","Sustain"], a:1, why:"Sort (seiri) separates what's needed from what isn't."},
+{q:"A kanban board with WIP limits is an example of:", o:["Push","Pull","Batching","Inspection"], a:1, why:"New work is pulled only when a column has capacity."},
+{q:"In Goldratt's five focusing steps, what comes right after 'Identify the constraint'?", o:["Elevate it","Exploit it","Subordinate everything to it","Remove it"], a:1, why:"Identify, Exploit, Subordinate, Elevate, Repeat. Exploiting existing capacity is cheaper than adding capacity."},
+{q:"A form field that only accepts a valid 10-digit account number is a:", o:["Detection poka-yoke","Prevention poka-yoke","Kanban signal","Standard work instruction"], a:1, why:"It makes the error impossible to enter, so it prevents the defect."},
+{q:"SMED reduces changeover time mainly by:", o:["Hiring setup specialists","Converting internal setup to external setup","Running larger batches","Skipping quality checks"], a:1, why:"Prepare everything possible while the process is still running."},
+{q:"Why does reducing batch size usually cut lead time?", o:["Each item waits less for the rest of its batch","People work faster","It removes the need for approvals","It increases WIP"], a:0, why:"In big batches every item waits for the whole batch before moving on."},
+{q:"An hour saved at a non-bottleneck step:", o:["Increases total throughput by an hour","Usually doesn't increase total throughput","Always reduces quality","Moves the bottleneck"], a:1, why:"Throughput is set by the constraint. Faster non-constraints just build bigger queues in front of it."},
+{q:"Heijunka refers to:", o:["Stopping the line on defects","Levelling the volume and mix of work","Sorting the workplace","Continuous improvement"], a:1, why:"Heijunka = production levelling, the cure for mura."},
+{q:"What is the main purpose of standard work?", o:["To prevent any future change","To create a stable baseline that improvement builds on","To evaluate employee speed","To satisfy auditors only"], a:1, why:"Standard work stabilises the process so you can see and improve on it."}
+],
+questions:[
+{q:"Design three poka-yokes for an online order-entry process used by a sales team.", model:"1) Product codes picked from a searchable catalogue, never typed (prevention). 2) Delivery address validated against a postcode database with an auto-complete (prevention). 3) System blocks submission if the discount exceeds the rep's authority level and routes it for approval automatically (prevention plus detection). Others: duplicate-order warning for same customer and items within 24 hours; credit limit check at entry."},
+{q:"A claims process has these steps and capacities per day: Intake 120, Assessment 60, Approval 150, Payment 200. Demand is 80 per day. Where is the bottleneck, what happens over time, and what would you do first?", model:"Assessment (60/day) is the constraint and below demand (80/day), so the queue in front of Assessment grows by about 20 claims per day. First, exploit it: remove non-assessment work from assessors (admin, chasing documents), make sure intake sends only complete claims, and stagger breaks so assessment never stops. Subordinate intake so it doesn't flood the queue with incomplete files. Then elevate: cross-train approvers (who have spare capacity) to handle simple assessments, or create a fast lane with rules-based assessment for low-value claims."},
+{q:"Plan a one-week kaizen event to reduce the time it takes to issue customer refunds. Who is on the team and what are the daily goals?", model:"Team: refund clerks (2), a customer service agent, a finance/AP representative, an IT person who knows the ERP, the process owner, a facilitator; sponsor attends day 1 and day 5. Prep: charter with baseline (e.g. 9 days average), target (3 days), scope (request received to money returned). Day 1: training, gemba walk, current-state VSM. Day 2: waste identification, root causes, future-state design. Day 3: implement quick wins (approval thresholds, templates, fast lane). Day 4: test with live refunds, write standard work. Day 5: report-out, 30-day action list, metrics board."}
+]},
+
+/* ---------------------------------------------------------------- 5 */
+{id:"m5", belt:"yellow", title:"Six Sigma Essentials", time:"70 min",
+summary:"Defects, DPMO, sigma levels, yield, cost of poor quality, voice of the customer and the DMAIC roadmap.",
+objectives:[
+ "Calculate DPU, DPMO, first-pass yield and rolled throughput yield",
+ "Convert DPMO to an approximate sigma level",
+ "Translate voice of the customer into measurable CTQs",
+ "Estimate cost of poor quality",
+ "Describe the five DMAIC phases and when to use DMAIC vs. Lean quick wins"],
+sections:[
+{h:"Defects, units and opportunities", html:`
+<ul>
+<li><strong>Unit</strong>: the thing being processed (an invoice, a call, an order).</li>
+<li><strong>Defect</strong>: any failure to meet a customer requirement (wrong amount, late, missing field).</li>
+<li><strong>Defective</strong>: a unit with one or more defects. A unit can have many defects but is defective only once.</li>
+<li><strong>Opportunity</strong>: a distinct chance for a defect that the customer cares about. Define opportunities carefully; inflating them makes the sigma level look better than it is.</li>
+</ul>
+<div class="formula">DPU  = defects ÷ units
+DPO  = defects ÷ (units × opportunities per unit)
+DPMO = DPO × 1,000,000</div>
+<div class="callout example"><span class="eyebrow">Worked example</span><p>An AP team processes 2,000 invoices. Each has 5 opportunities (vendor, amount, GL code, due date, PO match). Audit finds 180 defects.<br>DPU = 180 ÷ 2,000 = 0.09. DPO = 180 ÷ 10,000 = 0.018. DPMO = <strong>18,000</strong>, about <strong>3.6 sigma</strong>.</p></div>`},
+{h:"Sigma levels", html:`
+<p>The sigma level expresses how many standard deviations fit between the process average and the nearest specification limit. By convention, tables include a <strong>1.5σ shift</strong> to reflect long-term drift.</p>
+<div class="tbl"><table>
+<tr><th class="num">Sigma level</th><th class="num">DPMO</th><th class="num">Yield</th><th>What it feels like</th></tr>
+<tr><td class="num">1</td><td class="num">691,462</td><td class="num">30.9%</td><td>Mostly wrong</td></tr>
+<tr><td class="num">2</td><td class="num">308,538</td><td class="num">69.1%</td><td>Wrong a third of the time</td></tr>
+<tr><td class="num">3</td><td class="num">66,807</td><td class="num">93.3%</td><td>Typical for many office processes</td></tr>
+<tr><td class="num">4</td><td class="num">6,210</td><td class="num">99.38%</td><td>Good company average</td></tr>
+<tr><td class="num">5</td><td class="num">233</td><td class="num">99.977%</td><td>Very good</td></tr>
+<tr><td class="num">6</td><td class="num">3.4</td><td class="num">99.99966%</td><td>World class</td></tr>
+</table></div>
+<p>Notice it's not linear: going from 3σ to 4σ is about a 10× improvement; 5σ to 6σ is about 70×. Not every process needs six sigma. Target the level the customer and business case justify.</p>`},
+{h:"Yield: FPY and RTY", html:`
+<p><strong>First-pass yield (FPY)</strong> is the share of units that go through a step right the first time, with no rework. <strong>Rolled throughput yield (RTY)</strong> is the chance a unit passes through every step without any rework:</p>
+<div class="formula">RTY = FPY₁ × FPY₂ × FPY₃ × … × FPYₙ</div>
+<p>A 6-step process where each step is 95% right first time has RTY = 0.95⁶ ≈ <strong>73.5%</strong>. More than a quarter of the work needs fixing somewhere, even though each step "looks fine". This is the <strong>hidden factory</strong>: the rework that never shows up in final-output metrics.</p>`},
+{h:"Cost of poor quality (COPQ)", html:`
+<p>COPQ is the money lost because work isn't done right the first time. It's often grouped as:</p>
+<ul>
+<li><strong>Internal failure</strong>: rework, corrections, re-approvals, write-offs found before the customer sees them.</li>
+<li><strong>External failure</strong>: refunds, credit notes, complaints handling, penalties, churn.</li>
+<li><strong>Appraisal</strong>: inspections, audits, reconciliations.</li>
+<li><strong>Prevention</strong>: training, error-proofing, planning (the "good" spend).</li>
+</ul>
+<p>Industry estimates often put COPQ at 15–25% of revenue for organisations operating around three to four sigma. Much of it is invisible ("that's just how the job works"). Quantifying COPQ is how you build the business case for a project.</p>`},
+{h:"Voice of the customer → CTQ", html:`
+<p><strong>Voice of the customer (VOC)</strong> is what customers say they need, collected through surveys, complaints, interviews, call recordings and reviews. It's usually vague: "I want fast service." Six Sigma converts it into a <strong>Critical-to-Quality (CTQ)</strong> requirement that you can measure:</p>
+<div class="tbl"><table>
+<tr><th>Need (VOC)</th><th>Driver</th><th>CTQ (measurable)</th></tr>
+<tr><td>"Fast refunds"</td><td>Time to money back</td><td>Refund credited within 3 business days of approval, 95% of the time</td></tr>
+<tr><td>"Bills I can trust"</td><td>Invoice accuracy</td><td>Zero line-item errors per invoice</td></tr>
+<tr><td>"Someone who solves it"</td><td>First-contact resolution</td><td>≥ 80% of tickets resolved without a second contact</td></tr>
+</table></div>
+<p>The <strong>Kano model</strong> helps prioritise: <em>basic</em> needs cause anger if missing but no delight if present (a correct bill); <em>performance</em> needs give more satisfaction the better they are (speed); <em>delighters</em> surprise customers (proactive status updates). Delighters become basic needs over time.</p>`},
+{h:"DMAIC: the roadmap", html:`
+<p>Six Sigma improvement projects follow <strong>DMAIC</strong>. Each phase ends with a <strong>tollgate</strong> review with the sponsor.</p>
+<div class="dmaic">
+<div><b>D</b><span class="q">Define</span><span class="t">What's the problem and why does it matter? Charter, SIPOC, VOC, CTQ.</span></div>
+<div><b>M</b><span class="q">Measure</span><span class="t">How bad is it today? Data collection, MSA, baseline, capability.</span></div>
+<div><b>A</b><span class="q">Analyze</span><span class="t">What are the root causes? Fishbone, 5 Whys, hypothesis tests, regression.</span></div>
+<div><b>I</b><span class="q">Improve</span><span class="t">What fixes the root causes? Solutions, pilot, future-state process.</span></div>
+<div><b>C</b><span class="q">Control</span><span class="t">How do we hold the gain? Control plan, SPC, standard work, handover.</span></div>
+</div>
+<p><strong>When to use what:</strong> if the solution is known and low-risk, "just do it". If the cause is clear but the process is messy, run a kaizen event. If the root cause is unknown and the problem is chronic and measurable, run a DMAIC project. For a brand-new process, Six Sigma uses <strong>DMADV</strong> (Define, Measure, Analyze, Design, Verify), also called Design for Six Sigma.</p>`}
+],
+quiz:[
+{q:"500 orders, 4 opportunities each, 60 defects found. DPMO is:", o:["30,000","12,000","120,000","3,000"], a:0, why:"60 ÷ (500 × 4) = 0.03 → 30,000 DPMO."},
+{q:"A unit with three errors on it counts as:", o:["Three defectives","Three defects and one defective","One defect","Zero defects if corrected"], a:1, why:"Defects are counted individually; the unit is defective once."},
+{q:"Four steps have first-pass yields of 98%, 90%, 95% and 99%. RTY is about:", o:["95.5%","83%","90%","98%"], a:1, why:"0.98 × 0.90 × 0.95 × 0.99 ≈ 0.830."},
+{q:"Roughly how many DPMO correspond to 4 sigma?", o:["66,807","6,210","233","3.4"], a:1, why:"4σ ≈ 6,210 DPMO with the 1.5σ shift."},
+{q:"A credit note issued after a customer complains about a wrong invoice is which COPQ category?", o:["Prevention","Appraisal","Internal failure","External failure"], a:3, why:"The customer found the failure, so it's external."},
+{q:"In the Kano model, a hotel room being clean is a:", o:["Delighter","Performance need","Basic (must-be) need","Indifferent attribute"], a:2, why:"No one is delighted by a clean room, but everyone is angry about a dirty one."},
+{q:"Which phase of DMAIC establishes the baseline performance?", o:["Define","Measure","Analyze","Control"], a:1, why:"Measure quantifies current performance so you can prove improvement later."},
+{q:"You are designing a brand-new customer portal. Which roadmap fits best?", o:["DMAIC","DMADV / Design for Six Sigma","5S","A kaizen event"], a:1, why:"DMAIC improves existing processes; DMADV designs new ones."},
+{q:"'The hidden factory' refers to:", o:["Outsourced work","Rework and corrections not visible in final output metrics","Automated back-office systems","A night shift"], a:1, why:"Final yield can look fine while lots of capacity is spent fixing things along the way."}
+],
+questions:[
+{q:"Practice calculation: A payroll team processes 1,500 payslips per month. Each has 6 opportunities for error. Last month 45 defects were found across 38 payslips. Calculate DPU, DPMO, % defective, and estimate the sigma level.", model:"DPU = 45 ÷ 1,500 = 0.03. DPMO = 45 ÷ (1,500 × 6) × 1,000,000 = 5,000. % defective = 38 ÷ 1,500 = 2.53%. 5,000 DPMO is just above 4 sigma (≈ 4.1σ with the 1.5 shift). Note the sigma level based on % defective would be much lower (≈ 3.45σ); this is why the definition of opportunity must be agreed upfront."},
+{q:"Translate these three customer complaints into CTQs: (a) 'I never know where my order is', (b) 'Your agents keep transferring me', (c) 'The invoice never matches the quote'.", model:"(a) Proactive status notification sent at each of 4 milestones; ≥ 98% of orders have tracking available within 2 hours of dispatch. (b) ≤ 1 transfer per call; first-contact resolution ≥ 80%. (c) Invoice line prices equal quoted prices for 100% of lines; invoice-to-quote mismatch rate < 0.5% of invoices."},
+{q:"Estimate COPQ: A distributor issues 900 credit notes per year due to pricing errors, averaging $210 each. Each takes 45 minutes of staff time at $40/hour fully loaded, plus customers who get a wrong invoice twice churn at an estimated 30 per year with $8,000 annual margin each. What is the annual COPQ from these items?", model:"Credit value: 900 × $210 = $189,000. Labour: 900 × 0.75 h × $40 = $27,000. Churn: 30 × $8,000 = $240,000. Total ≈ $456,000 per year, before counting appraisal (audits) and reputational effects. That's a strong business case for a project."}
+]},
+
+/* ---------------------------------------------------------------- 6 */
+{id:"m6", belt:"green", title:"DMAIC: Define", time:"60 min",
+summary:"Pick the right problem, write a charter that survives contact with stakeholders, and set clear scope.",
+objectives:[
+ "Select projects using impact and feasibility",
+ "Write a factual problem statement and a SMART goal",
+ "Build a project charter with scope, team and business case",
+ "Map stakeholders and plan communication"],
+sections:[
+{h:"Choosing the right project", html:`
+<p>Good projects connect to a strategic priority, have a measurable problem, an unknown root cause, a scope the team can finish in 3–6 months, and a sponsor who cares. Bad projects have a solution already chosen ("implement a new CRM"), a scope like "fix customer service", or no data.</p>
+<p>Score candidates on <strong>impact</strong> (customer, financial, risk) and <strong>effort</strong> (time, cost, complexity). Start with high-impact, moderate-effort projects. Low-effort fixes don't need DMAIC; just do them.</p>`},
+{h:"The problem statement", html:`
+<p>A problem statement describes <strong>what</strong> is wrong, <strong>where</strong>, <strong>when</strong>, <strong>how big</strong> and <strong>the impact</strong>. It contains no cause, no blame and no solution.</p>
+<div class="callout example"><span class="eyebrow">Weak vs strong</span>
+<p><strong>Weak:</strong> "Refunds are too slow because the finance team is understaffed. We need a new system."</p>
+<p><strong>Strong:</strong> "From January to June 2026, customer refunds for online orders took an average of 9.4 business days from request to credit (target: 3 days). 41% of refund-related contacts were repeat 'where is my refund' calls, costing an estimated $310,000 a year in handling and driving a 12-point lower NPS among affected customers."</p></div>`},
+{h:"The goal statement: SMART", html:`
+<p>Goals should be <strong>S</strong>pecific, <strong>M</strong>easurable, <strong>A</strong>chievable, <strong>R</strong>elevant and <strong>T</strong>ime-bound. A common rule of thumb for a first project is to aim to close about half the gap between today and the target.</p>
+<div class="formula">Reduce average refund lead time for online orders
+from 9.4 to 4.0 business days by 31 March 2027,
+with 90% of refunds completed within 5 days.</div>`},
+{h:"The project charter", html:`
+<div class="tbl"><table>
+<tr><th>Element</th><th>Contents</th></tr>
+<tr><td>Business case</td><td>Why now? Link to strategy, money, customers or risk</td></tr>
+<tr><td>Problem statement</td><td>As above: what, where, when, how big, impact</td></tr>
+<tr><td>Goal statement</td><td>SMART goal and the primary metric (Y)</td></tr>
+<tr><td>Secondary / guardrail metrics</td><td>What must not get worse (e.g. refund fraud rate, cost per refund)</td></tr>
+<tr><td>Scope</td><td>In scope and out of scope; start and end points of the process</td></tr>
+<tr><td>Team and roles</td><td>Sponsor, process owner, belt leader, members, time commitment</td></tr>
+<tr><td>Timeline</td><td>Target date for each DMAIC tollgate</td></tr>
+<tr><td>Risks and constraints</td><td>System freezes, budget limits, regulatory requirements</td></tr>
+</table></div>
+<p>Use an <strong>in/out of scope</strong> frame to stop scope creep. If a stakeholder wants to add "and also returns processing", it goes in the parking lot or a separate project.</p>`},
+{h:"Stakeholders and communication", html:`
+<p>Projects fail more often from people issues than from statistics. Map stakeholders by <strong>influence</strong> and <strong>interest</strong>, and note where each is today (opposed, neutral, supportive) and where you need them.</p>
+<ul>
+<li>High influence, high interest: manage closely (sponsor, process owner).</li>
+<li>High influence, low interest: keep satisfied (CFO, IT director).</li>
+<li>Low influence, high interest: keep informed (front-line staff, who may also be your best idea source).</li>
+<li>Low influence, low interest: monitor.</li>
+</ul>
+<p>A <strong>RACI</strong> chart (Responsible, Accountable, Consulted, Informed) clarifies decision rights for each deliverable. Only one person should be Accountable per task.</p>`},
+{h:"Define tollgate checklist", html:`
+<ul>
+<li>Is the problem measurable with data we can get?</li>
+<li>Is the scope narrow enough to finish in the timeline?</li>
+<li>Do we have a SIPOC and the CTQs from VOC?</li>
+<li>Has the sponsor signed the charter, including team time?</li>
+<li>Is there a guardrail metric so we don't improve one thing by breaking another?</li>
+</ul>`}
+],
+quiz:[
+{q:"Which belongs in a good problem statement?", o:["The suspected root cause","The proposed solution","The size and impact of the problem","Who is to blame"], a:2, why:"Describe what, where, when, how big and impact. No causes, blame or solutions."},
+{q:"'Implement a new ticketing tool' is a poor Six Sigma project because:", o:["Tools are expensive","The solution is predetermined","Ticketing isn't a process","It's too small"], a:1, why:"DMAIC is for problems with unknown root causes. A predetermined solution skips Analyze."},
+{q:"In SMART, the 'T' stands for:", o:["Targeted","Time-bound","Tested","Tracked"], a:1, why:"The goal must have a deadline."},
+{q:"A guardrail (secondary) metric is used to:", o:["Replace the primary metric","Ensure improvement in Y doesn't harm something else","Track team attendance","Measure sponsor satisfaction"], a:1, why:"E.g. speeding up refunds must not increase fraud."},
+{q:"In a RACI chart, how many people should be 'Accountable' for a task?", o:["None","Exactly one","At least two","Everyone involved"], a:1, why:"One accountable owner avoids diffused responsibility."},
+{q:"A stakeholder with high influence and low interest should be:", o:["Ignored","Managed closely","Kept satisfied","Only informed"], a:2, why:"Keep them satisfied so they don't block the project, without overloading them."},
+{q:"Which is the best scoped project?", o:["Improve customer experience","Reduce invoice errors company-wide in all 14 countries","Reduce the error rate of domestic supplier invoices in the UK AP team from 8% to 3% by June","Make finance more efficient"], a:2, why:"Specific process, location, metric, baseline, target and date."}
+],
+questions:[
+{q:"Rewrite this problem statement to be effective: 'Our onboarding is a mess because sales hand over bad info and IT is slow. We need automation.'", model:"'Between April and September 2026, new B2B customers waited an average of 23 business days from contract signature to first login (contract SLA: 10 days). 64% of onboarding tickets were reopened at least once for missing information. Delays triggered $85,000 in SLA credits and are cited in 30% of first-year churn interviews.' No blame on sales or IT, no solution, quantified gap and impact."},
+{q:"Draft the in-scope / out-of-scope list for a project to reduce purchase-to-pay cycle time at a single site.", model:"In scope: purchase requisitions for indirect spend at the Melbourne site; process from requisition creation to supplier payment; approval workflow; PO creation; invoice matching. Out of scope: direct materials; other sites; supplier selection and contract negotiation; ERP replacement; payment-term renegotiation; tax and treasury processes."},
+{q:"Your sponsor wants the project done in 4 weeks with a team who can only give 2 hours per week. What do you do?", model:"Make the trade-off visible: show the DMAIC timeline and effort needed. Options: narrow the scope (one product line or site), convert to a kaizen event with dedicated time for one week, or extend the timeline. Get the agreed team commitment written into the charter. Do not accept a charter you can't deliver, since a failed project damages the program's credibility."}
+]},
+
+/* ---------------------------------------------------------------- 7 */
+{id:"m7", belt:"green", title:"DMAIC: Measure", time:"90 min",
+summary:"Collect trustworthy data, describe it with basic statistics, and establish the baseline and process capability.",
+objectives:[
+ "Distinguish continuous and discrete data and why it matters",
+ "Write operational definitions and a data collection plan",
+ "Explain measurement system analysis (MSA) and Gage R&R",
+ "Calculate mean, median, standard deviation and interpret histograms, run charts and Pareto charts",
+ "Calculate and interpret Cp and Cpk"],
+sections:[
+{h:"Y = f(X)", html:`
+<p>The core idea of Six Sigma: the output you care about (<strong>Y</strong>, e.g. refund lead time) is a function of inputs and process variables (<strong>X's</strong>, e.g. channel, payment method, approval threshold, staffing). In Measure you quantify Y and start collecting data on the likely X's. In Analyze you prove which X's matter.</p>`},
+{h:"Types of data", html:`
+<div class="tbl"><table>
+<tr><th>Type</th><th>Description</th><th>Examples</th><th>Information value</th></tr>
+<tr><td>Continuous (variable)</td><td>Measured on a scale, can be subdivided</td><td>Time, cost, weight, temperature</td><td>High: small samples tell you a lot</td></tr>
+<tr><td>Discrete: count</td><td>Whole-number counts</td><td>Errors per invoice, calls per hour</td><td>Medium</td></tr>
+<tr><td>Discrete: attribute / binary</td><td>Pass/fail, yes/no, category</td><td>On time yes/no, approved/rejected</td><td>Low: needs large samples</td></tr>
+</table></div>
+<p>Prefer continuous data when you can. "Was the refund on time?" (yes/no) tells you less than "how many days did the refund take?" You can always convert continuous to binary later; you can't go the other way.</p>`},
+{h:"Operational definitions and the data collection plan", html:`
+<p>An <strong>operational definition</strong> describes exactly how something is measured so two people get the same number. "Refund lead time" could start when the customer clicks a button, when the request reaches the queue, or when the item is returned. Pick one and write it down.</p>
+<div class="formula">Refund lead time = business days from the timestamp the
+refund request is created in the CRM (field: created_at)
+to the timestamp the payment file is sent to the bank
+(field: pay_file_sent). Excludes weekends and public holidays.</div>
+<p>A <strong>data collection plan</strong> lists: what to measure, operational definition, data type, source, sample size, who collects it, when, and how it will be displayed. Collect data on the Y <em>and</em> on candidate X's (stratification factors like region, product, shift, channel) at the same time.</p>`},
+{h:"Sampling", html:`
+<ul>
+<li><strong>Random sampling</strong>: every unit has an equal chance; good for stable populations.</li>
+<li><strong>Stratified sampling</strong>: sample within subgroups (e.g. each region) so all are represented.</li>
+<li><strong>Systematic sampling</strong>: every n-th unit (every 10th invoice).</li>
+<li><strong>Subgroup sampling</strong>: small samples taken at regular intervals, used for control charts.</li>
+</ul>
+<p>Watch for bias: sampling only easy cases, only one shift, or only the cases someone remembers. Transactional systems often let you pull 100% of records; still check the data is clean.</p>`},
+{h:"Measurement system analysis (MSA)", html:`
+<p>Before trusting data, check the measurement system. Observed variation = true process variation + measurement variation. If the measuring is noisy, you may "fix" a problem that doesn't exist.</p>
+<ul>
+<li><strong>Accuracy (bias)</strong>: is the average measurement correct?</li>
+<li><strong>Repeatability</strong>: does the same person get the same result measuring the same thing twice?</li>
+<li><strong>Reproducibility</strong>: do different people get the same result?</li>
+<li><strong>Stability</strong>: is it consistent over time?</li>
+</ul>
+<p>A <strong>Gage R&R</strong> study quantifies repeatability and reproducibility for continuous data. Common guideline: under 10% of total variation is acceptable, 10–30% may be acceptable depending on use, over 30% is not acceptable. For attribute data (e.g. auditors classifying invoices as correct/incorrect), use an <strong>attribute agreement analysis</strong>: have several appraisers classify the same sample of known items twice and check agreement with each other and with the standard.</p>
+<div class="callout example"><span class="eyebrow">Business example</span><p>Three quality reviewers scored the same 30 recorded customer calls. They agreed with each other only 68% of the time on whether a call was "resolved". The team rewrote the definition of "resolved" with examples and retrained, reaching 94% agreement before collecting baseline data.</p></div>`},
+{h:"Describing data", html:`
+<p><strong>Central tendency:</strong> the <em>mean</em> (average) is sensitive to outliers; the <em>median</em> (middle value) isn't. For skewed data like lead times, report both.</p>
+<p><strong>Spread:</strong> the <em>range</em> (max − min) and the <em>standard deviation</em> (typical distance of points from the mean).</p>
+<div class="formula">Sample standard deviation  s = √( Σ(xᵢ − x̄)² ÷ (n − 1) )</div>
+<p>For a roughly normal distribution, about 68% of values fall within ±1σ of the mean, 95% within ±2σ, and 99.7% within ±3σ.</p>
+<p><strong>Graphs:</strong></p>
+<ul>
+<li><strong>Histogram</strong>: shape of the distribution: normal, skewed, bimodal (two humps often mean two different processes mixed together, e.g. two teams).</li>
+<li><strong>Run chart</strong>: data in time order; shows trends, shifts and cycles.</li>
+<li><strong>Pareto chart</strong>: categories sorted by frequency with a cumulative line. Usually about 20% of categories cause about 80% of the problem.</li>
+<li><strong>Box plot</strong>: compares distributions across groups (e.g. lead time by region).</li>
+</ul>`},
+{h:"Process capability: Cp and Cpk", html:`
+<p>Capability compares the <strong>voice of the process</strong> (its natural spread) with the <strong>voice of the customer</strong> (specification limits).</p>
+<div class="formula">Cp  = (USL − LSL) ÷ 6σ
+Cpk = min( (USL − μ) ÷ 3σ , (μ − LSL) ÷ 3σ )</div>
+<ul>
+<li><strong>Cp</strong> measures potential: could the process fit inside the specs if it were centred?</li>
+<li><strong>Cpk</strong> measures actual performance, accounting for off-centre. Cpk ≤ Cp always.</li>
+<li>Rules of thumb: Cpk &lt; 1.0 not capable; 1.0–1.33 marginal; ≥ 1.33 capable; ≥ 2.0 corresponds to six sigma short-term.</li>
+<li>Many service CTQs only have one limit (an upper limit for time). Then use only the relevant side: Cpk = (USL − μ) ÷ 3σ.</li>
+</ul>
+<div class="callout example"><span class="eyebrow">Worked example</span><p>Call handling time must be under 10 minutes (USL = 10). Mean = 7 min, σ = 1.2 min.<br>Cpk = (10 − 7) ÷ (3 × 1.2) = 3 ÷ 3.6 = <strong>0.83</strong>. Not capable: a meaningful share of calls exceeds 10 minutes. To reach Cpk 1.33 you'd need to cut σ to 0.75 min or lower the mean to about 5.2 min.</p></div>
+<p>Only calculate capability on a <strong>stable</strong> process (check with a control chart first). For non-normal data like lead times, use transformations or non-normal capability methods, or simply report % beyond spec.</p>`}
+],
+quiz:[
+{q:"Which is continuous data?", o:["Number of complaints per week","Whether an order shipped on time","Time to approve a loan in hours","Customer region"], a:2, why:"Time can be measured on a continuous scale."},
+{q:"Why do we prefer continuous data where possible?", o:["It's easier to collect","It gives more information from smaller samples","Managers prefer it","It never has outliers"], a:1, why:"Continuous data carries more information per data point than pass/fail."},
+{q:"A Gage R&R result of 42% of total variation means:", o:["The measurement system is excellent","The measurement system is acceptable","The measurement system is not acceptable","The process is capable"], a:2, why:"Over 30% is unacceptable; fix the measurement before analysing the process."},
+{q:"A histogram of lead times shows two distinct peaks. The most likely explanation is:", o:["Normal data","Two different processes or groups mixed together","Measurement error","A perfect process"], a:1, why:"Bimodal data usually means stratification is needed, e.g. by team, product or channel."},
+{q:"USL = 20, LSL = 8, mean = 16, σ = 1.5. Cpk is:", o:["0.89","1.33","1.78","2.67"], a:0, why:"(20−16)/4.5 = 0.89; (16−8)/4.5 = 1.78. Cpk is the minimum: 0.89."},
+{q:"For the same process, Cp is:", o:["0.89","1.33","1.78","2.67"], a:1, why:"(20 − 8) ÷ (6 × 1.5) = 12 ÷ 9 = 1.33. Capable if centred, but it isn't."},
+{q:"Repeatability in MSA refers to:", o:["Different appraisers getting the same result","The same appraiser getting the same result on repeated measurements","Measurements staying stable over months","Measurements matching a standard"], a:1, why:"Repeatability = same person, same item, same gauge. Reproducibility = different people."},
+{q:"For lead-time data heavily skewed to the right, which statistic best describes the typical case?", o:["Mean","Median","Range","Maximum"], a:1, why:"The median isn't pulled by long-tail outliers."},
+{q:"Which chart shows data in time order to reveal trends and shifts?", o:["Pareto chart","Histogram","Run chart","Pie chart"], a:2, why:"Run charts plot data sequentially over time."}
+],
+questions:[
+{q:"Write an operational definition for 'first-contact resolution' in a customer service centre.", model:"A contact is first-contact resolved if the customer does not contact us again about the same issue (same account, same case category) through any channel within 7 calendar days of the original contact being closed. Measured from the CRM using account ID and case category; contacts closed as 'transferred' or 'callback scheduled' are not counted as resolved."},
+{q:"Practice calculation: Seven invoice approval times (hours): 4, 6, 5, 30, 7, 5, 6. Calculate mean, median and range. What does the comparison tell you?", model:"Sorted: 4, 5, 5, 6, 6, 7, 30. Mean = 63 ÷ 7 = 9.0 h. Median = 6 h. Range = 30 − 4 = 26 h. The mean is pulled up by one outlier (30 h). Typical approval takes about 6 hours; the outlier deserves investigation (approver on leave? exception case?). Report the median and look at the tail separately."},
+{q:"Practice calculation: Order delivery must take no more than 48 hours (USL = 48, no lower limit). The process mean is 36 hours with σ = 5 hours. Calculate Cpk and interpret it. What would σ need to be for Cpk = 1.33?", model:"Cpk = (48 − 36) ÷ (3 × 5) = 12 ÷ 15 = 0.80. Not capable: roughly 0.8% of orders exceed 48 hours (z = 2.4). For Cpk = 1.33: σ = 12 ÷ (3 × 1.33) ≈ 3.0 hours. Alternatively, lowering the mean to 28 hours at σ = 5 gives Cpk = 20 ÷ 15 = 1.33."},
+{q:"Design a data collection plan for a project on late supplier payments.", model:"Y: days late (payment date − due date), continuous, from ERP payment and invoice tables, all invoices Jan–Jun. X's: supplier, invoice channel (EDI/PDF/paper), PO vs non-PO, amount band, approver, exception type, day of week received, AP clerk. Operational definitions written for each. Sample: 100% extract (approx. 14,000 invoices), plus manual review of 200 random late invoices for reason codes. Owner: project analyst with ERP admin. Display: histogram, Pareto of exception types, box plots by channel and approver, run chart by week."}
+]},
+
+/* ---------------------------------------------------------------- 8 */
+{id:"m8", belt:"green", title:"DMAIC: Analyze", time:"100 min",
+summary:"Find and prove root causes using fishbone, 5 Whys, Pareto, FMEA, correlation, regression and hypothesis testing.",
+objectives:[
+ "Generate potential causes with a fishbone diagram and 5 Whys",
+ "Prioritise causes with Pareto analysis and FMEA",
+ "Explain correlation vs. causation and read a scatter plot and R²",
+ "Set up a hypothesis test and interpret a p-value",
+ "Choose the right statistical test for the data type"],
+sections:[
+{h:"From many causes to the vital few", html:`
+<p>Analyze works like a funnel: brainstorm many possible causes (X's), narrow them with data and logic to a few <strong>verified root causes</strong>. Skipping verification is the most common mistake: teams fix the cause everyone believes in rather than the one the data supports.</p>`},
+{h:"Fishbone (Ishikawa) diagram", html:`
+<p>Write the problem (the effect) at the "head" and group possible causes along the bones. For manufacturing, the classic 6M categories are Man (people), Machine, Method, Material, Measurement, Mother Nature (environment). For services, many teams use the <strong>4 or 8 P's</strong> or adapt the 6M:</p>
+<div class="tbl"><table>
+<tr><th>Category</th><th>Example causes: "Refunds take 9 days"</th></tr>
+<tr><td>People</td><td>New staff unfamiliar with exceptions; no back-up approver</td></tr>
+<tr><td>Process / Method</td><td>Refunds batched twice a week; all refunds need manager approval</td></tr>
+<tr><td>Systems (Machine)</td><td>Warehouse and CRM not integrated; manual return confirmation</td></tr>
+<tr><td>Inputs (Material)</td><td>Request forms missing order number; wrong payment method details</td></tr>
+<tr><td>Measurement</td><td>No visibility of ageing refunds; KPI counts only processed volume</td></tr>
+<tr><td>Environment / Policy</td><td>Bank payment run cut-off; peak returns after holidays</td></tr>
+</table></div>`},
+{h:"5 Whys", html:`
+<p>Ask "why?" repeatedly until you reach a cause you can act on, usually a process or system cause, not a person.</p>
+<ol>
+<li>Why was the refund late? <em>It waited 4 days for manager approval.</em></li>
+<li>Why did it wait? <em>The manager approves refunds in a batch on Tuesdays and Fridays.</em></li>
+<li>Why in a batch? <em>Every refund requires approval, about 300 a week, so it's done in bulk.</em></li>
+<li>Why does every refund require approval? <em>A fraud incident three years ago led to a blanket rule.</em></li>
+<li>Why is it still blanket? <em>Nobody reviewed the rule against current fraud data; 96% of refunds are under $100 and fraud loss there is negligible.</em></li>
+</ol>
+<p>Root cause: an outdated blanket approval policy. Countermeasure: risk-based approval threshold. Always verify each "why" with evidence, and note that one effect can have several causal chains.</p>`},
+{h:"Pareto analysis", html:`
+<p>Sort causes or defect categories by frequency (or cost) and add a cumulative percentage line. Focus on the bars that make up roughly 80% of the impact.</p>
+<div class="tbl"><table>
+<tr><th>Delay reason (refunds &gt; 5 days)</th><th class="num">Count</th><th class="num">%</th><th class="num">Cumulative</th></tr>
+<tr><td>Waiting for manager approval</td><td class="num">212</td><td class="num">44%</td><td class="num">44%</td></tr>
+<tr><td>Return not confirmed by warehouse</td><td class="num">131</td><td class="num">27%</td><td class="num">71%</td></tr>
+<tr><td>Missing / wrong payment details</td><td class="num">68</td><td class="num">14%</td><td class="num">85%</td></tr>
+<tr><td>System error in payment file</td><td class="num">39</td><td class="num">8%</td><td class="num">93%</td></tr>
+<tr><td>Other</td><td class="num">32</td><td class="num">7%</td><td class="num">100%</td></tr>
+</table></div>
+<p>Weight by impact where it matters: the most frequent defect isn't always the most expensive.</p>`},
+{h:"FMEA: failure mode and effects analysis", html:`
+<p>FMEA ranks risks in a process step by step. For each step, list how it can fail (failure mode), the effect, the cause and current controls. Score each 1–10:</p>
+<ul>
+<li><strong>Severity (S)</strong>: how bad is the effect?</li>
+<li><strong>Occurrence (O)</strong>: how often does the cause happen?</li>
+<li><strong>Detection (D)</strong>: how likely is it we <em>won't</em> catch it before the customer? (10 = undetectable)</li>
+</ul>
+<div class="formula">RPN (Risk Priority Number) = S × O × D   (range 1–1,000)</div>
+<p>Act on the highest RPNs, but also on any failure with very high severity (9–10) regardless of RPN. Newer AIAG-VDA guidance replaces RPN with "action priority" tables for the same reason. Re-score after actions to show risk reduction.</p>`},
+{h:"Correlation, causation and regression", html:`
+<p>A <strong>scatter plot</strong> shows the relationship between two continuous variables. The <strong>correlation coefficient r</strong> ranges from −1 to +1: near ±1 is a strong linear relationship, near 0 is none.</p>
+<p><strong>Correlation is not causation.</strong> Ice-cream sales and drowning deaths both rise in summer; hot weather drives both. In business, "tickets handled by senior agents take longer" may be because senior agents get the hardest tickets. Always look for a lurking variable.</p>
+<p><strong>Simple linear regression</strong> fits a line Y = b₀ + b₁X. <strong>R²</strong> (coefficient of determination) is the share of variation in Y explained by X. R² = 0.64 means 64% of the variation is explained. <strong>Multiple regression</strong> uses several X's at once.</p>`},
+{h:"Hypothesis testing", html:`
+<p>Hypothesis tests tell you whether a difference you see in a sample is likely real or just chance.</p>
+<ul>
+<li><strong>Null hypothesis (H₀)</strong>: no difference / no effect (e.g. both teams have the same mean lead time).</li>
+<li><strong>Alternative hypothesis (H₁)</strong>: there is a difference.</li>
+<li><strong>p-value</strong>: the probability of seeing a difference at least this large if H₀ were true.</li>
+<li><strong>Significance level α</strong>, usually 0.05. If p &lt; α, reject H₀: the difference is statistically significant.</li>
+</ul>
+<div class="callout"><span class="eyebrow">Memory aid</span><p>"If p is low, the null must go." A p-value of 0.003 means the observed difference would be very unlikely if there were truly no difference.</p></div>
+<p><strong>Errors:</strong> Type I (α) = rejecting H₀ when it's true (false alarm). Type II (β) = failing to reject H₀ when it's false (missed signal). <strong>Power</strong> = 1 − β, the chance of detecting a real effect, which grows with sample size.</p>
+<p>Statistical significance isn't practical significance: with 100,000 records, a 0.1-minute difference can be "significant" and meaningless.</p>`},
+{h:"Choosing the right test", html:`
+<div class="tbl"><table>
+<tr><th>Y data</th><th>X data</th><th>Question</th><th>Test</th></tr>
+<tr><td>Continuous</td><td>One group vs. a target</td><td>Is the mean different from 5 days?</td><td>1-sample t-test</td></tr>
+<tr><td>Continuous</td><td>Two groups</td><td>Do team A and B have different mean lead times?</td><td>2-sample t-test (paired t if before/after on the same units)</td></tr>
+<tr><td>Continuous</td><td>3+ groups</td><td>Do the four regions differ?</td><td>One-way ANOVA</td></tr>
+<tr><td>Continuous</td><td>Groups (variance)</td><td>Is one team more variable?</td><td>Test for equal variances (F / Levene)</td></tr>
+<tr><td>Continuous, non-normal</td><td>Groups</td><td>Do medians differ?</td><td>Mann-Whitney / Kruskal-Wallis</td></tr>
+<tr><td>Discrete (proportion)</td><td>Two groups</td><td>Is the error rate different between channels?</td><td>2-proportion test</td></tr>
+<tr><td>Discrete (counts in categories)</td><td>Categorical</td><td>Is complaint type associated with region?</td><td>Chi-square test</td></tr>
+<tr><td>Continuous</td><td>Continuous</td><td>Does order size predict processing time?</td><td>Correlation / regression</td></tr>
+</table></div>`}
+],
+quiz:[
+{q:"A 2-sample t-test comparing lead times for two teams gives p = 0.02 (α = 0.05). You should:", o:["Fail to reject H₀: no difference","Reject H₀: the means likely differ","Collect no more data and stop the project","Conclude team B is lazy"], a:1, why:"p < 0.05, so the difference is statistically significant. Then investigate why, without blame."},
+{q:"Which test compares mean processing time across four regional offices?", o:["Chi-square","2-proportion test","One-way ANOVA","Paired t-test"], a:2, why:"ANOVA compares the means of three or more groups."},
+{q:"Which test checks whether complaint category is associated with sales channel?", o:["Regression","Chi-square test","1-sample t-test","ANOVA"], a:1, why:"Both variables are categorical counts, so chi-square test of association."},
+{q:"FMEA: Severity 8, Occurrence 5, Detection 6. RPN is:", o:["19","40","240","480"], a:2, why:"8 × 5 × 6 = 240."},
+{q:"In FMEA, a detection score of 10 means:", o:["Defect is always caught","Defect is almost certainly not caught","Defect is very severe","Defect occurs constantly"], a:1, why:"High detection score = poor detection ability."},
+{q:"R² = 0.36 from regressing call time on number of products the customer holds means:", o:["36% of calls involve multiple products","36% of the variation in call time is explained by number of products","The correlation is 0.36","There is no relationship"], a:1, why:"R² is the share of variation explained. (r would be 0.6.)"},
+{q:"A Type I error is:", o:["Rejecting H₀ when it is actually true","Failing to reject H₀ when it is false","A data entry error","Using the wrong test"], a:0, why:"A false alarm, probability α."},
+{q:"The main purpose of 5 Whys is to:", o:["Assign responsibility","Move past symptoms to an actionable root cause","Generate solutions","Replace data analysis"], a:1, why:"It digs to process/system causes; each why should be verified with evidence."},
+{q:"Stores with more staff show higher shrinkage. The best interpretation is:", o:["Staff cause shrinkage","Correlation may reflect a lurking variable such as store size","Shrinkage causes hiring","There's no relationship"], a:1, why:"Bigger stores have both more staff and more shrinkage. Correlation ≠ causation."}
+],
+questions:[
+{q:"Build a fishbone for: 'Customer onboarding takes 23 days versus a 10-day target.' Give at least two causes per category.", model:"People: no dedicated onboarding owner; sales reps unaware of required data. Process: sequential hand-offs (sales → legal → IT → CS) instead of parallel; contract and technical setup can't start until payment confirmed. Systems: CRM and provisioning tool not integrated; manual account creation. Inputs: missing technical contact; incomplete billing details at contract signing. Measurement: no tracking of time per stage; KPI only counts closed deals. Environment/policy: security review required for all customers regardless of size; quarter-end deal spikes."},
+{q:"Do a 5 Whys for: 'The monthly sales report was published 3 days late.'", model:"1) Why late? Regional data was missing. 2) Why missing? Two regions submitted spreadsheets after the deadline. 3) Why late? They have to reconcile CRM data against the finance system manually first. 4) Why manual? The CRM product codes don't map to finance product codes. 5) Why no mapping? The CRM was set up separately and no master data owner was assigned. Root cause: no master data governance for product codes. Countermeasure: single product code master with an owner and automated mapping."},
+{q:"A team believes 'invoices from new suppliers have more errors'. Which data would you collect, which test would you use, and what result would confirm the hypothesis?", model:"Collect: for a sample of invoices, supplier tenure (new < 6 months vs established) and whether the invoice had an error (yes/no). Y is discrete (proportion with error), X is two groups, so a 2-proportion test (or chi-square). H₀: error rates are equal. If p < 0.05 and the new-supplier error rate is meaningfully higher (e.g. 18% vs 6%), the hypothesis is supported. Then ask why (no onboarding guide? wrong PO references?) to reach root cause."},
+{q:"Complete an FMEA row: step 'Enter bank details for refund'. Suggest S, O, D, the RPN, and an action that lowers it.", model:"Failure mode: wrong account number entered. Effect: refund paid to wrong account, customer complaint, financial loss (S = 8). Cause: manual typing from email (O = 5). Current control: none until customer complains (D = 8). RPN = 8 × 5 × 8 = 320. Action: refund to original payment method by default; if bank transfer needed, customer enters details in a secure form with IBAN checksum validation and name-match check. New O = 2, D = 3 → RPN = 48."}
+]},
+
+/* ---------------------------------------------------------------- 9 */
+{id:"m9", belt:"green", title:"DMAIC: Improve", time:"75 min",
+summary:"Generate and select solutions, design the future-state process, pilot safely and prove the gain.",
+objectives:[
+ "Generate solutions that target verified root causes",
+ "Select solutions with an impact/effort matrix and a Pugh or criteria matrix",
+ "Design a future-state process using Lean principles",
+ "Plan and evaluate a pilot using PDCA",
+ "Know when a designed experiment (DOE) is appropriate"],
+sections:[
+{h:"Link every solution to a root cause", html:`
+<p>Each solution must address a <strong>verified</strong> root cause from Analyze. If it doesn't, it's a pet idea. A simple table keeps you honest:</p>
+<div class="tbl"><table>
+<tr><th>Root cause (verified)</th><th>Solution</th><th>Expected effect on Y</th></tr>
+<tr><td>Blanket manager approval on all refunds</td><td>Auto-approve refunds under $150 with no fraud flag</td><td>Removes ~3.5 days wait for ~90% of refunds</td></tr>
+<tr><td>Warehouse return confirmation is manual</td><td>Scan-to-confirm triggers CRM status update</td><td>Removes ~2 days wait</td></tr>
+<tr><td>Wrong payment details</td><td>Refund to original payment method by default</td><td>Cuts rework loop for 14% of cases</td></tr>
+</table></div>`},
+{h:"Generating solutions", html:`
+<ul>
+<li><strong>Brainstorming</strong>: quantity first, judge later. Use silent writing before discussion so quieter people contribute.</li>
+<li><strong>Benchmarking</strong>: how do other teams or companies do it?</li>
+<li><strong>SCAMPER</strong>: Substitute, Combine, Adapt, Modify, Put to other use, Eliminate, Reverse.</li>
+<li><strong>Lean design principles</strong>: eliminate steps, combine hand-offs, move checks upstream (quality at source), run steps in parallel, create a fast lane for simple cases, standardise, automate only after simplifying.</li>
+</ul>
+<div class="callout"><span class="eyebrow">Rule</span><p>Simplify, then standardise, then automate. Automating a bad process gives you a fast bad process.</p></div>`},
+{h:"Selecting solutions", html:`
+<p><strong>Impact/effort matrix:</strong> plot each idea. Do quick wins (high impact, low effort) first; plan major projects (high impact, high effort); fill in low-effort/low-impact "fill-ins" when convenient; drop the rest.</p>
+<p><strong>Pugh matrix:</strong> compare options against a baseline (the "datum", often the current process) on weighted criteria. Score each option better (+), same (S) or worse (−) per criterion.</p>
+<div class="tbl"><table>
+<tr><th>Criterion (weight)</th><th>Datum: current</th><th>A: auto-approve &lt; $150</th><th>B: hire 2nd approver</th><th>C: daily approval</th></tr>
+<tr><td>Lead time reduction (5)</td><td>S</td><td>+</td><td>+</td><td>+</td></tr>
+<tr><td>Cost (3)</td><td>S</td><td>+</td><td>−</td><td>S</td></tr>
+<tr><td>Fraud risk (4)</td><td>S</td><td>−</td><td>S</td><td>S</td></tr>
+<tr><td>Ease of implementation (2)</td><td>S</td><td>+</td><td>−</td><td>+</td></tr>
+<tr><td><strong>Weighted total</strong></td><td>0</td><td><strong>+6</strong></td><td>0</td><td>+7</td></tr>
+</table></div>
+<p>Pugh matrices often lead to <strong>hybrid</strong> solutions: here, daily approval (C) for refunds over $150 combined with auto-approval (A) plus a fraud flag below $150, which strengthens A's weak point.</p>`},
+{h:"Designing the future state", html:`
+<p>Draw the future-state map before you implement. Typical changes in office processes:</p>
+<ul>
+<li>Remove approvals that almost never reject anything.</li>
+<li>Collect complete information at intake (one form, validated) to kill rework loops.</li>
+<li>Replace batches with daily or continuous flow.</li>
+<li>Create triage: simple cases go through a fast lane, complex ones to specialists.</li>
+<li>Put WIP limits and a visual board on the main queues.</li>
+<li>Write standard work and update training for the new process.</li>
+</ul>`},
+{h:"Pilot with PDCA", html:`
+<p>Never roll out untested changes to the whole organisation. Use <strong>PDCA</strong> (Plan–Do–Check–Act, the Deming/Shewhart cycle):</p>
+<ol>
+<li><strong>Plan</strong>: what you'll change, where (one team, one region), for how long, the success criteria and the guardrail metrics.</li>
+<li><strong>Do</strong>: run the pilot; record issues and deviations.</li>
+<li><strong>Check</strong>: compare results to baseline with data (e.g. a 2-sample t-test or before/after control chart).</li>
+<li><strong>Act</strong>: adopt, adapt or abandon. Then scale or run another cycle.</li>
+</ol>
+<p>Also run a quick <strong>FMEA on the new process</strong> to catch new risks your changes create.</p>`},
+{h:"Design of experiments (DOE)", html:`
+<p>When several X's might interact (e.g. email subject line, send time and discount level on response rate), testing one factor at a time is slow and misses interactions. <strong>DOE</strong> changes several factors at once in a planned way. A <strong>2-level full factorial</strong> with 3 factors needs 2³ = 8 runs and estimates each factor's effect and their interactions. A/B testing in digital channels is the simplest DOE.</p>
+<p>At the Green Belt level, you should recognise when DOE is appropriate and plan a simple one with a Black Belt's support.</p>`}
+],
+quiz:[
+{q:"What should every proposed solution be linked to?", o:["The sponsor's favourite idea","A verified root cause","The cheapest option","An automation tool"], a:1, why:"Solutions that don't address verified root causes won't move Y."},
+{q:"'Simplify, standardise, then automate' is recommended because:", o:["Automation is always expensive","Automating a wasteful process locks the waste in and speeds it up","Standardising is mandatory by law","Simplifying is optional"], a:1, why:"You get a fast bad process otherwise."},
+{q:"In a Pugh matrix, the datum is:", o:["The highest-scoring option","The baseline everything is compared against","The weighting column","The final decision"], a:1, why:"Options are scored better/same/worse than the datum."},
+{q:"High impact, low effort ideas on an impact/effort matrix are:", o:["Major projects","Quick wins","Fill-ins","Thankless tasks"], a:1, why:"Do them first."},
+{q:"In PDCA, the 'Check' step is about:", o:["Getting approvals","Comparing results to the baseline and the goal using data","Writing the charter","Training staff"], a:1, why:"Check = study the results. Some call it PDSA (Study)."},
+{q:"A 2-level full factorial DOE with 4 factors requires how many runs (no replication)?", o:["4","8","16","32"], a:2, why:"2⁴ = 16."},
+{q:"Why pilot before full rollout?", o:["To delay the project","To test effectiveness and catch unintended effects at small scale","Because sponsors require it","To avoid writing standard work"], a:1, why:"Lower risk, real data, chance to adjust."},
+{q:"Moving an accuracy check from the end of a process to the point where data is entered is an example of:", o:["Overproduction","Quality at source","Batching","Inspection"], a:1, why:"Catch or prevent errors where they're created."}
+],
+questions:[
+{q:"For each root cause, propose a solution and say whether it's a quick win or a major project: (1) Invoices arrive by PDF email and are keyed manually. (2) Approvers are travelling and approvals wait. (3) 30% of invoices lack a PO number.", model:"(1) Supplier portal or e-invoicing with OCR capture: major project (IT, supplier onboarding); interim quick win: standard PDF template sent to top 20 suppliers. (2) Mobile approval plus a delegate rule when the approver is out of office for more than 1 day: quick win if the system supports it. (3) 'No PO, no pay' policy communicated to suppliers, with PO number as a mandatory field in the portal: medium effort; quick win version is a templated email returning invoices without PO within 24 hours."},
+{q:"Design a pilot for auto-approving low-value refunds. What do you measure, for how long, and what are your stop criteria?", model:"Scope: online refunds under $150 for one country for 4 weeks. Primary metric: refund lead time (target: median ≤ 2 days). Guardrails: refund fraud rate (stop if > 0.5% of auto-approved value, vs baseline 0.2%), customer complaints, cost per refund. Daily monitoring dashboard. Stop criteria: fraud above threshold, payment file errors, or any regulatory issue. At the end, compare before/after with a control chart and a Mann-Whitney test on lead times; decide adopt/adapt/abandon."},
+{q:"Your team wants to buy RPA (robotic process automation) to speed up data entry. As the Green Belt, what questions do you ask first?", model:"Is the data entry step necessary at all, or could the data be captured once at source (integration, portal)? What share of cases are standard vs exceptions (bots struggle with exceptions)? Is the process stable and standardised (if not, the bot will break)? What's the root cause the bot addresses, and what's the expected effect on Y? Who will maintain the bot? Would a simpler fix (template, validation) achieve most of the benefit?"}
+]},
+
+/* ---------------------------------------------------------------- 10 */
+{id:"m10", belt:"green", title:"DMAIC: Control", time:"80 min",
+summary:"Hold the gains: control plans, statistical process control, response plans and handover to the process owner.",
+objectives:[
+ "Distinguish common-cause from special-cause variation",
+ "Choose the right control chart for the data",
+ "Read a control chart using standard out-of-control rules",
+ "Write a control plan and a response plan",
+ "Hand a project over and close it properly"],
+sections:[
+{h:"Why gains slip", html:`
+<p>Without control, processes drift back to old habits: people leave, workarounds creep in, a system update reverses a setting, and the old KPI still rewards the old behaviour. Control is about making the new way the <em>easy</em> way and noticing quickly when something changes.</p>`},
+{h:"Common cause vs special cause", html:`
+<ul>
+<li><strong>Common-cause variation</strong>: the natural, built-in noise of a stable process. Many small causes. Reducing it requires changing the process (a management decision).</li>
+<li><strong>Special-cause variation</strong>: an unusual, assignable event (a system outage, a new untrained hire, a supplier change). Find it and deal with it.</li>
+</ul>
+<p>Two classic mistakes (Deming): <strong>tampering</strong> (reacting to common-cause noise as if it were special, which makes variation worse) and <strong>ignoring</strong> a real special cause.</p>`},
+{h:"Control charts", html:`
+<p>A control chart plots data over time with a centre line (mean) and <strong>control limits</strong> at about ±3 standard deviations, calculated <em>from the process data</em>. Control limits are the voice of the process; they are <strong>not</strong> the specification limits, which are the voice of the customer.</p>
+<div class="chart" role="img" aria-label="Individuals control chart of daily refund lead time showing one point above the upper control limit on day 15">
+<svg viewBox="0 0 620 230" xmlns="http://www.w3.org/2000/svg" font-family="IBM Plex Mono, monospace" font-size="11">
+<line x1="40" y1="40" x2="560" y2="40" stroke="var(--ucl)" stroke-dasharray="5 4" stroke-width="1.5"/>
+<line x1="40" y1="115" x2="560" y2="115" stroke="var(--muted)" stroke-width="1.5"/>
+<line x1="40" y1="190" x2="560" y2="190" stroke="var(--ucl)" stroke-dasharray="5 4" stroke-width="1.5"/>
+<text x="566" y="44" fill="var(--ucl)">UCL 4.1</text>
+<text x="566" y="119" fill="var(--muted)">CL 2.6</text>
+<text x="566" y="194" fill="var(--ucl)">LCL 1.1</text>
+<polyline fill="none" stroke="var(--accent)" stroke-width="1.6" points="50,108 76,92 102,126 128,118 154,98 180,134 206,112 232,104 258,140 284,121 310,95 336,128 362,110 388,86 414,26 440,117 466,101 492,131 518,112 544,99"/>
+<g fill="var(--accent)">
+<circle cx="50" cy="108" r="3.5"/><circle cx="76" cy="92" r="3.5"/><circle cx="102" cy="126" r="3.5"/><circle cx="128" cy="118" r="3.5"/><circle cx="154" cy="98" r="3.5"/><circle cx="180" cy="134" r="3.5"/><circle cx="206" cy="112" r="3.5"/><circle cx="232" cy="104" r="3.5"/><circle cx="258" cy="140" r="3.5"/><circle cx="284" cy="121" r="3.5"/><circle cx="310" cy="95" r="3.5"/><circle cx="336" cy="128" r="3.5"/><circle cx="362" cy="110" r="3.5"/><circle cx="388" cy="86" r="3.5"/><circle cx="440" cy="117" r="3.5"/><circle cx="466" cy="101" r="3.5"/><circle cx="492" cy="131" r="3.5"/><circle cx="518" cy="112" r="3.5"/><circle cx="544" cy="99" r="3.5"/>
+</g>
+<circle cx="414" cy="26" r="5" fill="var(--ucl)"/>
+<text x="424" y="22" fill="var(--ucl)">Day 15: bank file failure</text>
+<text x="40" y="218" fill="var(--muted)">Day 1</text>
+<text x="520" y="218" fill="var(--muted)">Day 20</text>
+<text x="40" y="18" fill="var(--muted)">Refund lead time, days (I chart)</text>
+</svg></div>`},
+{h:"Choosing a control chart", html:`
+<div class="tbl"><table>
+<tr><th>Data</th><th>Situation</th><th>Chart</th></tr>
+<tr><td>Continuous</td><td>One measurement at a time (e.g. daily average lead time)</td><td>I-MR (Individuals & Moving Range)</td></tr>
+<tr><td>Continuous</td><td>Small subgroups, n ≈ 2–9</td><td>X̄-R (Xbar and Range)</td></tr>
+<tr><td>Continuous</td><td>Larger subgroups, n ≥ 10</td><td>X̄-S (Xbar and Standard deviation)</td></tr>
+<tr><td>Attribute: defectives</td><td>Proportion defective, sample size varies</td><td>p chart</td></tr>
+<tr><td>Attribute: defectives</td><td>Number defective, constant sample size</td><td>np chart</td></tr>
+<tr><td>Attribute: defects</td><td>Count of defects, constant area of opportunity</td><td>c chart</td></tr>
+<tr><td>Attribute: defects</td><td>Defects per unit, varying area of opportunity</td><td>u chart</td></tr>
+</table></div>
+<p>For an I chart: <code>UCL/LCL = X̄ ± 2.66 × MR̄</code>, where MR̄ is the average moving range between consecutive points.</p>`},
+{h:"Out-of-control rules", html:`
+<p>The common rules (Western Electric / Nelson) flag special causes:</p>
+<ol>
+<li>One point beyond a 3σ control limit.</li>
+<li>A run of 8 or more consecutive points on one side of the centre line (some use 7 or 9). Signals a shift.</li>
+<li>6 or more points in a row steadily increasing or decreasing. Signals a trend.</li>
+<li>2 out of 3 consecutive points beyond 2σ on the same side.</li>
+<li>4 out of 5 consecutive points beyond 1σ on the same side.</li>
+<li>14 points alternating up and down. Signals over-adjustment or two alternating sources.</li>
+</ol>
+<p>After an improvement, a sustained shift in the desired direction is the evidence you want: recalculate limits from the new stable period.</p>`},
+{h:"The control plan", html:`
+<p>The control plan is the handover document: what to monitor, how, how often, who owns it and what to do when it goes wrong.</p>
+<div class="tbl"><table>
+<tr><th>Process step</th><th>What to control</th><th>Spec / target</th><th>Method</th><th>Frequency</th><th>Owner</th><th>Reaction plan</th></tr>
+<tr><td>Refund approval</td><td>% auto-approved refunds flagged as fraud</td><td>&lt; 0.5%</td><td>Fraud report</td><td>Weekly</td><td>Refunds lead</td><td>&gt; 0.5%: lower threshold to $75, review with risk team within 48 h</td></tr>
+<tr><td>End to end</td><td>Refund lead time</td><td>Median ≤ 2 days, 90% ≤ 5</td><td>I-MR chart on daily median</td><td>Daily</td><td>Process owner</td><td>Any rule violation: investigate within 1 day, log cause</td></tr>
+<tr><td>Return confirmation</td><td>Scan compliance</td><td>≥ 98% scanned</td><td>System report</td><td>Daily</td><td>Warehouse supervisor</td><td>&lt; 98%: refresher at next huddle</td></tr>
+</table></div>`},
+{h:"Sustaining the gains", html:`
+<ul>
+<li><strong>Error-proofing</strong> beats procedures; procedures beat training; training beats reminders.</li>
+<li>Update <strong>standard work</strong>, SOPs, training materials and onboarding.</li>
+<li>Change <strong>KPIs and incentives</strong> to reward the new behaviour.</li>
+<li>Build the metrics into the team's <strong>visual board</strong> and daily huddle.</li>
+<li>Run a <strong>process audit</strong> at 30, 60 and 90 days.</li>
+<li><strong>Close the project</strong>: confirm results with finance (validated savings), document lessons learned, celebrate the team, and share the solution with other sites that could replicate it.</li>
+</ul>`}
+],
+quiz:[
+{q:"Control limits on a control chart are calculated from:", o:["Customer specifications","Management targets","The process data itself","Industry benchmarks"], a:2, why:"Control limits are the voice of the process (about ±3σ). Specs are the voice of the customer."},
+{q:"Which chart for the daily proportion of late orders when the number of orders varies each day?", o:["c chart","p chart","X̄-R chart","np chart"], a:1, why:"Proportion defective with varying sample size → p chart."},
+{q:"Which chart for the number of errors per invoice batch when batch sizes vary?", o:["u chart","c chart","p chart","I-MR chart"], a:0, why:"Defects per unit with varying opportunity → u chart."},
+{q:"Nine consecutive points above the centre line most likely indicate:", o:["Common-cause variation","A process shift (special cause)","Perfect control","A measurement error"], a:1, why:"A long run on one side signals a shift."},
+{q:"Adjusting a stable process every time a point is above average is called:", o:["Kaizen","Tampering","Poka-yoke","Heijunka"], a:1, why:"Reacting to common-cause noise increases variation."},
+{q:"An I-MR chart has X̄ = 50 and MR̄ = 6. The UCL is about:", o:["56","62","66","68"], a:2, why:"50 + 2.66 × 6 = 65.96."},
+{q:"Who should own the control plan after the project closes?", o:["The Black Belt","The process owner","The sponsor's assistant","An external auditor"], a:1, why:"The process owner runs the process day to day."},
+{q:"Which control is strongest for sustaining a gain?", o:["An email reminder","Training","A written procedure","Error-proofing the process"], a:3, why:"Make the error impossible rather than relying on memory."}
+],
+questions:[
+{q:"Practice calculation: Daily % of tickets breaching SLA for 10 days: 4, 6, 5, 7, 5, 4, 6, 5, 14, 5. Compute the mean and the moving ranges, then the I-chart limits. Is any point out of control?", model:"Mean = 61 ÷ 10 = 6.1. Moving ranges: 2, 1, 2, 2, 1, 2, 1, 9, 9 → MR̄ = 29 ÷ 9 ≈ 3.22. UCL = 6.1 + 2.66 × 3.22 ≈ 14.7; LCL = 6.1 − 8.57 < 0, so 0. Day 9 (14) is just inside the limit, so technically no rule 1 violation, but the outlier inflates MR̄. In practice, investigate day 9 and, if it's a known special cause (outage), exclude it and recalculate: without day 9, mean ≈ 5.2, MR̄ ≈ 1.4, UCL ≈ 8.9 and day 9 is clearly out of control."},
+{q:"Write a reaction plan for a control chart on daily invoice-processing lead time.", model:"Trigger: any point beyond the control limits, or 8 consecutive points above the centre line. Step 1: AP team lead checks within one working day for an obvious special cause (system outage, absence, unusual invoice volume, supplier batch) and logs it on the chart. Step 2: if a cause is found, contain it (reassign work, escalate to IT) and record the action. Step 3: if no cause is found or the signal repeats, the process owner convenes a 30-minute problem-solving huddle (5 Whys). Step 4: review in the monthly process review; update standard work if the cause is systemic."},
+{q:"Your project cut refund lead time from 9.4 to 2.1 days. Six months later, it's back to 6 days. List the likely reasons and what should have been in the control plan.", model:"Likely reasons: auto-approval threshold quietly lowered after an incident without analysis; new staff not trained on the new process; warehouse scanning compliance dropped; dashboard stopped being reviewed after the Black Belt left; old KPI (volume processed) still rewarded batching. Control plan should have had: an owner per metric with a review cadence, control charts with reaction plans, threshold changes requiring process-owner sign-off, standard work in onboarding, a 30/60/90-day audit, and updated KPIs."}
+]},
+
+/* ---------------------------------------------------------------- 11 */
+{id:"m11", belt:"green", title:"Leading Change and Deployment", time:"60 min",
+summary:"The people side of improvement, A3 thinking, strategy deployment and Lean Six Sigma in digital and agile organisations.",
+objectives:[
+ "Plan for resistance using ADKAR and Kotter",
+ "Write an A3 problem-solving report",
+ "Connect projects to strategy with hoshin kanri",
+ "Apply Lean Six Sigma alongside automation, BPM and agile ways of working",
+ "Build a personal roadmap toward Green Belt certification"],
+sections:[
+{h:"The people side", html:`
+<p>A rough rule many practitioners use: <strong>E = Q × A</strong>. The effectiveness of a change equals the quality of the technical solution times its acceptance. A brilliant solution with zero acceptance delivers zero.</p>
+<p><strong>ADKAR</strong> (Prosci) describes what each individual needs to change:</p>
+<ul>
+<li><strong>A</strong>wareness of why the change is needed</li>
+<li><strong>D</strong>esire to support it</li>
+<li><strong>K</strong>nowledge of how to change</li>
+<li><strong>A</strong>bility to do it in practice</li>
+<li><strong>R</strong>einforcement to make it stick</li>
+</ul>
+<p><strong>Kotter's 8 steps</strong> describe change at the organisation level: create urgency, build a guiding coalition, form a vision, communicate it, empower action and remove obstacles, generate short-term wins, consolidate gains, anchor the change in culture.</p>`},
+{h:"Handling resistance", html:`
+<ul>
+<li>Resistance is information. Ask what people fear losing: control, status, competence, jobs.</li>
+<li>Involve the people who do the work early. People support what they help create.</li>
+<li>Be explicit about jobs. If productivity frees capacity, say how it will be used (growth, backlog, better service), and keep that promise.</li>
+<li>Show data, but tell the customer story too.</li>
+<li>Use quick wins to build credibility.</li>
+</ul>`},
+{h:"A3 thinking", html:`
+<p>Toyota's <strong>A3 report</strong> fits a whole problem-solving story on one A3 sheet (about 11 × 17 inches). Writing it forces clear thinking and makes coaching easy.</p>
+<div class="tbl"><table>
+<tr><th>Left side (understand)</th><th>Right side (act)</th></tr>
+<tr><td>1. Background: why this matters<br>2. Current condition: data, map<br>3. Goal / target condition<br>4. Root cause analysis</td><td>5. Countermeasures<br>6. Implementation plan (who, what, when)<br>7. Follow-up: results and next steps</td></tr>
+</table></div>
+<p>The A3 follows PDCA and is lighter than a full DMAIC deck. It's excellent for smaller problems and for managers coaching their teams.</p>`},
+{h:"Strategy deployment: hoshin kanri", html:`
+<p><strong>Hoshin kanri</strong> aligns improvement work with strategy. Leadership sets a few breakthrough objectives; each level translates them into its own goals and projects through <strong>catchball</strong>, a back-and-forth dialogue about what's feasible. An <strong>X-matrix</strong> on one page links long-term objectives, annual goals, improvement priorities, metrics and owners.</p>
+<p>This prevents the classic failure of Lean Six Sigma programs: lots of small projects with certificates and savings claims that don't add up to anything the CEO cares about.</p>`},
+{h:"Lean Six Sigma in a digital world", html:`
+<ul>
+<li><strong>Process mining</strong> tools reconstruct the real process from system event logs (case ID, activity, timestamp). They show every variant and rework loop, which is a value stream map built from data.</li>
+<li><strong>Automation (RPA, workflow, AI)</strong> amplifies whatever process it's applied to. Use Lean Six Sigma first to simplify and standardise.</li>
+<li><strong>BPM</strong> (business process management) provides governance: process owners, process architecture and lifecycle management. Lean Six Sigma provides the improvement method.</li>
+<li><strong>Agile and Scrum</strong> share Lean roots: small batches, WIP limits, fast feedback, retrospectives (kaizen). DMAIC phases can be run as sprints with tollgates as sprint reviews.</li>
+<li><strong>Customer journey mapping</strong> complements process maps: the journey is the outside-in view, the process map the inside-out view.</li>
+</ul>`},
+{h:"Your path from here", html:`
+<ol>
+<li>Finish this course and the capstone. Aim for 80%+ on the final exam.</li>
+<li>Learn a statistics tool: Minitab, JMP, or free options such as Python (pandas, scipy, statsmodels) or R. Excel with the Analysis ToolPak covers basics.</li>
+<li>Lead one real project at work, ideally with a mentor. Most credible Green Belt certifications require a completed project.</li>
+<li>Choose a certification body: ASQ (Certified Six Sigma Green Belt), IASSC, or your employer's internal program. Read their body of knowledge to fill gaps.</li>
+<li>Keep a portfolio: charter, maps, analysis and control plan for each project, with validated results.</li>
+</ol>`}
+],
+quiz:[
+{q:"In ADKAR, the second element is:", o:["Ability","Awareness","Desire","Knowledge"], a:2, why:"Awareness, Desire, Knowledge, Ability, Reinforcement."},
+{q:"E = Q × A means:", o:["Efficiency equals quality times automation","Effectiveness of change equals solution quality times acceptance","Effort equals quantity times accuracy","Errors equal quality times attention"], a:1, why:"Acceptance multiplies the technical quality; zero acceptance gives zero results."},
+{q:"An A3 report is named after:", o:["Its three authors","The paper size it fits on","Its three phases","An ISO standard"], a:1, why:"The whole story fits on one A3 sheet."},
+{q:"'Catchball' in hoshin kanri refers to:", o:["A team-building game","Back-and-forth dialogue to align goals between levels","Passing defects downstream","A sampling technique"], a:1, why:"Goals are negotiated up and down, not just dictated."},
+{q:"Process mining tools build process maps from:", o:["Interviews","Event logs with case ID, activity and timestamp","Customer surveys","Org charts"], a:1, why:"They reconstruct actual flows from system data."},
+{q:"What is the main risk of automating before improving a process?", o:["Automation is illegal","You lock in and accelerate waste and defects","Staff will be too fast","It reduces data quality checks"], a:1, why:"Simplify and standardise first."},
+{q:"Which Kotter step comes first?", o:["Generate short-term wins","Create a sense of urgency","Anchor change in culture","Form a vision"], a:1, why:"Without urgency, nothing moves."}
+],
+questions:[
+{q:"A team of claims handlers resists your new triage process, saying 'this will be used to cut jobs'. How do you respond?", model:"Listen first and acknowledge the concern; don't dismiss it. Get a clear answer from the sponsor on how freed capacity will be used (e.g. clearing the 1,200-claim backlog, handling 15% growth without hiring, more time for complex claims) and communicate it honestly. Involve handlers in designing the triage rules, since they know the cases best. Pilot with volunteers, share results, and recognise contributions. Use ADKAR to check where individuals are stuck (often Desire or Ability)."},
+{q:"Write an outline A3 for this problem: 'Month-end close takes 9 working days; the CFO wants 5.'", model:"Background: slow close delays management decisions and the board pack. Current condition: VSM shows 9 days; critical path is intercompany reconciliation (3 days) and accrual adjustments (2 days); 40% of journals are manual; late subsidiary submissions. Goal: 5-day close by Q2. Root causes: intercompany mismatches resolved only at month-end; accruals estimated from scratch each month; no submission cut-off enforced. Countermeasures: continuous intercompany matching weekly; standard accrual templates; day-2 cut-off with escalation; close calendar with task owners. Plan: owner and date per countermeasure. Follow-up: track days to close and number of post-close adjustments each month."},
+{q:"How would you use Lean Six Sigma alongside a team that already works in Scrum sprints?", model:"Map the value stream from idea to customer use, not just development, to find waste outside the sprint (approval queues, release delays). Use WIP limits and flow metrics (lead time, throughput) from Lean. Use defect data and root cause analysis (Pareto of escaped defects, 5 Whys in retrospectives) from Six Sigma. Run DMAIC phases as time-boxed sprints with tollgates in sprint reviews. Use control charts on cycle time to see whether process changes actually helped."}
+]}
+];
+
+/* ---------------------------------------------------------------- Capstone */
+const CAPSTONE = {
+intro:`<p><strong>Northwind Living</strong> is a mid-size online furniture and homeware retailer with 180,000 orders a year. Customer refunds have become a top complaint. You are the Green Belt assigned to the project. Work through each phase, write your own answer in the box, then compare with the model answer.</p>
+<div class="tbl"><table>
+<tr><th>Fact</th><th>Data</th></tr>
+<tr><td>Refund requests</td><td>About 1,200 per month (returns, damaged goods, cancellations)</td></tr>
+<tr><td>Average lead time (request → money credited)</td><td>9.4 business days; median 8; 90th percentile 16</td></tr>
+<tr><td>Customer promise on website</td><td>"Refunds within 5 business days"</td></tr>
+<tr><td>"Where is my refund?" contacts</td><td>About 2,100 per month, average 7 minutes each, $0.90 per minute handling cost</td></tr>
+<tr><td>Chargebacks from frustrated customers</td><td>About 35 per month, $25 fee each plus lost dispute cases</td></tr>
+<tr><td>NPS</td><td>+12 for customers with a refund vs +46 overall</td></tr>
+<tr><td>Process steps</td><td>Request logged in CRM → item returned to warehouse → warehouse confirms return (manual email) → refund clerk validates → manager approves (Tue/Fri batch) → finance creates payment file (daily 2 pm cut-off) → bank credits customer</td></tr>
+<tr><td>Delay reasons (sample of 482 refunds &gt; 5 days)</td><td>Manager approval wait 44%; warehouse confirmation 27%; wrong payment details 14%; payment file error 8%; other 7%</td></tr>
+<tr><td>Fraud</td><td>Refund fraud losses 0.15% of refund value; 96% of fraud cases are refunds over $400</td></tr>
+</table></div>`,
+tasks:[
+{phase:"Define", q:"Write the problem statement and a SMART goal statement. Name the primary metric and one guardrail metric.", model:"Problem: 'From January to June 2026, Northwind refunds took an average of 9.4 business days (median 8, 90th percentile 16) from request to credit, against a published promise of 5 days. This generated about 2,100 status contacts and 35 chargebacks per month, costing roughly $169,000 a year, and customers with refunds report an NPS 34 points lower than average.' Goal: 'Reduce median refund lead time from 8 to 3 business days, with 90% completed within 5 days, by 31 March 2027, without increasing refund fraud losses above 0.15% of refund value.' Primary metric: refund lead time (business days). Guardrail: fraud loss % of refund value (also cost per refund)."},
+{phase:"Define", q:"Calculate the annual cost of the 'where is my refund' contacts and the chargeback fees. Which costs are you not yet counting?", model:"Contacts: 2,100 × 7 min × $0.90 = $13,230 per month → $158,760 per year. Chargeback fees: 35 × $25 × 12 = $10,500 per year. Total ≈ $169,000. Not counted: lost chargeback disputes (refund paid twice), churn and lost repeat purchases from lower NPS, staff time on rework for wrong payment details, management time on approvals, reputation and review-site damage."},
+{phase:"Measure", q:"Write an operational definition for refund lead time and list the X's (stratification factors) you'd collect alongside it.", model:"Refund lead time = business days (excl. weekends and public holidays) from CRM refund case creation timestamp to the bank-confirmed credit date in the payment system. X's: refund reason (return/damaged/cancellation), refund amount band, payment method (card/PayPal/bank transfer), warehouse location, day of week requested, clerk, approver, whether payment details were changed, whether item had to be returned, channel of request."},
+{phase:"Measure", q:"With a mean of 9.4 days, a median of 8 and a 90th percentile of 16, what does the distribution look like and how will that affect your choice of statistics?", model:"Right-skewed: a long tail of slow refunds pulls the mean above the median. Use the median and percentiles (e.g. P90) as main metrics, use box plots and histograms, and use non-parametric tests (Mann-Whitney, Kruskal-Wallis) or transform the data before using t-tests or ANOVA. Capability should be reported as % beyond 5 days rather than a normal-based Cpk."},
+{phase:"Analyze", q:"Using the delay-reason data and the 5 Whys, what are the likely root causes? Which hypothesis would you test with data, and how?", model:"Pareto: approval wait (44%) and warehouse confirmation (27%) cover 71% of late refunds; add payment details (14%) to reach 85%. Root causes: (1) blanket manager approval in twice-weekly batches, a policy from an old fraud incident; (2) warehouse confirmation by manual email with no system trigger; (3) bank-transfer refunds collect payment details by free-text email. Hypothesis test: 'refunds paid by bank transfer have longer lead times than card refunds': Mann-Whitney test on lead time by payment method. Also: 'refunds requested Wed–Thu wait longer' (Kruskal-Wallis by weekday), since they just miss a Tuesday batch and wait for Friday."},
+{phase:"Analyze", q:"The sponsor says 'we just need more refund clerks.' How do you respond using data?", model:"Show the value stream: clerk validation is a few minutes of touch time; most of the 9.4 days is waiting for approval batches and warehouse emails. Adding clerks increases capacity at a step that isn't the constraint, so lead time would barely change (Little's Law: WIP and the approval batch drive lead time). The Pareto shows 85% of delays come from approval, warehouse confirmation and payment-detail errors, none of which more clerks fix."},
+{phase:"Improve", q:"Propose three solutions linked to root causes, and explain how you'd keep fraud risk under control.", model:"(1) Risk-based approval: auto-approve refunds under $400 with no fraud flags (covers most refunds; fraud is concentrated above $400); daily approval for those above. (2) Warehouse scan-to-confirm: scanning the returned item updates the CRM case automatically and triggers the refund step. (3) Refund to original payment method by default; when bank transfer is needed, a secure form with IBAN validation. Fraud control: fraud rules engine flags (repeat refunders, address mismatch), weekly fraud report as a guardrail with a reaction plan, random audit of 2% of auto-approved refunds."},
+{phase:"Improve", q:"Design the pilot. What scope, duration and success criteria?", model:"Scope: one warehouse and card/PayPal refunds under $400 for 6 weeks (about 1,500 refunds). Success: median lead time ≤ 3 days, P90 ≤ 5 days; fraud loss ≤ 0.15%; status contacts per refund down at least 50%. Compare against the same weeks for the non-pilot warehouse and the baseline using a before/after control chart and a Mann-Whitney test. Stop criteria: fraud above 0.3% or payment file errors."},
+{phase:"Control", q:"Draft the key rows of the control plan and say who owns the process after handover.", model:"Owner: Head of Customer Operations (process owner). Rows: (1) Refund lead time: I-MR chart of daily median, P90 tracked weekly; reaction: investigate any rule violation within 1 day. (2) Auto-approval fraud rate: weekly report, threshold 0.15%; reaction: risk review in 48 h, temporary threshold reduction. (3) Warehouse scan compliance ≥ 98%: daily system report; reaction: supervisor huddle. (4) Status contact rate per refund: monthly. Also: standard work for clerks, updated training, changes to approval thresholds require process-owner and risk sign-off, 30/60/90-day audits, validated savings signed by finance."}
+]};
+
+/* ---------------------------------------------------------------- Final exam */
+const EXAM = [
+{q:"A purchasing process has 15 days of lead time and 2 hours of value-added time (8-hour days). What is the PCE?", o:["1.7%","13.3%","2.5%","0.8%"], a:0, why:"Lead time = 120 hours. 2 ÷ 120 ≈ 1.7%."},
+{q:"A team wants to reduce the variation in loan decision quality between underwriters. Which approach fits best?", o:["5S","A Six Sigma DMAIC project with MSA and analysis of variation","Kanban board","SMED"], a:1, why:"Variation between people in a judgement-based output is a measurement and variation problem."},
+{q:"In a shared-services centre, 2,400 transactions are in progress and 300 are completed per day. Lead time is:", o:["0.125 days","8 days","80 days","2,100 days"], a:1, why:"Little's Law: 2,400 ÷ 300 = 8 days."},
+{q:"Which of these is a business-value-added step?", o:["Re-keying data from email into ERP","Waiting for approval","A legally required tax calculation","Searching for a missing file"], a:2, why:"Required by law but not valued by the customer."},
+{q:"Employees walk to a central printer 20 times a day to collect documents. This is:", o:["Transportation","Motion","Inventory","Overproduction"], a:1, why:"The person moving = motion."},
+{q:"A call centre receives 1,200 calls in a 10-hour day. Takt time is:", o:["0.5 min","2 min","12 min","30 sec per hour"], a:0, why:"600 min ÷ 1,200 = 0.5 min per call."},
+{q:"Which statement about Cp and Cpk is correct?", o:["Cpk is always greater than Cp","Cp = Cpk when the process is perfectly centred","Cp accounts for off-centre processes","Cpk ignores the standard deviation"], a:1, why:"When centred, both sides are equal so Cpk = Cp. Otherwise Cpk < Cp."},
+{q:"Three process steps have FPY 92%, 88% and 97%. RTY is closest to:", o:["78.5%","88%","92%","97%"], a:0, why:"0.92 × 0.88 × 0.97 ≈ 0.785."},
+{q:"A problem statement reads: 'Orders are late because the warehouse team is careless.' What's wrong?", o:["It is too short","It includes a cause and blame","It lacks a solution","Nothing"], a:1, why:"Problem statements state facts and impact, with no cause or blame."},
+{q:"Three appraisers classify 50 claims as valid/invalid twice. What study is this?", o:["Gage R&R for continuous data","Attribute agreement analysis","Regression","DOE"], a:1, why:"Attribute agreement analysis checks consistency of categorical judgements."},
+{q:"A Pareto chart of order errors shows 'wrong SKU' 52%, 'wrong address' 23%, 'wrong quantity' 12%, other 13%. Where should the team focus first?", o:["All categories equally","Wrong SKU and wrong address","Other","Wrong quantity"], a:1, why:"The top two categories account for 75% of errors."},
+{q:"Comparing average resolution time across five support teams, the right test is:", o:["Chi-square","One-way ANOVA","2-proportion test","Paired t-test"], a:1, why:"Continuous Y, 3+ groups → ANOVA (or Kruskal-Wallis if non-normal)."},
+{q:"p = 0.27 in a test comparing old vs new process error rates. You conclude:", o:["The new process is significantly better","No statistically significant difference was detected","The test is invalid","Reject the null hypothesis"], a:1, why:"p > 0.05: fail to reject H₀. It may also mean the sample was too small (low power)."},
+{q:"FMEA scores: Failure A S=9, O=2, D=3; Failure B S=4, O=6, D=5. Which needs attention first and why?", o:["B only, because its RPN is higher","A only, because RPN doesn't matter","Both: B has the higher RPN (120 vs 54), but A's severity of 9 warrants action regardless","Neither"], a:2, why:"Severity 9–10 failures need action whatever their RPN."},
+{q:"A team finds that sales calls lasting longer correlate with bigger deals (r = 0.7). They mandate longer calls. The flaw is:", o:["The correlation is too weak","Correlation doesn't prove causation; bigger opportunities may naturally take longer calls","They should use ANOVA","There is no flaw"], a:1, why:"Deal size may drive call length, not the other way round."},
+{q:"An approval step rejects 0.3% of requests, takes 3 days on average, and the rejected cases are all above $10,000. The best Lean improvement is:", o:["Add a second approver","Apply approval only above a risk threshold (e.g. $10,000)","Automate the approval email","Approve faster by working overtime"], a:1, why:"Remove extra-processing for low-risk cases; keep control where the risk is."},
+{q:"Which control chart fits the number of customer complaints per week (similar volume each week)?", o:["p chart","c chart","X̄-R chart","np chart"], a:1, why:"Count of defects with constant area of opportunity → c chart."},
+{q:"Seven consecutive points steadily rising on a control chart suggests:", o:["Common-cause variation","A trend (special cause)","Perfect stability","The chart is wrong"], a:1, why:"Six or more points in a row increasing signals a trend."},
+{q:"A manager reacts to every small fluctuation in daily output by changing staffing. Deming would call this:", o:["Kaizen","Tampering","Jidoka","Standard work"], a:1, why:"Reacting to common-cause variation increases variation."},
+{q:"Which sequence is correct for introducing automation?", o:["Automate, then standardise","Standardise, automate, simplify","Simplify, standardise, automate","Automate everything at once"], a:2, why:"Remove waste and stabilise before automating."},
+{q:"A bottleneck step is idle during lunch because everyone breaks at the same time. Applying Goldratt, you should first:", o:["Hire more people for the bottleneck","Stagger breaks so the constraint never stops (exploit it)","Speed up the non-bottleneck steps","Increase batch sizes"], a:1, why:"Exploit the constraint's existing capacity before elevating it."},
+{q:"Converting 'prepare month-end templates during the close' into 'prepare templates the week before' is an example of:", o:["Poka-yoke","SMED (internal to external setup)","Heijunka","5S"], a:1, why:"Setup moved out of the time-critical window."},
+{q:"A process has mean 30 min, σ = 4 min, USL = 42 min (no LSL). Cpk is:", o:["0.75","1.00","1.33","2.50"], a:1, why:"(42 − 30) ÷ (3 × 4) = 12 ÷ 12 = 1.00."},
+{q:"Which is NOT part of a project charter?", o:["Business case","Scope","Validated root causes","Team and roles"], a:2, why:"Root causes are found in Analyze; the charter is written in Define."},
+{q:"The output of Measure that gets compared at the end of the project is the:", o:["Fishbone","Baseline","Pugh matrix","RACI"], a:1, why:"Baseline performance is the 'before' you compare against."},
+{q:"A Kano 'delighter' for an insurance claim might be:", o:["Correct payout amount","Paying within the legal time limit","Proactive SMS updates and same-day payout for simple claims","Polite staff"], a:2, why:"Unexpected features that surprise. The others are basic or performance needs."},
+{q:"WIP limits on a kanban board primarily improve:", o:["Utilisation of every person","Flow and lead time by stopping too much work starting","Report quality","Fraud detection"], a:1, why:"Less WIP → shorter lead time and earlier delivery."},
+{q:"A Green Belt finds a solution that cuts lead time 60% but triples errors. What should have prevented this?", o:["A larger sample","A guardrail metric in the charter and a pilot with error monitoring","Using ANOVA","A SIPOC"], a:1, why:"Guardrail metrics and pilots catch unintended consequences."},
+{q:"Which tool best documents what to monitor, how often, by whom and what to do when it goes wrong?", o:["Project charter","Control plan","SIPOC","Fishbone"], a:1, why:"The control plan is the Control-phase handover document."},
+{q:"An organisation runs 120 small projects with claimed savings but the CFO sees no P&L impact. What's most likely missing?", o:["More Black Belts","Strategy deployment (hoshin kanri) and finance-validated savings","More statistics training","A new software tool"], a:1, why:"Projects must link to strategic goals and savings must be validated by finance."}
+];
+
+/* ---------------------------------------------------------------- Glossary */
+const GLOSSARY = [
+["5S","Sort, Set in order, Shine, Standardise, Sustain: workplace organisation that makes abnormalities visible."],
+["5 Whys","Asking 'why' repeatedly to move from a symptom to an actionable root cause."],
+["A3","One-page problem-solving report following PDCA, named after the A3 paper size."],
+["ADKAR","Awareness, Desire, Knowledge, Ability, Reinforcement: Prosci's individual change model."],
+["Andon","A signal (light, alert) used to call for help when a problem occurs."],
+["ANOVA","Analysis of variance: tests whether means differ across three or more groups."],
+["Attribute agreement analysis","MSA for categorical judgements; checks whether appraisers agree with each other and a standard."],
+["Batch","A group of items processed together; large batches increase waiting."],
+["Black Belt","Full-time Lean Six Sigma project leader for complex projects."],
+["Bottleneck / constraint","The step with the lowest capacity, which limits the whole system's throughput."],
+["Business-value-added (BVA)","A step the customer doesn't value but the business requires (legal, regulatory, risk)."],
+["c chart","Control chart for count of defects with constant area of opportunity."],
+["Catchball","Back-and-forth dialogue used in hoshin kanri to align goals between levels."],
+["Champion / Sponsor","Senior leader who selects projects, provides resources and removes barriers."],
+["Common-cause variation","Natural, inherent variation in a stable process."],
+["Control chart","Time-ordered chart with centre line and control limits used to detect special causes."],
+["Control limits","Lines at about ±3σ calculated from process data (voice of the process)."],
+["Control plan","Document specifying what to monitor, how, how often, who owns it and the reaction plan."],
+["COPQ","Cost of poor quality: internal failure, external failure, appraisal and prevention costs."],
+["Cp","Potential capability: (USL − LSL) ÷ 6σ."],
+["Cpk","Actual capability accounting for centring: min((USL − μ)/3σ, (μ − LSL)/3σ)."],
+["CTQ","Critical-to-Quality: a measurable requirement derived from the voice of the customer."],
+["Cycle time","Time between completions of consecutive units at a step; some use it for processing time. Always define it."],
+["Defect","Any failure to meet a customer requirement."],
+["Defective","A unit containing one or more defects."],
+["DMADV","Define, Measure, Analyze, Design, Verify: Six Sigma roadmap for designing new processes."],
+["DMAIC","Define, Measure, Analyze, Improve, Control: Six Sigma improvement roadmap."],
+["DOE","Design of experiments: changing several factors in a planned way to find effects and interactions."],
+["DOWNTIME","Acronym for the 8 wastes: Defects, Overproduction, Waiting, Non-utilised talent, Transportation, Inventory, Motion, Extra-processing."],
+["DPMO","Defects per million opportunities: defects ÷ (units × opportunities) × 1,000,000."],
+["DPU","Defects per unit: defects ÷ units."],
+["FMEA","Failure mode and effects analysis: ranks risks by Severity × Occurrence × Detection."],
+["FPY","First-pass yield: share of units completed right the first time at a step."],
+["Fishbone / Ishikawa","Cause-and-effect diagram grouping potential causes into categories."],
+["Gage R&R","Study measuring repeatability and reproducibility of a continuous measurement system."],
+["Gemba","'The real place' where work happens."],
+["Green Belt","Practitioner who leads smaller improvement projects part-time."],
+["Heijunka","Levelling the volume and mix of work over time."],
+["Hoshin kanri","Strategy deployment method aligning objectives and projects across levels."],
+["Hypothesis test","Statistical test of whether an observed difference is likely real or due to chance."],
+["I-MR chart","Individuals and moving range control chart for continuous data with subgroup size 1."],
+["Jidoka","Building in quality: stopping and signalling when an abnormality occurs."],
+["Just-in-Time","Producing only what is needed, when it is needed, in the amount needed."],
+["Kaizen","Continuous, incremental improvement involving everyone."],
+["Kaizen event","Focused 3–5 day team workshop to improve one process."],
+["Kanban","Visual signal system that controls flow by pull; often a board with WIP limits."],
+["Kano model","Classifies needs as basic, performance or delighters."],
+["Lead time","Total elapsed time from request to delivery, as experienced by the customer."],
+["Little's Law","Lead time = WIP ÷ throughput."],
+["LSL / USL","Lower and upper specification limits, set by the customer (voice of the customer)."],
+["Master Black Belt","Expert coach and trainer who guides the Lean Six Sigma program."],
+["MSA","Measurement system analysis: checking that the data collection method is accurate and precise."],
+["Muda / Mura / Muri","Waste / unevenness / overburden."],
+["Non-value-added (NVA)","A step that consumes resources without adding value; eliminate it."],
+["Operational definition","A precise description of how a metric is measured so everyone measures it the same way."],
+["p chart","Control chart for proportion defective with variable sample size."],
+["p-value","Probability of observing a result at least this extreme if the null hypothesis is true."],
+["Pareto principle","Roughly 80% of effects come from 20% of causes."],
+["PDCA","Plan, Do, Check, Act: the Deming/Shewhart improvement cycle."],
+["Poka-yoke","Error-proofing: designing a process so mistakes are impossible or immediately obvious."],
+["Process cycle efficiency (PCE)","Value-added time ÷ lead time."],
+["Process owner","The person responsible for a process day to day and for sustaining improvements."],
+["Pugh matrix","Compares solution options against a baseline across weighted criteria."],
+["Pull","Starting work only when downstream capacity or demand signals it."],
+["R²","Share of variation in Y explained by the regression model."],
+["RACI","Responsible, Accountable, Consulted, Informed: a chart of roles for each task."],
+["RPN","Risk priority number in FMEA: Severity × Occurrence × Detection."],
+["RTY","Rolled throughput yield: product of FPYs across all steps."],
+["SIPOC","Suppliers, Inputs, Process, Outputs, Customers: high-level process scoping tool."],
+["Sigma level","Number of standard deviations between the process mean and the nearest spec limit (tables include a 1.5σ shift)."],
+["SMED","Single-Minute Exchange of Die: reducing setup time by converting internal to external setup."],
+["Special-cause variation","Variation from an unusual, assignable cause."],
+["Standard work","The current best-known way to do a task, documented and followed by all."],
+["Swimlane map","Process map with a lane per role or department, showing hand-offs."],
+["Takt time","Available time ÷ customer demand: the pace the process must match."],
+["Tampering","Adjusting a stable process in response to common-cause variation, increasing variation."],
+["Theory of Constraints","Goldratt's approach: Identify, Exploit, Subordinate, Elevate, Repeat."],
+["Throughput","Units completed per unit of time."],
+["Tollgate","Review at the end of each DMAIC phase with the sponsor."],
+["Type I / Type II error","False alarm (reject a true H₀) / missed signal (fail to reject a false H₀)."],
+["u chart","Control chart for defects per unit with varying area of opportunity."],
+["Value stream map (VSM)","Process map with data (process time, wait time, %C&A) showing material and information flow."],
+["Value-added (VA)","A step the customer cares about, that changes the product/service, done right first time."],
+["VOC","Voice of the customer: customer needs and expectations."],
+["WIP","Work in progress: items started but not finished."],
+["Y = f(X)","The output (Y) is a function of process inputs and variables (X's)."]
+];
+
+/* Shuffle answer options once per page load so the correct letter isn't predictable */
+function shuffleQ(q){const idx=q.o.map((_,i)=>i);
+  for(let i=idx.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[idx[i],idx[j]]=[idx[j],idx[i]];}
+  q.o=idx.map(i=>q.o[i]);q.a=idx.indexOf(q.a);}
+MODULES.forEach(m=>m.quiz.forEach(shuffleQ));EXAM.forEach(shuffleQ);
+
+/* ============================== STATE ============================== */
+const KEY="lss-path-v1";
+let state={done:{},best:{},exam:null};
+try{const s=JSON.parse(localStorage.getItem(KEY)||"null"); if(s) state=Object.assign(state,s);}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+
+const PAGES=[
+ {id:"home",title:"Course home",group:"Start"},
+ ...MODULES.map((m,i)=>({id:m.id,title:m.title,belt:m.belt,group:i<2?"White belt: awareness":i<5?"Yellow belt: core tools":"Green belt: DMAIC and leading change",n:i+1})),
+ {id:"capstone",title:"Capstone case: Northwind refunds",group:"Prove it",belt:"black"},
+ {id:"exam",title:"Final exam (30 questions)",group:"Prove it",belt:"black"},
+ {id:"toolkit",title:"Calculator toolkit",group:"Reference"},
+ {id:"glossary",title:"Glossary",group:"Reference"}
+];
+const TRACKED=[...MODULES.map(m=>m.id),"capstone","exam"];
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const L="ABCDEFG";
+
+function renderNav(){
+  let html="",g="";
+  PAGES.forEach(p=>{
+    if(p.group!==g){g=p.group;html+=`<span class="eyebrow grp">${g}</span>`;}
+    const tick=state.done[p.id]?'<span class="tick" aria-label="completed">✓</span>':'<span></span>';
+    const belt=p.belt?`<span class="belt ${p.belt}"></span>`:'<span></span>';
+    html+=`<a href="#${p.id}" data-id="${p.id}">${belt}<span>${p.n?p.n+". ":""}${esc(p.title)}</span>${tick}</a>`;
+  });
+  $("#nav").innerHTML=html;
+  const pct=Math.round(TRACKED.filter(id=>state.done[id]).length/TRACKED.length*100);
+  $("#pct").textContent=pct+"%"; $("#pctBar").style.width=pct+"%";
+}
+
+function quizHTML(qs,prefix){
+  return qs.map((q,i)=>`<div class="qcard" data-q="${i}">
+    <div class="qt"><span class="n">Q${i+1}</span><span>${esc(q.q)}</span></div>
+    <div class="opts">${q.o.map((o,j)=>`<button class="opt" data-o="${j}"><span class="k">${L[j]}</span><span>${esc(o)}</span></button>`).join("")}</div>
+    <div class="why" hidden></div></div>`).join("");
+}
+function wireQuiz(root,qs,id){
+  let answered=0,correct=0;
+  const upd=()=>{root.querySelector(".score").textContent=`${answered}/${qs.length} answered · ${correct} correct`;
+    if(answered===qs.length){const pct=Math.round(correct/qs.length*100);
+      if(!(state.best[id]>=pct)){state.best[id]=pct;save();}
+      root.querySelector(".score").textContent+=` · ${pct}% (best ${state.best[id]}%)`;}};
+  root.querySelectorAll(".qcard").forEach(card=>{
+    const q=qs[+card.dataset.q];
+    card.querySelectorAll(".opt").forEach(b=>b.addEventListener("click",()=>{
+      const pick=+b.dataset.o; answered++; if(pick===q.a) correct++;
+      card.querySelectorAll(".opt").forEach(x=>{x.disabled=true;const k=+x.dataset.o;
+        if(k===q.a)x.classList.add("right"); else if(k===pick)x.classList.add("wrong");});
+      const w=card.querySelector(".why"); w.hidden=false;
+      w.className="why "+(pick===q.a?"ok":"no");
+      w.innerHTML=`<b>${pick===q.a?"Correct.":"Not quite. Answer: "+L[q.a]+"."}</b> ${esc(q.why)}`;
+      upd();
+    }));
+  });
+  root.querySelector(".reset").addEventListener("click",()=>{root.querySelector(".qlist").innerHTML=quizHTML(qs);wireQuiz(root,qs,id);});
+  upd();
+}
+function openQs(qs,label){
+  return qs.map((q,i)=>`<details class="oq"><summary><span class="n">${label}${i+1}</span><span>${esc(q.q)}</span></summary>
+    <textarea id="oq-${label}-${i}" placeholder="Write your answer here before revealing the model answer" aria-label="Your answer"></textarea>
+    <div class="ans"><span class="eyebrow">Model answer</span><p>${esc(q.model)}</p></div></details>`).join("");
+}
+function pager(id){
+  const i=PAGES.findIndex(p=>p.id===id),pr=PAGES[i-1],nx=PAGES[i+1];
+  return `<nav class="pager">${pr?`<a href="#${pr.id}"><span>← Previous</span>${esc(pr.title)}</a>`:"<span></span>"}${nx?`<a href="#${nx.id}" style="text-align:right"><span>Next →</span>${esc(nx.title)}</a>`:""}</nav>`;
+}
+function doneBtn(id){
+  return `<div class="row"><button class="btn ${state.done[id]?"":"primary"}" id="doneBtn">${state.done[id]?"Completed ✓ (click to undo)":"Mark as complete"}</button></div>`;
+}
+function wireDone(id){
+  $("#doneBtn").addEventListener("click",()=>{state.done[id]=!state.done[id];save();renderNav();setCurrent(id);
+    $("#doneBtn").outerHTML=doneBtn(id);wireDone(id);});
+}
+const beltName={white:"White belt",yellow:"Yellow belt",green:"Green belt",black:"Capstone"};
+
+/* ============================== VIEWS ============================== */
+function viewHome(){
+  return `<div class="head"><span class="eyebrow">A self-paced course · 11 modules · about 13 hours</span>
+  <h1>Lean Six Sigma, from first principles to running a DMAIC project</h1>
+  <p class="lede">Learn to see waste, measure processes, find root causes with data and make improvements stick. Every module uses business and office processes: invoices, refunds, onboarding, claims, support tickets.</p>
+  <div class="row"><a class="btn primary" href="#m1" style="text-decoration:none">Start module 1</a><a class="btn" href="#exam" style="text-decoration:none">Take the final exam</a></div></div>
+  <div class="belts">
+   <div><span class="belt white"></span><h4>White belt</h4><p>Modules 1–2. Vocabulary, Lean thinking, the 8 wastes.</p></div>
+   <div><span class="belt yellow"></span><h4>Yellow belt</h4><p>Modules 3–5. Mapping, flow metrics, Lean tools, Six Sigma basics.</p></div>
+   <div><span class="belt green"></span><h4>Green belt</h4><p>Modules 6–11. The full DMAIC roadmap, statistics and leading change.</p></div>
+  </div>
+  <div class="prose"><h2>How each module works</h2>
+  <ul><li><strong>Lessons</strong> with worked business examples and formulas.</li>
+  <li><strong>Quiz</strong>: multiple choice with instant feedback and an explanation for every answer.</li>
+  <li><strong>Practice questions</strong>: open-ended and calculation problems. Write your answer first, then open the model answer.</li>
+  <li><strong>Capstone</strong>: run a full DMAIC project on a realistic refund-process case.</li>
+  <li><strong>Final exam</strong>: 30 scenario questions. 80% is the pass mark used by many Green Belt exams.</li></ul>
+  <p>Your progress and quiz scores are saved in this browser only.</p></div>
+  <h2>Modules</h2>
+  <div class="path">${MODULES.map((m,i)=>`<a class="mod" href="#${m.id}"><div class="top"><span class="eyebrow">Module ${i+1} · ${m.time}</span><span class="belt ${m.belt}"></span></div><h4>${esc(m.title)}</h4><p>${esc(m.summary)}</p>${state.done[m.id]?'<span class="tick">✓ Completed'+(state.best[m.id]!=null?' · quiz best '+state.best[m.id]+'%':'')+'</span>':(state.best[m.id]!=null?'<span class="score">Quiz best '+state.best[m.id]+'%</span>':'')}</a>`).join("")}
+  <a class="mod" href="#capstone"><div class="top"><span class="eyebrow">Capstone</span><span class="belt black"></span></div><h4>Northwind refunds case</h4><p>Apply DMAIC end to end on a realistic business problem.</p></a>
+  <a class="mod" href="#exam"><div class="top"><span class="eyebrow">Final exam</span><span class="belt black"></span></div><h4>30 scenario questions</h4><p>Scored at the end with explanations for every question.</p></a></div>`;
+}
+function viewModule(m,idx){
+  return `<div class="head"><span class="eyebrow">Module ${idx+1} of ${MODULES.length}</span><h1>${esc(m.title)}</h1>
+  <div class="meta"><span class="chip"><span class="belt ${m.belt}"></span>${beltName[m.belt]}</span><span class="chip">${m.time}</span><span class="chip">${m.quiz.length} quiz questions</span><span class="chip">${m.questions.length} practice questions</span></div>
+  <p class="lede">${esc(m.summary)}</p></div>
+  <div class="obj"><span class="eyebrow">By the end you can</span><ul>${m.objectives.map(o=>`<li>${esc(o)}</li>`).join("")}</ul></div>
+  ${m.sections.map((s,i)=>`<section class="lesson"><h3><span class="n">${idx+1}.${i+1}</span>${esc(s.h)}</h3><div class="prose">${s.html}</div></section>`).join('<hr class="rule">')}
+  <hr class="rule">
+  <div class="block" id="quiz"><div class="block-head"><h2>Quiz</h2><div class="row"><span class="score"></span><button class="btn reset">Reset</button></div></div><div class="qlist">${quizHTML(m.quiz)}</div></div>
+  <div class="block"><div class="block-head"><h2>Practice questions</h2><span class="reveal-hint">Answer first, then open</span></div>${openQs(m.questions,"P")}</div>
+  ${doneBtn(m.id)}${pager(m.id)}`;
+}
+function viewCapstone(){
+  let phase="";
+  const tasks=CAPSTONE.tasks.map((t,i)=>{let h="";if(t.phase!==phase){phase=t.phase;h=`<h3 style="margin-top:8px">${phase}</h3>`;}
+    return h+`<details class="oq"><summary><span class="n">C${i+1}</span><span>${esc(t.q)}</span></summary>
+    <textarea id="cap-${i}" placeholder="Draft your answer" aria-label="Your answer"></textarea>
+    <div class="ans"><span class="eyebrow">Model answer</span><p>${esc(t.model)}</p></div></details>`;}).join("");
+  return `<div class="head"><span class="eyebrow">Capstone project</span><h1>Northwind Living: refunds that take too long</h1>
+  <div class="meta"><span class="chip"><span class="belt black"></span>Apply everything</span><span class="chip">90–120 min</span><span class="chip">${CAPSTONE.tasks.length} tasks across DMAIC</span></div></div>
+  <div class="prose">${CAPSTONE.intro}</div><div class="block">${tasks}</div>${doneBtn("capstone")}${pager("capstone")}`;
+}
+function viewExam(){
+  return `<div class="head"><span class="eyebrow">Final exam</span><h1>Final exam</h1>
+  <p class="lede">30 questions covering all modules. Choose one answer per question; nothing is revealed until you submit. Pass mark: 80% (24/30).</p>
+  ${state.exam!=null?`<span class="chip">Last score: ${state.exam}%</span>`:""}</div>
+  <div class="block" id="examList">${EXAM.map((q,i)=>`<div class="qcard" data-q="${i}">
+    <div class="qt"><span class="n">${i+1}</span><span>${esc(q.q)}</span></div>
+    <div class="opts">${q.o.map((o,j)=>`<button class="opt" data-o="${j}"><span class="k">${L[j]}</span><span>${esc(o)}</span></button>`).join("")}</div>
+    <div class="why" hidden></div></div>`).join("")}</div>
+  <div class="row"><button class="btn primary" id="submitExam">Submit exam</button><button class="btn" id="resetExam">Clear answers</button><span class="score" id="examCount">0/30 answered</span></div>
+  <div id="examResult"></div>${pager("exam")}`;
+}
+function wireExam(){
+  const picks={};
+  const cnt=()=>$("#examCount").textContent=`${Object.keys(picks).length}/${EXAM.length} answered`;
+  document.querySelectorAll("#examList .qcard").forEach(card=>{
+    const i=+card.dataset.q;
+    card.querySelectorAll(".opt").forEach(b=>b.addEventListener("click",()=>{
+      card.querySelectorAll(".opt").forEach(x=>x.classList.remove("sel"));b.classList.add("sel");picks[i]=+b.dataset.o;cnt();}));
+  });
+  $("#submitExam").addEventListener("click",()=>{
+    const missing=EXAM.length-Object.keys(picks).length;
+    if(missing>0 && !$("#submitExam").dataset.confirm){
+      $("#submitExam").dataset.confirm="1";$("#submitExam").textContent=`${missing} unanswered. Submit anyway?`;return;}
+    let c=0;
+    document.querySelectorAll("#examList .qcard").forEach(card=>{
+      const i=+card.dataset.q,q=EXAM[i],p=picks[i];if(p===q.a)c++;
+      card.querySelectorAll(".opt").forEach(x=>{x.disabled=true;x.classList.remove("sel");const k=+x.dataset.o;
+        if(k===q.a)x.classList.add("right");else if(k===p)x.classList.add("wrong");});
+      const w=card.querySelector(".why");w.hidden=false;w.className="why "+(p===q.a?"ok":"no");
+      w.innerHTML=`<b>${p===q.a?"Correct.":(p==null?"Not answered.":"Incorrect.")+" Answer: "+L[q.a]+"."}</b> ${esc(q.why)}`;
+    });
+    const pct=Math.round(c/EXAM.length*100);state.exam=pct;if(pct>=80)state.done.exam=true;save();renderNav();setCurrent("exam");
+    $("#submitExam").disabled=true;
+    $("#examResult").innerHTML=`<div class="result"><span class="eyebrow">Your score</span><span class="big">${c}/${EXAM.length} · ${pct}%</span>
+    <p>${pct>=80?"Pass. You have the knowledge base of an intermediate practitioner. The next step is leading a real project.":"Below the 80% pass mark. Review the explanations above, revisit the matching modules, and try again."}</p></div>`;
+    $("#examResult").scrollIntoView({behavior:"smooth",block:"center"});
+  });
+  $("#resetExam").addEventListener("click",()=>route(true));
+}
+function viewToolkit(){
+  const f=(id,label,val)=>`<label for="${id}">${label}<input id="${id}" type="number" step="any" value="${val}"></label>`;
+  return `<div class="head"><span class="eyebrow">Reference</span><h1>Calculator toolkit</h1><p class="lede">Check your practice answers or run quick numbers on a real process. Results update as you type.</p></div>
+  <div class="tools">
+   <div class="tool"><h3>Sigma level</h3><div class="fields">${f("t-def","Defects",180)}${f("t-units","Units",2000)}${f("t-opp","Opportunities per unit",5)}</div><div class="out" id="o-sigma"></div></div>
+   <div class="tool"><h3>Takt time</h3><div class="fields">${f("t-avail","Available minutes per day",450)}${f("t-dem","Demand per day",90)}${f("t-work","Work content per unit (min)",20)}</div><div class="out" id="o-takt"></div></div>
+   <div class="tool"><h3>Little's Law</h3><div class="fields">${f("t-wip","WIP (units)",600)}${f("t-thr","Throughput per day",50)}</div><div class="out" id="o-little"></div></div>
+   <div class="tool"><h3>Process capability</h3><div class="fields">${f("t-lsl","LSL (blank if none)","")}${f("t-usl","USL (blank if none)",10)}${f("t-mean","Mean",7)}${f("t-sd","Standard deviation",1.2)}</div><div class="out" id="o-cap"></div></div>
+   <div class="tool"><h3>Process cycle efficiency</h3><div class="fields">${f("t-va","Value-added time (hours)",0.83)}${f("t-lt","Lead time (hours)",96)}</div><div class="out" id="o-pce"></div></div>
+   <div class="tool"><h3>Rolled throughput yield</h3><label for="t-fpy">First-pass yields, % separated by commas<input id="t-fpy" type="text" value="95, 70, 80, 98, 99"></label><div class="out" id="o-rty"></div></div>
+  </div>${pager("toolkit")}`;
+}
+function normInv(p){
+  const a=[-39.69683028665376,220.9460984245205,-275.9285104469687,138.357751867269,-30.66479806614716,2.506628277459239],
+  b=[-54.47609879822406,161.5858368580409,-155.6989798598866,66.80131188771972,-13.28068155288572],
+  c=[-0.007784894002430293,-0.3223964580411365,-2.400758277161838,-2.549732539343734,4.374664141464968,2.938163982698783],
+  d=[0.007784695709041462,0.3224671290700398,2.445134137142996,3.754408661907416],pl=0.02425;let q,r;
+  if(p<pl){q=Math.sqrt(-2*Math.log(p));return(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);}
+  if(p<=1-pl){q=p-0.5;r=q*q;return(((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1);}
+  q=Math.sqrt(-2*Math.log(1-p));return-(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1);
+}
+function wireToolkit(){
+  const v=id=>{const x=$("#"+id).value.trim();return x===""?null:parseFloat(x);};
+  const fmt=(n,d=2)=>isFinite(n)?n.toLocaleString(undefined,{maximumFractionDigits:d}):"–";
+  const calc=()=>{
+    const D=v("t-def"),U=v("t-units"),O=v("t-opp");
+    if(D!=null&&U>0&&O>0){const dpo=D/(U*O),dpmo=dpo*1e6;let s=dpo<=0?"> 6":dpo>=1?"< 0":fmt(normInv(1-dpo)+1.5,2);
+      $("#o-sigma").innerHTML=`<span>DPU <b>${fmt(D/U,4)}</b></span><span>DPMO <b>${fmt(dpmo,0)}</b></span><span>Yield <b>${fmt((1-dpo)*100,3)}%</b></span><span>Sigma level (1.5σ shift) <b>${s}</b></span>`;}
+    else $("#o-sigma").textContent="Enter defects, units and opportunities.";
+    const A=v("t-avail"),De=v("t-dem"),W=v("t-work");
+    if(A>0&&De>0){const t=A/De;$("#o-takt").innerHTML=`<span>Takt <b>${fmt(t)} min per unit</b></span>${W>0?`<span>Minimum people <b>${fmt(W/t)}</b> → round up to <b>${Math.ceil(W/t-1e-9)}</b></span>`:""}`;}
+    else $("#o-takt").textContent="Enter available time and demand.";
+    const Wi=v("t-wip"),T=v("t-thr");
+    $("#o-little").innerHTML=Wi!=null&&T>0?`<span>Average lead time <b>${fmt(Wi/T)} days</b></span>`:"Enter WIP and throughput.";
+    const LS=v("t-lsl"),US=v("t-usl"),M=v("t-mean"),S=v("t-sd");
+    if(M!=null&&S>0&&(LS!=null||US!=null)){let out="";
+      if(LS!=null&&US!=null)out+=`<span>Cp <b>${fmt((US-LS)/(6*S))}</b></span>`;
+      const cu=US!=null?(US-M)/(3*S):Infinity,cl=LS!=null?(M-LS)/(3*S):Infinity,k=Math.min(cu,cl);
+      if(US!=null)out+=`<span>Cpu <b>${fmt(cu)}</b></span>`; if(LS!=null)out+=`<span>Cpl <b>${fmt(cl)}</b></span>`;
+      out+=`<span>Cpk <b>${fmt(k)}</b> · ${k<1?"not capable":k<1.33?"marginal":"capable"}</span>`;$("#o-cap").innerHTML=out;}
+    else $("#o-cap").textContent="Enter the mean, a standard deviation above 0, and at least one spec limit.";
+    const VA=v("t-va"),LT=v("t-lt");
+    $("#o-pce").innerHTML=VA!=null&&LT>0?`<span>PCE <b>${fmt(VA/LT*100)}%</b></span><span>Non-value-added time <b>${fmt(LT-VA)} h</b></span>`:"Enter value-added time and lead time.";
+    const ys=$("#t-fpy").value.split(",").map(s=>parseFloat(s)).filter(x=>isFinite(x));
+    $("#o-rty").innerHTML=ys.length?`<span>Steps <b>${ys.length}</b></span><span>RTY <b>${fmt(ys.reduce((a,b)=>a*b/100,100))}%</b></span>`:"Enter at least one yield.";
+  };
+  document.querySelectorAll(".tool input").forEach(i=>i.addEventListener("input",calc));calc();
+}
+function viewGlossary(){
+  return `<div class="head"><span class="eyebrow">Reference</span><h1>Glossary</h1><p class="lede">${GLOSSARY.length} terms used in this course.</p></div>
+  <input class="search" id="gq" type="search" placeholder="Search terms, e.g. takt, Cpk, kanban" aria-label="Search glossary">
+  <dl class="gl" id="gl">${GLOSSARY.map(([t,d])=>`<div data-s="${esc((t+" "+d).toLowerCase())}"><dt>${esc(t)}</dt><dd>${esc(d)}</dd></div>`).join("")}</dl>${pager("glossary")}`;
+}
+function wireGlossary(){
+  $("#gq").addEventListener("input",e=>{const q=e.target.value.toLowerCase().trim();
+    document.querySelectorAll("#gl>div").forEach(r=>r.hidden=q&&!r.dataset.s.includes(q));});
+}
+
+/* ============================== ROUTER ============================== */
+function setCurrent(id){
+  document.querySelectorAll("#nav a").forEach(a=>{if(a.dataset.id===id)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");});}
+function route(keepScroll){
+  const id=(location.hash||"#home").slice(1);
+  const v=$("#view");const mi=MODULES.findIndex(m=>m.id===id);
+  if(mi>=0){const m=MODULES[mi];v.innerHTML=viewModule(m,mi);wireQuiz($("#quiz"),m.quiz,m.id);wireDone(m.id);}
+  else if(id==="capstone"){v.innerHTML=viewCapstone();wireDone("capstone");}
+  else if(id==="exam"){v.innerHTML=viewExam();wireExam();}
+  else if(id==="toolkit"){v.innerHTML=viewToolkit();wireToolkit();}
+  else if(id==="glossary"){v.innerHTML=viewGlossary();wireGlossary();}
+  else {v.innerHTML=viewHome();}
+  const cur=PAGES.some(p=>p.id===id)?id:"home";
+  setCurrent(cur);document.title="Lean Six Sigma Path";
+  $("#side").classList.remove("open");$("#menuBtn").setAttribute("aria-expanded","false");
+  if(keepScroll!==true)window.scrollTo(0,0);
+}
+$("#menuBtn").addEventListener("click",()=>{const o=$("#side").classList.toggle("open");$("#menuBtn").setAttribute("aria-expanded",o);});
+window.addEventListener("hashchange",route);
+renderNav();route();
+</script>
+</body>
+</html>
