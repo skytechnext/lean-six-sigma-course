@@ -66,7 +66,7 @@ code,.mono{font-family:var(--mono);font-size:.9em}
 .belt{width:14px;height:5px;border-radius:2px;background:var(--belt-white)}
 .belt.yellow{background:var(--belt-yellow)} .belt.green{background:var(--belt-green)} .belt.black{background:var(--belt-black)}
 .tick{font-family:var(--mono);font-size:.75rem;color:var(--ok)}
-.menu-btn{display:none}
+.btn.menu-btn{display:none}
 
 main{padding-block:40px 80px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .col{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
@@ -285,7 +285,7 @@ dl.gl dd{margin:0;color:var(--muted)}
   .side .nav,.side .overall{display:none}
   .side.open .nav,.side.open .overall{display:flex}
   .brand-row{display:flex;justify-content:space-between;align-items:center;gap:10px}
-  .menu-btn{display:inline-block}
+  .btn.menu-btn{display:inline-flex}
   main{padding-block:24px 60px}
   .dmaic{grid-template-columns:minmax(0,1fr)}
   .tools,.belts{grid-template-columns:minmax(0,1fr)}
@@ -1705,6 +1705,7 @@ function renderNav(){
     const belt=p.belt?`<span class="belt ${p.belt}"></span>`:'<span></span>';
     html+=`<a href="#${p.id}" data-id="${p.id}">${belt}<span>${p.n?p.n+". ":""}${esc(p.title)}</span>${tick}</a>`;
   });
+  html+=`<span class="eyebrow grp">Go further</span><a href="alternatives.html"><span class="belt" style="background:var(--ucl)"></span><span>Beyond Lean Six Sigma: Tesla/SpaceX playbook and alternatives</span><span></span></a>`;
   $("#nav").innerHTML=html;
   const pct=Math.round(TRACKED.filter(id=>state.done[id]).length/TRACKED.length*100);
   $("#pct").textContent=pct+"%"; $("#pctBar").style.width=pct+"%";
@@ -1779,7 +1780,8 @@ function viewHome(){
   <h2>Modules</h2>
   <div class="path">${MODULES.map((m,i)=>`<a class="mod" href="#${m.id}"><div class="top"><span class="eyebrow">Module ${i+1} · ${m.time}</span><span class="belt ${m.belt}"></span></div><h4>${esc(m.title)}</h4><p>${esc(m.summary)}</p>${state.done[m.id]?'<span class="tick">✓ Completed'+(state.best[m.id]!=null?' · quiz best '+state.best[m.id]+'%':'')+'</span>':(state.best[m.id]!=null?'<span class="score">Quiz best '+state.best[m.id]+'%</span>':'')}</a>`).join("")}
   <a class="mod" href="#capstone"><div class="top"><span class="eyebrow">Capstone</span><span class="belt black"></span></div><h4>Northwind refunds case</h4><p>Apply DMAIC end to end on a realistic business problem.</p></a>
-  <a class="mod" href="#exam"><div class="top"><span class="eyebrow">Final exam</span><span class="belt black"></span></div><h4>30 scenario questions</h4><p>Scored at the end with explanations for every question.</p></a></div>`;
+  <a class="mod" href="#exam"><div class="top"><span class="eyebrow">Final exam</span><span class="belt black"></span></div><h4>30 scenario questions</h4><p>Scored at the end with explanations for every question.</p></a>
+  <a class="mod" href="alternatives.html"><div class="top"><span class="eyebrow">Go further</span><span class="belt" style="background:var(--ucl)"></span></div><h4>Beyond Lean Six Sigma</h4><p>First principles, Musk's 5-step algorithm, how Tesla and SpaceX apply them, and 7 other methods.</p></a></div>`;
 }
 function viewModule(m,idx){
   return `<div class="head"><span class="eyebrow">Module ${idx+1} of ${MODULES.length}</span><h1>${esc(m.title)}</h1>

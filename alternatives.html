@@ -1,0 +1,805 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Beyond Lean Six Sigma</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: same belt-path sidebar + reading column as the course; each method renders into the column by hash. */
+:root{
+  --bg:#f3f5f7; --surface:#ffffff; --sunk:#e9edf1; --ink:#15212c; --muted:#56646f; --line:#d6dde4;
+  --accent:#0d6b73; --accent-ink:#ffffff; --accent-soft:#dcefef;
+  --ok:#1d7446; --ok-soft:#dff2e6; --bad:#b0352c; --bad-soft:#f8e1de;
+  --belt-yellow:#d9a514; --belt-green:#2e8a4f; --ucl:#b0352c; --rocket:#c4561b;
+  --display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e1419; --surface:#151e26; --sunk:#1b2630; --ink:#e2e8ee; --muted:#93a1ae; --line:#28343f;
+  --accent:#55c2c9; --accent-ink:#06282b; --accent-soft:#16363a;
+  --ok:#5fcf8c; --ok-soft:#163626; --bad:#f08a80; --bad-soft:#3d1d1a;
+  --belt-yellow:#e9b934; --belt-green:#4fb873; --ucl:#f08a80; --rocket:#f0965f; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0e1419; --surface:#151e26; --sunk:#1b2630; --ink:#e2e8ee; --muted:#93a1ae; --line:#28343f;
+  --accent:#55c2c9; --accent-ink:#06282b; --accent-soft:#16363a;
+  --ok:#5fcf8c; --ok-soft:#163626; --bad:#f08a80; --bad-soft:#3d1d1a;
+  --belt-yellow:#e9b934; --belt-green:#4fb873; --ucl:#f08a80; --rocket:#f0965f; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6}
+h1,h2,h3,h4{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(2rem,5vw,2.9rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:1.6rem;font-weight:700;letter-spacing:-.01em}
+h3{font-size:1.2rem;font-weight:700}
+h4{font-size:1rem;font-weight:700}
+p{margin:0}
+a{color:var(--accent)}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+code{font-family:var(--mono);font-size:.9em}
+.eyebrow{font-family:var(--mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+.app{display:grid;grid-template-columns:290px minmax(0,1fr);min-height:100vh}
+.side{position:sticky;top:0;height:100vh;overflow-y:auto;border-right:1px solid var(--line);background:var(--surface);
+  padding-block:24px;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:20px;display:flex;flex-direction:column;gap:18px}
+.brand-row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.brand{display:flex;flex-direction:column;gap:4px}
+.brand b{font-family:var(--display);font-size:1.35rem;font-weight:800;letter-spacing:-.01em}
+.nav{display:flex;flex-direction:column;gap:2px}
+.nav .grp{margin-top:10px;margin-bottom:4px}
+.nav a{display:grid;grid-template-columns:14px minmax(0,1fr) auto;gap:10px;align-items:center;padding:7px 10px;border-radius:7px;min-height:44px;
+  color:var(--ink);text-decoration:none;font-size:.93rem;line-height:1.3;transition:background-color .2s}
+.nav a:hover{background:var(--sunk)}
+.nav a[aria-current="page"]{background:var(--accent-soft);font-weight:600}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.dot.tsla{background:var(--rocket)} .dot.alt{background:var(--accent)} .dot.tool{background:var(--belt-yellow)} .dot.back{background:var(--belt-green)}
+.tick{font-family:var(--mono);font-size:.75rem;color:var(--ok)}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:8px 14px;font-weight:500;min-height:44px;display:inline-flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;color:var(--ink);transition:border-color .2s}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.theme-btn{padding:8px 10px}
+.theme-btn svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn.menu-btn{display:none}
+
+main{padding-block:40px 80px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.col{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+.head{display:flex;flex-direction:column;gap:14px}
+.lede{font-size:1.12rem;color:var(--muted);max-width:62ch}
+.meta{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:7px;padding:3px 10px;border:1px solid var(--line);border-radius:999px;font-size:.8rem;color:var(--muted);background:var(--surface)}
+.prose{display:flex;flex-direction:column;gap:14px}
+.prose>p,.prose>ul,.prose>ol{max-width:68ch}
+.prose ul,.prose ol{margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:6px}
+.prose strong{font-weight:600}
+section.lesson{display:flex;flex-direction:column;gap:14px;padding-top:6px}
+section.lesson>h3{display:flex;gap:10px;align-items:baseline}
+section.lesson>h3 .n{font-family:var(--mono);font-size:.8rem;color:var(--muted);font-weight:500}
+hr.rule{border:0;border-top:1px solid var(--line);margin:0}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.facts>div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;font-size:.88rem}
+.facts span{font-family:var(--mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.callout{border-left:3px solid var(--accent);background:var(--accent-soft);padding:14px 16px;border-radius:0 8px 8px 0;display:flex;flex-direction:column;gap:6px}
+.callout.example{border-left-color:var(--belt-yellow);background:var(--sunk)}
+.callout.warn{border-left-color:var(--ucl);background:var(--bad-soft)}
+.callout .eyebrow{color:var(--ink);opacity:.75}
+.formula{font-family:var(--mono);background:var(--sunk);border-radius:8px;padding:12px 14px;font-size:.92rem;overflow-x:auto;white-space:pre}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500;background:var(--sunk)}
+tr:last-child td{border-bottom:0}
+td.num{text-align:right;font-variant-numeric:tabular-nums;font-family:var(--mono)}
+.steps{display:flex;flex-direction:column;gap:10px;counter-reset:s}
+.steps>div{display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px}
+.steps>div>b{width:44px;height:44px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;font-family:var(--display);font-size:1.2rem}
+.steps.tsla>div>b{background:var(--rocket);color:#fff}
+.steps h4{margin-bottom:4px}
+.steps p{font-size:.94rem}
+.steps small{display:block;margin-top:6px;color:var(--muted);font-size:.86rem}
+
+/* Diagrams */
+.fig{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;overflow-x:auto;display:flex;flex-direction:column;gap:10px}
+.fig>svg{display:block;width:100%;height:auto}
+.fig figcaption{font-size:.85rem;color:var(--muted);line-height:1.45}
+.fig svg text{fill:var(--ink);font-family:var(--body);font-size:12px}
+.fig svg .t-m{fill:var(--muted)} .fig svg .t-a{fill:var(--accent)} .fig svg .t-r{fill:var(--ucl)} .fig svg .t-o{fill:var(--rocket)}
+.fig svg .t-s{font-size:10.5px} .fig svg .t-b{font-weight:600} .fig svg .t-mono{font-family:var(--mono)} .fig svg .t-l{font-size:15px} .fig svg .t-inv{fill:var(--accent-ink)} .fig svg .t-w{fill:#fff}
+.s-box{fill:var(--surface);stroke:var(--line)} .s-bg{fill:var(--bg);stroke:var(--line)} .s-sunk{fill:var(--sunk)}
+.s-soft{fill:var(--accent-soft);stroke:var(--accent)} .s-acc{fill:var(--accent)} .s-accl{stroke:var(--accent);fill:none;stroke-width:2}
+.s-ln{stroke:var(--line);fill:none} .s-mu{stroke:var(--muted);fill:none;stroke-width:1.4} .s-ink{stroke:var(--ink);fill:none;stroke-width:1.6}
+.s-red{fill:var(--ucl)} .s-redl{stroke:var(--ucl);fill:none;stroke-width:1.6} .s-yel{fill:var(--belt-yellow)} .s-grn{fill:var(--belt-green)}
+.s-roc{fill:var(--rocket)} .s-rocl{stroke:var(--rocket);fill:none;stroke-width:2} .s-dash{stroke-dasharray:5 4} .mk{fill:var(--muted)}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:stretch}
+.flow .st{flex:1 1 110px;min-width:0;border:1px solid var(--line);border-radius:8px;padding:8px 10px;background:var(--bg);display:flex;flex-direction:column;gap:2px;font-size:.84rem;line-height:1.35}
+.flow .st.hl{background:var(--accent-soft);border-color:var(--accent)}
+.flow .st small{color:var(--muted);font-size:.78rem}
+.flow .arrow{display:flex;flex-direction:column;justify-content:center;align-items:center;color:var(--muted);font-size:1.1rem;flex:none}
+.flow .arrow .ar{font-style:normal}
+.flow .arrow .ar::before{content:"→"}
+.quad{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;gap:6px}
+.quad .qy{writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--mono);font-size:.72rem;color:var(--muted);text-align:center;text-transform:uppercase;letter-spacing:.06em}
+.quad .qx{grid-column:2;font-family:var(--mono);font-size:.72rem;color:var(--muted);text-align:center;text-transform:uppercase;letter-spacing:.06em}
+.qgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.qgrid>div{border:1px solid var(--line);border-radius:8px;padding:10px;background:var(--bg);display:flex;flex-direction:column;gap:6px;font-size:.84rem;min-height:96px}
+.qgrid small{color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:4px}
+.chips>a,.chips>span{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:2px 8px;font-size:.78rem;color:var(--ink);text-decoration:none}
+.chips>a:hover{border-color:var(--accent)}
+
+/* Quiz */
+.block{display:flex;flex-direction:column;gap:14px}
+.block-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.score{font-family:var(--mono);font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.qcard{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:12px}
+.qcard .qt{font-weight:600;display:flex;gap:10px}
+.qcard .qt .n{font-family:var(--mono);color:var(--muted);font-weight:500;flex:none}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opt{text-align:left;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 12px;display:flex;gap:10px;line-height:1.4;min-height:44px;transition:border-color .2s}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt .k{font-family:var(--mono);color:var(--muted);flex:none}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt:disabled{cursor:default}
+.why{font-size:.92rem;padding:10px 12px;border-radius:8px;background:var(--sunk)}
+.why.ok b{color:var(--ok)} .why.no b{color:var(--bad)}
+details.oq{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 18px}
+details.oq>summary{cursor:pointer;font-weight:600;list-style:none;display:flex;gap:10px}
+details.oq>summary::-webkit-details-marker{display:none}
+details.oq>summary .n{font-family:var(--mono);color:var(--muted);font-weight:500;flex:none}
+details.oq .ans{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line);display:flex;flex-direction:column;gap:8px;font-size:.95rem}
+details.oq textarea,.tool textarea{width:100%;min-height:80px;margin-top:12px;font:inherit;font-size:.92rem;padding:10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);resize:vertical}
+.pager{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding-top:8px;border-top:1px solid var(--line)}
+.pager a{text-decoration:none;display:flex;flex-direction:column;gap:2px;padding:10px 14px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);max-width:48%}
+.pager a span{font-size:.75rem;color:var(--muted);font-family:var(--mono)}
+
+/* Home cards & tools */
+.path{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+.mod{display:flex;flex-direction:column;gap:8px;padding:14px 16px;border:1px solid var(--line);border-radius:10px;background:var(--surface);text-decoration:none;color:var(--ink);transition:border-color .2s,transform .2s}
+.mod:hover{border-color:var(--accent);transform:translateY(-2px)}
+.mod .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.mod p{font-size:.86rem;color:var(--muted);line-height:1.45}
+.tools{display:flex;flex-direction:column;gap:14px}
+.tool{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.tool label{display:flex;flex-direction:column;gap:3px;font-size:.84rem;color:var(--muted)}
+.tool input[type=number],.tool input[type=text]{font:inherit;font-family:var(--mono);font-size:.95rem;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);width:100%}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.out{font-family:var(--mono);font-size:.9rem;background:var(--sunk);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:3px;font-variant-numeric:tabular-nums}
+.out b{color:var(--accent);font-weight:500}
+.ws{display:flex;flex-direction:column;gap:12px}
+.ws label b{color:var(--ink);font-size:.95rem}
+.ws textarea{margin-top:4px;min-height:70px}
+.chooser{display:flex;flex-direction:column;gap:14px}
+.chooser fieldset{border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:0;display:flex;flex-direction:column;gap:6px;background:var(--bg)}
+.chooser legend{font-weight:600;padding:0 4px}
+.chooser label{display:flex;gap:10px;align-items:flex-start;font-size:.92rem;color:var(--ink);cursor:pointer;min-height:32px}
+.chooser input{margin-top:5px;accent-color:var(--accent)}
+.result{padding:16px 18px;border-radius:10px;border:1px solid var(--accent);background:var(--accent-soft);display:flex;flex-direction:column;gap:8px}
+.result .big{font-family:var(--display);font-size:2rem;font-weight:800;font-variant-numeric:tabular-nums}
+
+/* Key terms */
+.term{background:none;border:0;padding:0;margin:0;font:inherit;color:inherit;line-height:inherit;text-align:inherit;border-bottom:1.5px dotted var(--accent);cursor:help}
+.term:hover,.term[aria-expanded="true"]{color:var(--accent)}
+#pop{position:fixed;z-index:50;max-width:min(320px,calc(100vw - 32px));background:var(--ink);color:var(--bg);padding:10px 12px;border-radius:8px;font-size:.88rem;line-height:1.45;box-shadow:0 8px 24px rgb(0 0 0 / .22)}
+#pop b{display:block;margin-bottom:2px;font-family:var(--display)}
+
+@media (max-width:900px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .side{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:14px}
+  .side .nav{display:none}
+  .side.open .nav{display:flex}
+  .btn.menu-btn{display:inline-flex}
+  main{padding-block:24px 60px}
+  .facts{grid-template-columns:minmax(0,1fr)}
+  .fields{grid-template-columns:minmax(0,1fr)}
+  .pager a{max-width:100%;flex:1 1 100%}
+  .flow .arrow{flex-basis:100%}
+  .flow .arrow .ar::before{content:"↓"}
+  .flow .st{flex-basis:100%}
+}
+@media (max-width:480px){
+  h1{font-size:1.75rem} h2{font-size:1.35rem}
+  .qcard,details.oq,.tool{padding:14px}
+  .steps>div{grid-template-columns:36px minmax(0,1fr);padding:12px}
+  .steps>div>b{width:36px;height:36px;font-size:1rem}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side" id="side">
+    <div class="brand-row">
+      <div class="brand"><span class="eyebrow">Lean Six Sigma Path · Extension</span><b>Beyond Lean Six Sigma</b></div>
+      <div class="row" style="gap:6px">
+        <button class="btn theme-btn" id="themeBtn" type="button"></button>
+        <button class="btn menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">Topics</button>
+      </div>
+    </div>
+    <nav class="nav" id="nav"></nav>
+  </aside>
+  <main><div class="col" id="view"></div></main>
+</div>
+
+<script>
+/* ============================== DIAGRAM HELPERS ============================== */
+const AR=`<defs><marker id="ar" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0L8,4L0,8z" class="mk"/></marker></defs>`;
+const svg=(w,h,label,inner,minw)=>`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${label}"${minw?` style="min-width:${minw}px"`:""} xmlns="http://www.w3.org/2000/svg">${AR}${inner}</svg>`;
+const fig=(inner,cap)=>`<figure class="fig">${inner}${cap?`<figcaption>${cap}</figcaption>`:""}</figure>`;
+const tx=(x,y,s,cls="",anchor="start")=>`<text x="${x}" y="${y}" class="${cls}" text-anchor="${anchor}">${s}</text>`;
+const flow=items=>`<div class="flow">${items.map((it,i)=>`${i?`<span class="arrow"><i class="ar"></i></span>`:""}<div class="st${it.hl?" hl":""}"><b>${it.t}</b>${it.s?`<small>${it.s}</small>`:""}</div>`).join("")}</div>`;
+const steps=(arr,cls="")=>`<div class="steps ${cls}">${arr.map((s,i)=>`<div><b>${i+1}</b><div><h4>${s[0]}</h4><p>${s[1]}</p>${s[2]?`<small>${s[2]}</small>`:""}</div></div>`).join("")}</div>`;
+const facts=arr=>`<div class="facts">${arr.map(f=>`<div><span>${f[0]}</span>${f[1]}</div>`).join("")}</div>`;
+const loop=(labels,center,label)=>{const n=labels.length,cx=170,cy=150,r=105;let s=`<circle cx="${cx}" cy="${cy}" r="${r}" class="s-mu s-dash"/>`+tx(cx,cy-4,center[0],"t-b t-l","middle")+tx(cx,cy+14,center[1]||"","t-m t-s","middle");
+  labels.forEach((l,i)=>{const a=-Math.PI/2+i*2*Math.PI/n,x=cx+r*Math.cos(a),y=cy+r*Math.sin(a),a2=a+Math.PI/n,ax=cx+(r)*Math.cos(a2),ay=cy+r*Math.sin(a2);
+    s+=`<path d="M${(cx+r*Math.cos(a2-.12)).toFixed(1)},${(cy+r*Math.sin(a2-.12)).toFixed(1)} A${r},${r} 0 0 1 ${(cx+r*Math.cos(a2+.12)).toFixed(1)},${(cy+r*Math.sin(a2+.12)).toFixed(1)}" class="s-ink" marker-end="url(#ar)"/>`;
+    s+=`<rect x="${(x-58).toFixed(1)}" y="${(y-20).toFixed(1)}" width="116" height="40" rx="20" class="${i===0?"s-soft":"s-box"}"/>`+tx(x.toFixed(1),(y+5).toFixed(1),l,"t-b t-s","middle");});
+  return svg(340,300,label,s);};
+
+/* ============================== DIAGRAMS ============================== */
+const D={
+reasoning:()=>fig(svg(660,250,"Reasoning by analogy compared with reasoning from first principles",`
+ ${tx(160,22,"Reasoning by analogy","t-b t-l","middle")}${tx(500,22,"Reasoning from first principles","t-b t-l t-a","middle")}
+ <rect x="40" y="40" width="240" height="40" rx="8" class="s-box"/>${tx(160,65,"Competitors charge $600/kWh","t-s","middle")}
+ <line x1="160" y1="82" x2="160" y2="108" class="s-mu" marker-end="url(#ar)"/>
+ <rect x="40" y="110" width="240" height="40" rx="8" class="s-box"/>${tx(160,135,"So batteries will always be expensive","t-s","middle")}
+ <line x1="160" y1="152" x2="160" y2="178" class="s-mu" marker-end="url(#ar)"/>
+ <rect x="40" y="180" width="240" height="40" rx="8" class="s-sunk"/>${tx(160,205,"Small, incremental cost cuts","t-s t-m","middle")}
+ ${[["Cobalt",380],["Nickel",450],["Aluminium",520],["Carbon",590]].map(([m,x])=>`<rect x="${x-32}" y="180" width="64" height="40" rx="6" class="s-soft"/>${tx(x,205,m,"t-s","middle")}`).join("")}
+ <path d="M485,178 L500,150 M415,178 L470,150 M555,178 L530,150 M625,178 L560,150" class="s-mu"/>
+ <rect x="390" y="110" width="220" height="40" rx="8" class="s-soft"/>${tx(500,135,"Materials cost ≈ $80/kWh","t-s t-b","middle")}
+ <line x1="500" y1="108" x2="500" y2="82" class="s-ink" marker-end="url(#ar)"/>
+ <rect x="390" y="40" width="220" height="40" rx="8" class="s-acc"/>${tx(500,65,"Find a cheaper way to combine them","t-s t-b t-inv","middle")}
+ ${tx(160,240,"Starts from what others do","t-m t-s","middle")}${tx(500,240,"Starts from what physics and cost allow","t-m t-s","middle")}`,560),
+ "The battery example Elon Musk has often used. Analogy accepts the market price. First principles asks what the materials actually cost, then reasons upward."),
+
+algorithm:()=>{const S=[["Question","requirements","Each has a","named owner"],["Delete parts","and steps","Add back only","if needed"],["Simplify and","optimise","Only what","survived step 2"],["Accelerate","cycle time","Faster, but","only now"],["Automate","","Last,","never first"]];let s="";
+ S.forEach((p,i)=>{const x=14+i*128,y=110-i*20,hot=i===1,c=hot?"t-w":"";s+=`<rect x="${x}" y="${y}" width="120" height="${226-y}" rx="6" class="${hot?"s-roc":"s-soft"}"/>`+tx(x+10,y+26,i+1,`t-b t-l ${hot?"t-w":"t-o"}`)+tx(x+10,y+48,p[0],`t-b t-s ${c}`)+tx(x+10,y+62,p[1],`t-b t-s ${c}`)+tx(x+10,y+86,p[2],`t-s ${hot?"t-w":"t-m"}`)+tx(x+10,y+100,p[3],`t-s ${hot?"t-w":"t-m"}`);});
+ s+=`<line x1="14" y1="226" x2="650" y2="226" class="s-mu"/><path d="M640,40 C560,8 140,8 70,40" class="s-redl s-dash" marker-end="url(#ar)"/>${tx(355,20,"Most common mistake: starting at step 5 and working backwards","t-r t-s t-b","middle")}`;
+ return fig(svg(660,236,"The five-step algorithm drawn as a staircase",s,560),"The order is the point. Musk has said he made the mistake of automating, then accelerating, then optimising parts that should have been deleted.");},
+
+idiot:()=>{const bars=[["Raw materials","2%",.02],["Typical rocket price","100%",1]];let s=`${tx(20,24,"Rocket example: raw materials as a share of the finished price","t-b t-s")}`;
+ bars.forEach(([l,v,f],i)=>{const y=44+i*44,w=Math.max(6,f*480);s+=tx(150,y+19,l,"t-s","end")+`<rect x="160" y="${y}" width="${w}" height="26" rx="4" class="${i?"s-sunk":"s-roc"}" ${i?'stroke="var(--line)"':""}/>`+tx(i?160+w-8:160+w+8,y+18,v,"t-mono t-b t-s",i?"end":"start");});
+ s+=tx(20,148,"Idiot index = finished cost ÷ raw material cost = 100 ÷ 2 = 50","t-mono t-b t-o");
+ return fig(svg(660,160,"Bar chart comparing raw material cost with finished rocket price",s,520),"Musk has said raw materials were about 2% of a typical rocket's price. A high idiot index means most of the cost comes from how something is made, which is the part you can change.");},
+
+iterate:()=>{let s=tx(20,22,"Traditional: one long, careful cycle","t-b t-s")+`<rect x="20" y="32" width="600" height="30" rx="6" class="s-sunk"/>`;
+ [["Requirements",0,150],["Design",150,150],["Build",300,150],["Test",450,150]].forEach(([l,x,w])=>{s+=`<line x1="${20+x+w}" y1="32" x2="${20+x+w}" y2="62" class="s-ln"/>`+tx(20+x+w/2,52,l,"t-s","middle");});
+ s+=tx(620,80,"First real test after ~4 years","t-m t-s","end");
+ s+=tx(20,112,"Rapid iteration: many short build-test-fix cycles","t-b t-s t-o");
+ for(let i=0;i<12;i++){const x=20+i*50;s+=`<rect x="${x}" y="122" width="44" height="30" rx="6" class="s-roc" fill-opacity="${.45+i*.045}"/>`+tx(x+22,142,"v"+(i+1),"t-s t-b t-w","middle");}
+ s+=tx(620,170,"12 real tests, each one teaches you something","t-m t-s","end");
+ s+=`<line x1="20" y1="190" x2="620" y2="190" class="s-mu" marker-end="url(#ar)"/>`+tx(20,206,"Time","t-m t-s");
+ return fig(svg(640,214,"Timeline comparing one long development cycle with many short iterations",s,520),"Hardware-rich iteration, as used on SpaceX's Starship test campaign: failures are treated as cheap data instead of disasters to be avoided at any cost.");},
+
+dbr:()=>{let s=`<line x1="20" y1="110" x2="620" y2="110" class="s-ln"/>`;const st=[["Release",80,"s-box"],["Step A",200,"s-box"],["Buffer",320,"s-yel"],["Drum (constraint)",450,"s-roc"],["Ship",580,"s-box"]];
+ st.forEach(([l,x,c],i)=>{s+=`<rect x="${x-55}" y="88" width="110" height="44" rx="8" class="${c}"/>`+tx(x,115,l,`t-s t-b ${c==="s-roc"?"t-w":""}`,"middle");if(i)s+=`<line x1="${st[i-1][1]+57}" y1="110" x2="${x-57}" y2="110" class="s-mu" marker-end="url(#ar)"/>`;});
+ s+=`<path d="M450,86 C450,30 80,30 80,84" class="s-redl s-dash" marker-end="url(#ar)"/>`+tx(265,40,"Rope: release new work only at the drum's pace","t-r t-s t-b","middle");
+ s+=tx(320,156,"Buffer protects the constraint from upstream hiccups","t-m t-s","middle")+tx(450,176,"Drum sets the beat for the whole system","t-m t-s","middle");
+ return fig(svg(640,190,"Drum-buffer-rope scheduling diagram",s,520),"Drum-buffer-rope. The constraint (drum) sets the pace, a small buffer keeps it from ever starving, and the rope limits how much work enters the system.");},
+
+kanban:()=>fig(`<div class="flow">${[["Backlog","",""],["Ready","WIP 4",""],["Doing","WIP 3","hl"],["Review","WIP 2",""],["Done","",""]].map((c,i)=>`${i?`<span class="arrow"><i class="ar"></i></span>`:""}<div class="st ${c[2]}"><b>${c[0]}</b><small>${c[1]||"no limit"}</small></div>`).join("")}</div>`,"The Kanban Method board. The limits make bottlenecks visible: when 'Doing' is full, people help finish work instead of starting more."),
+
+design:()=>{const P=[["Empathise",60],["Define",180],["Ideate",300],["Prototype",420],["Test",540]];let s=`<path d="M20,120 L130,40 L240,120 L130,200 Z" class="s-soft" fill-opacity=".5"/><path d="M260,120 L420,40 L580,120 L420,200 Z" class="s-soft" fill-opacity=".5"/>`;
+ s+=tx(130,124,"Problem space","t-b t-a","middle")+tx(420,124,"Solution space","t-b t-a","middle")+tx(75,224,"Diverge: explore needs","t-m t-s","middle")+tx(185,224,"Converge: frame","t-m t-s","middle")+tx(340,224,"Diverge: many ideas","t-m t-s","middle")+tx(500,224,"Converge: test, choose","t-m t-s","middle");
+ P.forEach(([l,x],i)=>{s+=`<rect x="${x-46}" y="242" width="92" height="30" rx="15" class="${i%2?"s-box":"s-soft"}"/>`+tx(x,262,l,"t-s t-b","middle");});
+ s+=`<path d="M560,272 C560,300 60,300 60,274" class="s-mu s-dash" marker-end="url(#ar)"/>`+tx(310,310,"Loop back as often as you learn","t-m t-s","middle");
+ return fig(svg(600,318,"Double diamond with the five design thinking stages",s,480),"The double diamond with the five design thinking stages underneath. Spread out to understand, narrow down to a sharp problem, spread out for ideas, narrow down through testing.");},
+
+bml:()=>fig(loop(["Ideas","Build","Product","Measure","Data","Learn"],["Minimise","total loop time"],"Build-measure-learn loop"),"Eric Ries' build-measure-learn loop. The goal is not to build fast but to learn fast: the whole loop is what you shorten."),
+
+change:()=>{let s=`<line x1="40" y1="200" x2="620" y2="200" class="s-mu"/><line x1="40" y1="200" x2="40" y2="20" class="s-mu"/>`+tx(46,30,"Performance","t-m t-s")+tx(616,218,"Time","t-m t-s","end");
+ let p="M40,180";for(let i=0;i<12;i++){const x=40+(i+1)*48,y=180-(i+1)*7;p+=`H${x}V${y}`;}s+=`<path d="${p}" class="s-accl"/>`+tx(600,86,"Kaizen / TQM","t-a t-b t-s","end")+tx(600,100,"many small steps","t-m t-s","end");
+ s+=`<path d="M40,184 H250 C262,184 266,170 270,150 C276,100 280,60 300,50 H620" class="s-rocl"/>`+tx(310,40,"Reengineering: one big redesign","t-o t-b t-s")+tx(270,166,"risky dip","t-r t-s","end");
+ return fig(svg(640,226,"Incremental improvement compared with a one-off radical redesign",s,520),"Two shapes of change. Continuous improvement compounds small gains; reengineering bets on a single leap, which pays off big when it works and hurts when it doesn't.");},
+
+kata:()=>{let s=`<rect x="20" y="60" width="130" height="80" rx="10" class="s-box"/>${tx(85,95,"Current","t-b","middle")}${tx(85,112,"condition","t-b","middle")}
+ <rect x="470" y="60" width="150" height="80" rx="10" class="s-acc"/>${tx(545,95,"Next target","t-b t-inv","middle")}${tx(545,112,"condition","t-b t-inv","middle")}
+ <rect x="160" y="40" width="300" height="120" rx="12" class="s-sunk"/>${tx(310,30,"The grey zone: you can't see the path yet","t-m t-s","middle")}`;
+ const pts=[[175,110],[220,80],[255,120],[300,70],[340,105],[385,85],[440,100]];let p="M150,100";pts.forEach(([x,y])=>{p+=` L${x},${y}`;});s+=`<path d="${p} L468,100" class="s-ink s-dash" marker-end="url(#ar)"/>`;
+ pts.slice(0,6).forEach(([x,y],i)=>{s+=`<circle cx="${x}" cy="${y}" r="9" class="s-roc"/>`+tx(x,y+4,i+1,"t-s t-b t-w","middle");});
+ s+=tx(310,184,"Each dot = one small PDCA experiment. Learn, adjust, take the next step.","t-m t-s","middle");
+ s+=`<path d="M545,58 C545,10 620,10 620,30" class="s-mu"/>`+tx(612,22,"Challenge","t-s t-b","end");
+ return fig(svg(640,196,"Toyota Kata: experiments through the grey zone from current to target condition",s,520),"The Improvement Kata. You set a target you don't yet know how to reach, then walk towards it one experiment at a time.");},
+
+map:()=>fig(`<div class="quad"><div class="qy">Problem understood → unclear</div><div class="qgrid">
+ <div><b>Unclear problem, small changes</b><small>Explore and iterate</small><div class="chips"><a href="#design">Design Thinking</a><a href="#startup">Lean Startup</a><a href="#kata">Toyota Kata</a></div></div>
+ <div><b>Unclear problem, big changes</b><small>Rethink from scratch</small><div class="chips"><a href="#first">First Principles</a><a href="#algorithm">5-Step Algorithm</a></div></div>
+ <div><b>Clear problem, small changes</b><small>Improve the existing system</small><div class="chips"><a href="#agile">Kanban / Agile</a><a href="#tqm">TQM / Kaizen</a><span>Lean Six Sigma</span></div></div>
+ <div><b>Clear problem, big changes</b><small>Redesign the process</small><div class="chips"><a href="#bpr">Reengineering</a><a href="#toc">Theory of Constraints</a></div></div>
+ </div><div class="qx">Size of change: incremental → radical</div></div>`,"A rough map of where each method shines. Most real organisations combine two or three.")
+};
+
+/* ============================== CONTENT ============================== */
+const SECTIONS=[
+/* ---------------------------------------------------------------- First principles */
+{id:"first",group:"Tesla and SpaceX playbook",dot:"tsla",title:"First Principles Thinking",time:"40 min",
+summary:"Break a problem down to what must be true, then rebuild the solution from there instead of copying what everyone else does.",
+facts:[["Origin","Aristotle; popularised in business by Elon Musk"],["Best for","Costs or limits everyone treats as fixed"],["Compared with LSS","Questions the target itself, not just the gap to it"]],
+sections:[
+{h:"What it is",html:`<p><strong>First principles thinking</strong> means breaking a problem down into the basic facts you are sure of, then reasoning upward from those facts to a solution. Aristotle described a first principle as the first basis from which a thing is known.</p>
+<p>The opposite is <strong>reasoning by analogy</strong>: doing something because it's how it has always been done, or how competitors do it. Analogy is fast and usually fine. It fails when the thing everyone copies is built on an assumption that is no longer true.</p>
+<p>Elon Musk's way of putting it: physics sets the only hard rules. Everything else, including industry norms, company policy and "best practice", is a recommendation you can challenge.</p>${D.reasoning()}`},
+{h:"The method, step by step",html:steps([
+ ["Write down the problem and the belief behind it","State the problem, then write the assumption that makes it look hard. 'Onboarding takes 23 days because the industry average is 20–30 days.'","The assumption is usually hiding in phrases like 'that's just how it is' or 'everyone does it this way'."],
+ ["Break it into fundamentals","Ask what the thing is really made of. For a physical product: materials, energy, physics. For a business process: the information that must be gathered, the decisions that must be made, the legal requirements, and the customer's real need.","Separate facts (law, physics, customer outcome) from conventions (habits, policies, tools)."],
+ ["Question every convention","For each piece that isn't a hard fact, ask: who decided this, why, and is the reason still true? Socratic questions help: How do I know this? What would have to be true for this to be wrong?",""],
+ ["Calculate the theoretical minimum","What would this cost, or how long would it take, if only the fundamentals remained? This number is rarely achievable, but it shows how much of today's cost is self-imposed.",""],
+ ["Rebuild from the ground up","Design a solution that starts from the fundamentals, not from today's process. Then test it in a small way before betting the company on it.",""]])},
+{h:"Worked example: customer onboarding",html:`<div class="callout example"><span class="eyebrow">Business example</span>
+<p><strong>Problem:</strong> new business customers wait 23 days from signed contract to first login. Benchmarks say 20–30 days is normal, so leadership thinks it's fine.</p>
+<p><strong>Fundamentals:</strong> what must happen? Verify the customer's identity (law). Agree commercial terms (already done at signing). Create an account and give access (a system action). Train the user (the customer's real need).</p>
+<p><strong>Theoretical minimum:</strong> identity check via an online service takes about 5 minutes. Account creation can be automated in seconds. A first training session is 1 hour. Total: about half a day of real work.</p>
+<p><strong>Gap:</strong> 22.5 days are queues, hand-offs and policy. Examples: legal re-reviews contracts already approved in sales; IT only provisions accounts on Thursdays; security reviews every customer the same way regardless of size.</p>
+<p><strong>Rebuild:</strong> identity check during the sales process, automatic provisioning on signature, risk-based security review. New target: 2 days.</p></div>`},
+{h:"Pitfalls",html:`<ul><li><strong>Confusing conventions with facts.</strong> Regulations are real constraints even when they feel like conventions. Check with the people who own them before deleting.</li>
+<li><strong>Using it for everything.</strong> First principles is slow and tiring. Use analogy for routine decisions and save first principles for the big, expensive assumptions.</li>
+<li><strong>Stopping at the theory.</strong> The theoretical minimum is a direction, not a plan. You still need to test, pilot and measure, which is where Lean Six Sigma tools help.</li>
+<li><strong>Ignoring people.</strong> Telling a team their process is "mostly self-imposed waste" lands badly. Bring them into the questioning.</li></ul>`}],
+quiz:[
+{q:"What is the main difference between reasoning by analogy and reasoning from first principles?",o:["Analogy uses data; first principles doesn't","Analogy starts from what others do; first principles starts from what must be true","First principles is only for engineers","There's no real difference"],a:1,why:"Analogy copies existing solutions; first principles rebuilds from fundamental facts."},
+{q:"In a business process, which of these is most likely a fundamental rather than a convention?",o:["Approvals happen on Thursdays","A legal requirement to verify customer identity","The form has 40 fields","Everyone in the industry takes 3 weeks"],a:1,why:"Legal requirements are hard constraints. The others are choices someone made."},
+{q:"Why calculate a 'theoretical minimum' time or cost?",o:["To set it as next month's target","To show how much of the current cost is self-imposed","To impress investors","Because auditors require it"],a:1,why:"It reveals the size of the gap between what's necessary and what you do today."},
+{q:"When is reasoning by analogy perfectly fine?",o:["Never","For routine, low-stakes decisions where the usual way works","Only in manufacturing","Only when data is missing"],a:1,why:"First principles is costly; use it for big assumptions, not every decision."}],
+ex:[{q:"Apply first principles to your own expense-claim process. List the fundamentals, the conventions, and estimate the theoretical minimum time.",model:"Fundamentals: the company must reimburse legitimate business costs; tax rules require a receipt for some items; fraud must be controlled. Conventions: paper or PDF forms, manager approval for every claim, monthly payment runs, finance re-checks every line. Theoretical minimum: photograph receipt (30 s), auto-extract amount and category, policy rules approve within limits instantly, payment in the next daily run. About 1 day end to end versus 2–3 weeks today. The gap is batching and approval conventions."}]},
+
+/* ---------------------------------------------------------------- Algorithm */
+{id:"algorithm",group:"Tesla and SpaceX playbook",dot:"tsla",title:"The 5-Step Algorithm",time:"50 min",
+summary:"Musk's five steps, in strict order: question requirements, delete, simplify, accelerate, automate. A full tutorial with an office walk-through.",
+facts:[["Origin","Described by Elon Musk (2021 Starbase tour; Isaacson's 2023 biography)"],["Best for","Bloated processes and products with too many steps or parts"],["Compared with LSS","Faster and more aggressive about deletion; less statistical proof"]],
+sections:[
+{h:"The five steps",html:`<p>Musk calls it "the algorithm" and has described it to Tesla and SpaceX teams many times. The steps are simple. The discipline is doing them <strong>in order</strong>.</p>${D.algorithm()}
+${steps([
+ ["Make the requirements less dumb","Every requirement is probably wrong in some way, even if it came from a smart person. Especially then, because you're less likely to question it. Each requirement must have a <strong>named person</strong> who owns it, not a department. 'Legal requires it' isn't acceptable; 'Priya in legal requires it because of regulation X' is.","Ask the owner: what problem does this solve? What happens if we drop it?"],
+ ["Delete any part or process step you can","If in doubt, delete it. You'll be tempted to keep things 'just in case'. Musk's rule of thumb: if you don't end up adding back at least 10% of what you deleted, you didn't delete enough.","Deletion is the only step that makes cost, time and failure points disappear completely."],
+ ["Simplify and optimise","Only now improve what's left. The most common error of smart people is optimising something that should not exist.",""],
+ ["Accelerate cycle time","Every process can go faster. But speeding up a step you should have deleted is wasted effort. Musk has said he made exactly this mistake in Tesla's factory.",""],
+ ["Automate","Last. Automating a messy process locks the mess in. During Tesla's 2018 Model 3 'production hell', heavily automated lines were partly torn out. Musk posted that excessive automation was his mistake, adding: \"Humans are underrated.\"",""]],"tsla")}`},
+{h:"Worked example: purchase approvals",html:`<div class="callout example"><span class="eyebrow">Business example</span>
+<p><strong>Starting point:</strong> a company's purchase process for items under $5,000 has 11 steps, 3 approvals and takes 9 days on average. 6,000 requests a year.</p>
+<p><strong>Step 1, requirements:</strong> the team lists 14 requirements and hunts for the owner of each. Three have no owner anyone can find ("finance always wanted a quote attached"). The CFO confirms only two are real: spend must stay within budget, and suppliers must be approved vendors.</p>
+<p><strong>Step 2, delete:</strong> they delete the department-head approval (rejected 0.4% of requests), the mandatory quote under $1,000, and the printed copy for the filing cabinet. Later they add back one thing: a quote for IT hardware, because of compatibility problems. One add-back out of six deletions: about right.</p>
+<p><strong>Step 3, simplify:</strong> one online form with the approved vendor list as a drop-down and budget shown live.</p>
+<p><strong>Step 4, accelerate:</strong> the remaining manager approval gets a 24-hour rule, with automatic escalation to a delegate.</p>
+<p><strong>Step 5, automate:</strong> requests under $500 from approved vendors and within budget go straight to a purchase order.</p>
+<p><strong>Result:</strong> 5 steps, 1 approval for most requests, median 1 day. The team skipped buying an RPA bot that had been planned to "speed up data entry" for steps that no longer exist.</p></div>`},
+{h:"How it fits with Lean Six Sigma",html:`<div class="tbl"><table>
+<tr><th>Algorithm step</th><th>Lean Six Sigma equivalent</th></tr>
+<tr><td>1. Question requirements</td><td>Voice of the customer → CTQ; value-added analysis; 5 Whys on policies</td></tr>
+<tr><td>2. Delete</td><td>Eliminate non-value-added steps; the 8 wastes</td></tr>
+<tr><td>3. Simplify and optimise</td><td>Standard work, poka-yoke, DMAIC Improve</td></tr>
+<tr><td>4. Accelerate</td><td>Flow, pull, WIP limits, bottleneck management</td></tr>
+<tr><td>5. Automate</td><td>"Simplify, standardise, then automate"</td></tr>
+</table></div>
+<p>The big difference is attitude. Lean Six Sigma usually asks for evidence before removing a step. The algorithm says delete first and add back only if something actually breaks. That works well where mistakes are cheap and reversible. In regulated or safety-critical work (healthcare, aviation, finance controls), test deletions in a pilot first.</p>`},
+{h:"Corollaries Musk pairs with it",html:`<ul><li><strong>Leaders must have hands-on experience</strong> of the work they manage.</li>
+<li><strong>Go to the source:</strong> when there's a problem, talk to the people doing the work, skipping levels if needed.</li>
+<li><strong>Being wrong is fine; being confidently wrong isn't.</strong></li>
+<li><strong>Urgency</strong> is treated as an operating principle.</li></ul>
+<div class="callout warn"><span class="eyebrow">Balance</span><p>These companies achieve remarkable speed, and they also face criticism and regulatory scrutiny over workplace safety, burnout and product recalls. Borrow the method, and decide deliberately how much urgency and risk your context can take.</p></div>`}],
+quiz:[
+{q:"What is the correct order of the five steps?",o:["Automate, accelerate, simplify, delete, question","Question requirements, delete, simplify, accelerate, automate","Delete, question, automate, simplify, accelerate","Simplify, delete, automate, question, accelerate"],a:1,why:"The order matters: each step makes the next one cheaper and safer."},
+{q:"Why must every requirement have a named person attached?",o:["For blame if things go wrong","So you can ask that person why it exists and whether it's still needed","For audit trails only","To make org charts clearer"],a:1,why:"A department can't explain or drop a requirement. A person can."},
+{q:"According to the add-back rule, if you add back none of what you deleted, it means:",o:["You did a perfect job","You probably didn't delete enough","You should automate next","You should stop deleting"],a:1,why:"Some deletions should turn out to be wrong; otherwise you weren't bold enough."},
+{q:"What is the most common error smart people make, according to the algorithm?",o:["Deleting too much","Optimising something that shouldn't exist","Asking too many questions","Hiring too slowly"],a:1,why:"Simplifying and speeding up a step you should have deleted wastes effort."},
+{q:"Where should you be most careful applying 'delete first, add back later'?",o:["Internal reports","Safety-critical or regulated processes","Meeting agendas","Email templates"],a:1,why:"Where a mistake is costly or irreversible, test deletions in a pilot."}],
+ex:[{q:"Run the algorithm on your weekly team meeting. What does each step produce?",model:"1) Requirements: list why the meeting exists and who wants each agenda item. 'Status updates for the director' turns out to be wanted by nobody now that there's a dashboard. 2) Delete: drop status round-robin and the slide deck; cut attendees from 12 to the 5 who make decisions. Add back one thing if needed, say a monthly all-hands. 3) Simplify: one shared doc with blockers and decisions. 4) Accelerate: 60 → 20 minutes, decisions made in the meeting. 5) Automate: dashboard and reminders fill the doc automatically."},
+ {q:"Pick a requirement in your workplace that nobody can name the owner of. How would you challenge it safely?",model:"Ask around until you find the policy's origin (often an old incident). Find the current owner (e.g. the risk manager). Show them data: how often the requirement catches something, and what it costs. Propose a time-boxed pilot with a guardrail metric, e.g. remove the second signature for under $1,000 for 6 weeks and watch error and fraud rates. Decide with data."}]},
+
+/* ---------------------------------------------------------------- Inside Tesla & SpaceX */
+{id:"tesla",group:"Tesla and SpaceX playbook",dot:"tsla",title:"Inside Tesla and SpaceX",time:"35 min",
+summary:"How first principles, Lean manufacturing and the algorithm show up in practice: iteration, vertical integration, the idiot index and 'the best part is no part'.",
+facts:[["Mix","First principles + Lean + the 5-step algorithm"],["Signature ideas","Idiot index, rapid iteration, deletion"],["Caution","High urgency comes with real human and safety costs"]],
+sections:[
+{h:"The combination",html:`<p>Neither company invented a new method from nothing. They combine three ideas:</p>
+<ul><li><strong>First principles</strong> to set ambitious cost and performance targets (what physics allows).</li>
+<li><strong>Lean manufacturing</strong> ideas from Toyota: flow, eliminating waste, going to the real place, engineers close to the factory floor.</li>
+<li><strong>The 5-step algorithm</strong> as the day-to-day routine for cutting parts and process steps.</li></ul>
+<p>What's distinctive is the speed and the willingness to delete and to fail in tests.</p>`},
+{h:"The idiot index",html:`<p>The <strong>idiot index</strong> is the ratio of a finished component's cost to the cost of its raw materials. If a part costs $1,000 and contains $10 of aluminium, its idiot index is 100. A high number means most of the cost comes from <em>how</em> it's made, which is where improvement is possible.</p>${D.idiot()}
+<div class="formula">Idiot index = cost of finished part ÷ cost of raw materials</div>
+<p><strong>Office version:</strong> divide the full cost of a transaction by the cost of its irreducible work. If processing an invoice costs $12 and the irreducible work (one validation and one payment) is worth $0.50, the index is 24. Try it in the <a href="#tools">practice tools</a>.</p>`},
+{h:"Practices you can borrow",html:`<div class="tbl"><table>
+<tr><th>Practice</th><th>What it looks like</th><th>Office translation</th></tr>
+<tr><td>The best part is no part</td><td>Tesla's large single-piece castings replaced dozens of stamped and welded parts in the car body. Each new SpaceX Raptor engine version has removed parts and external plumbing.</td><td>The best step is no step. The best approval is no approval. The best report is no report.</td></tr>
+<tr><td>Reuse instead of rebuild</td><td>SpaceX questioned the 'requirement' that rockets are thrown away. Falcon 9 first landed in 2015 and first reflew in 2017.</td><td>Reuse data captured once instead of re-keying it at each step.</td></tr>
+<tr><td>Rapid, hardware-rich iteration</td><td>Starship is developed through repeated flight tests, where failures are treated as data.</td><td>Pilot small versions quickly instead of perfect plans. Cheap experiments beat long debates.</td></tr>
+<tr><td>Vertical integration</td><td>SpaceX makes most of its components in-house, so designers can change them fast.</td><td>Own the critical steps and data of your process, so you don't wait on other departments or vendors.</td></tr>
+<tr><td>Engineers on the floor</td><td>Designers sit near production and see problems first-hand.</td><td>Process designers spend time doing the work (gemba).</td></tr>
+<tr><td>Named requirement owners</td><td>Every spec traces to a person who can explain it.</td><td>Every policy and approval rule has an owner and a review date.</td></tr>
+</table></div>${D.iterate()}`},
+{h:"Lesson from production hell",html:`<div class="callout warn"><span class="eyebrow">Case study: Model 3, 2018</span>
+<p>Tesla tried to build the Model 3 on a highly automated line from the start. It struggled badly: robots couldn't handle tasks that people do easily, and output fell far short of targets. Tesla removed some automation, added people back, and even built an extra assembly line in a large tent to hit its production goals.</p>
+<p>It's the clearest example of running the algorithm backwards: automating (step 5) before questioning, deleting and simplifying. It's also why "automate last" is now built into the algorithm.</p></div>`},
+{h:"What to copy, what to be careful with",html:`<div class="tbl"><table>
+<tr><th>Copy</th><th>Be careful with</th></tr>
+<tr><td>Named owners for every requirement</td><td>Extreme urgency as a permanent state (burnout, mistakes)</td></tr>
+<tr><td>Deleting steps and testing cheaply</td><td>Deleting controls in safety-critical or regulated work without a pilot</td></tr>
+<tr><td>The idiot index to find opportunity</td><td>Assuming what works for prototypes works for customer-facing operations</td></tr>
+<tr><td>Automating last</td><td>Hero culture that relies on individuals instead of a stable process</td></tr>
+</table></div>`}],
+quiz:[
+{q:"A part costs $500 and contains $5 of raw material. Its idiot index is:",o:["5","50","100","500"],a:2,why:"500 ÷ 5 = 100. Most of the cost comes from how it's made."},
+{q:"What does 'the best part is no part' mean in an office?",o:["Hire fewer people","The best step, approval or report is the one you don't need","Use cheaper software","Outsource everything"],a:1,why:"Deleting a step removes its cost, delay and failure points entirely."},
+{q:"What was the main lesson of Tesla's 2018 Model 3 'production hell'?",o:["Robots are always better","Automating before simplifying caused major problems","Tents are cheaper than factories","Demand forecasting failed"],a:1,why:"It's the algorithm run backwards: automation came before deletion and simplification."},
+{q:"Why does SpaceX use many rapid test flights?",o:["To advertise","Because each real test generates learning faster than long analysis","Because regulators require it","To use up spare parts"],a:1,why:"Cheap, fast failures in testing are treated as data."}],
+ex:[{q:"Calculate an office idiot index: handling one customer complaint costs $38 in staff time across 4 departments. The irreducible work (understand the issue, decide, reply) takes 10 minutes of one person at $36/hour. What's the index and what would you look at first?",model:"Irreducible cost = 10/60 × $36 = $6. Index = 38 ÷ 6 ≈ 6.3. Most of the cost is hand-offs between 4 departments. Look first at giving the first-contact agent authority to resolve common complaints (delete hand-offs), then simplify the rest."}]},
+
+/* ---------------------------------------------------------------- TOC */
+{id:"toc",group:"Other alternatives",dot:"alt",title:"Theory of Constraints",time:"35 min",
+summary:"Every system has one constraint that limits it. Find it, protect it and build everything else around it.",
+facts:[["Origin","Eliyahu Goldratt, The Goal (1984)"],["Best for","Throughput problems, capacity, project delivery"],["Compared with LSS","Focuses all effort on one point instead of improving everywhere"]],
+sections:[
+{h:"Core idea",html:`<p>A chain is only as strong as its weakest link. A process is only as fast as its <strong>constraint</strong>. Improving anything else doesn't increase output; it only builds bigger queues. You met the five focusing steps in module 4 of the course. Here is the full method.</p>`},
+{h:"The five focusing steps in depth",html:steps([
+ ["Identify","Look for the biggest queue of waiting work, the step everyone waits for, or the resource with no spare time.","In offices it's often a specialist role: underwriters, senior engineers, the one person who approves contracts."],
+ ["Exploit","Get the most out of the constraint with what you already have. Never let it sit idle. Remove all work it doesn't have to do itself. Give it only complete, correct inputs.",""],
+ ["Subordinate","Make every other step serve the constraint. Release work at its pace, not faster. This feels wrong because other teams will have idle time. That's fine.",""],
+ ["Elevate","Only now spend money: hire, cross-train, automate or outsource to increase the constraint's capacity.",""],
+ ["Repeat","Once the constraint moves, go back to step 1. Don't let inertia (old rules built around the old constraint) become the new constraint.",""]])},
+{h:"Drum-buffer-rope",html:`${D.dbr()}<p>The <strong>drum</strong> is the constraint and sets the beat. The <strong>buffer</strong> is a small, deliberate queue in front of it so it never starves. The <strong>rope</strong> ties the release of new work to the drum's pace, so work-in-progress stays low everywhere else.</p>`},
+{h:"Throughput accounting",html:`<p>Goldratt argued that traditional cost accounting pushes managers to keep everyone busy, which builds inventory. He proposed three measures:</p>
+<ul><li><strong>Throughput (T):</strong> money generated through sales, minus truly variable costs.</li><li><strong>Investment/Inventory (I):</strong> money tied up in the system.</li><li><strong>Operating expense (OE):</strong> money spent turning I into T.</li></ul>
+<p>Good decisions increase T while reducing I and OE. An hour lost at the constraint is an hour lost for the whole business; an hour saved elsewhere is a mirage.</p>`},
+{h:"Worked example",html:`<div class="callout example"><span class="eyebrow">Business example: a law firm's contract team</span><p>The firm handles 120 contract reviews a month but receives 150. Senior partners are the constraint: every contract needs their final sign-off, and they spend 40% of their time on admin. <strong>Exploit:</strong> paralegals take over formatting and clause checks; partners review only flagged clauses. <strong>Subordinate:</strong> associates send contracts to partners in a daily batch sorted by priority, not whenever done. <strong>Elevate:</strong> promote one senior associate to sign off standard contracts. Capacity rises to 170 a month without hiring a partner.</p></div>`}],
+quiz:[
+{q:"What does 'subordinate' mean in the five focusing steps?",o:["Fire underperformers","Make every other step serve the constraint's pace","Report to the constraint's manager","Move the constraint"],a:1,why:"Non-constraints pace themselves to the constraint, even if that means idle time."},
+{q:"In drum-buffer-rope, what is the buffer for?",o:["Storing finished goods","Ensuring the constraint never runs out of work","Slowing the process down","Measuring quality"],a:1,why:"A small queue in front of the drum protects it from upstream variation."},
+{q:"Why should you exploit before you elevate?",o:["Exploiting is free or cheap; elevating costs money","Elevating is illegal","Exploiting is faster to say","They are the same"],a:0,why:"Get the most from existing capacity before buying more."},
+{q:"An hour saved at a non-constraint step usually:",o:["Increases total throughput","Doesn't increase total throughput","Moves the constraint","Reduces quality"],a:1,why:"Output is set by the constraint."}],
+ex:[{q:"Find the constraint in a process you know. How would you exploit it without spending money?",model:"Example: IT access requests, where one security admin approves all elevated access. Exploit: give them a queue of pre-validated requests only (manager approval, correct form), block their calendar for two approval slots a day, remove their unrelated tasks such as monthly reporting. Subordinate: requesters submit by 10 am for same-day processing. Only then elevate with a second trained approver."}]},
+
+/* ---------------------------------------------------------------- Agile */
+{id:"agile",group:"Other alternatives",dot:"alt",title:"Agile, Scrum and the Kanban Method",time:"35 min",
+summary:"Short cycles, visible work and limits on work in progress. Born in software, now used in marketing, HR and operations.",
+facts:[["Origin","Agile Manifesto (2001); Scrum (1990s); Kanban Method (David J. Anderson, 2010)"],["Best for","Knowledge work with changing priorities"],["Compared with LSS","Improves how teams deliver, less about defect rates"]],
+sections:[
+{h:"Two flavours",html:`<p><strong>Scrum</strong> organises work into fixed time-boxes called <strong>sprints</strong> (usually 1–4 weeks). A product owner prioritises a backlog; the team commits to a slice of it; each sprint ends with a review of what was delivered and a <strong>retrospective</strong> on how to work better.</p>
+<p>The <strong>Kanban Method</strong> doesn't use sprints. Work flows continuously across a board, and <strong>WIP limits</strong> stop the team from starting more than it can finish. It's ideal for operations and service teams where requests arrive all the time.</p>${D.kanban()}`},
+{h:"The Kanban Method: six practices",html:steps([
+ ["Visualise the work","Put every work item on a board, with a column for each real stage.",""],
+ ["Limit work in progress","Set a maximum per column. Stop starting, start finishing.",""],
+ ["Manage flow","Track lead time and throughput. Act when items get stuck.",""],
+ ["Make policies explicit","Write down what 'done' means for each column and how work is prioritised.",""],
+ ["Use feedback loops","Short daily stand-ups, regular reviews of flow metrics.",""],
+ ["Improve collaboratively, evolve experimentally","Small changes, tested and measured, in the spirit of kaizen.",""]])},
+{h:"Worked example",html:`<div class="callout example"><span class="eyebrow">Business example: an HR team</span><p>An HR operations team juggled 60 open items (contracts, visa letters, policy questions). Average lead time: 18 days. They built a Kanban board with columns Requested → Ready → In progress (WIP 6) → Waiting on others → Done, held a 10-minute daily stand-up at the board, and wrote a policy that visa letters always jump the queue. Within six weeks, open items fell to 25 and lead time to 7 days, with the same people. Little's Law at work.</p></div>`},
+{h:"When to choose which",html:`<div class="tbl"><table><tr><th>Situation</th><th>Choose</th></tr>
+<tr><td>Building a new product or feature with a team</td><td>Scrum</td></tr><tr><td>Continuous stream of requests (support, HR, finance ops)</td><td>Kanban Method</td></tr>
+<tr><td>Fixing a chronic defect with unknown causes</td><td>Lean Six Sigma DMAIC</td></tr><tr><td>Both delivery and quality problems</td><td>Kanban for flow plus DMAIC for the stubborn defects</td></tr></table></div>`}],
+quiz:[
+{q:"What is a sprint?",o:["A deadline crunch","A fixed time-box in Scrum, usually 1–4 weeks","A Kanban column","A type of retrospective"],a:1,why:"Scrum organises work into fixed time-boxes."},
+{q:"What is the main purpose of WIP limits?",o:["Keep people busy","Stop starting new work so existing work finishes faster","Track hours","Replace managers"],a:1,why:"Lower WIP means shorter lead time (Little's Law)."},
+{q:"Which fits a finance shared-services team with constant incoming requests?",o:["Scrum with 4-week sprints","The Kanban Method","Design of experiments","Business process reengineering"],a:1,why:"Continuous flow suits Kanban."},
+{q:"A retrospective is:",o:["A performance review","A regular team meeting on how to improve the way it works","A product demo","A budget review"],a:1,why:"It's the Agile version of kaizen."}],
+ex:[{q:"Design a Kanban board for your own team. Name the columns, the WIP limits and one explicit policy.",model:"Example for a marketing team: Ideas (no limit) → Ready (WIP 5) → Drafting (WIP 4) → Review (WIP 3) → Scheduled → Live. Policy: an item enters Review only with final copy and images attached; reviewers clear Review before starting anything new."}]},
+
+/* ---------------------------------------------------------------- Design thinking */
+{id:"design",group:"Other alternatives",dot:"alt",title:"Design Thinking",time:"35 min",
+summary:"Start with deep empathy for the people you serve, then prototype and test. Best when the problem itself is unclear.",
+facts:[["Origin","IDEO and Stanford d.school (1990s–2000s)"],["Best for","Customer and employee experience, new services"],["Compared with LSS","Starts from human needs and stories, not process data"]],
+sections:[
+{h:"Core idea",html:`<p>Lean Six Sigma assumes you know the problem and need to fix the process. <strong>Design thinking</strong> is for when you're not sure what the right problem is. It puts the people you're designing for at the centre and uses fast, rough prototypes to learn what works.</p>${D.design()}`},
+{h:"The five stages",html:steps([
+ ["Empathise","Observe and interview real users. Watch them use the current process. Look for frustrations, workarounds and emotions, not just steps.","Tools: interviews, shadowing, empathy maps (says, thinks, does, feels)."],
+ ["Define","Turn what you learned into a sharp problem statement from the user's point of view: '[User] needs a way to [need] because [insight].'",""],
+ ["Ideate","Generate many ideas without judging. Then cluster and pick the promising ones.","Tools: 'How might we…' questions, crazy 8s, SCAMPER."],
+ ["Prototype","Build something cheap and quick to test the idea: a paper form, a clickable mock-up, a role-play of the new service.",""],
+ ["Test","Put the prototype in front of real users. Watch, don't explain. Learn and loop back.",""]])},
+{h:"Worked example",html:`<div class="callout example"><span class="eyebrow">Business example: new-hire experience</span><p>HR assumed onboarding was slow. Interviews with 12 recent hires showed the real pain was uncertainty: nobody knew what would happen on day one, and laptops arrived late. <strong>Define:</strong> "New hires need to feel ready before day one because uncertainty makes them doubt their decision." <strong>Ideate:</strong> 40 ideas. <strong>Prototype:</strong> a simple welcome email sequence with a day-one schedule and a photo of their buddy, mocked up in a day. <strong>Test:</strong> sent to the next 10 hires; satisfaction scores rose sharply. The team then used Lean tools to fix laptop delivery.</p></div>`},
+{h:"Pairing with Lean Six Sigma",html:`<ul><li>Use design thinking in <strong>Define</strong> to understand the customer before writing CTQs.</li><li>Use prototypes and tests in <strong>Improve</strong> before full pilots.</li><li>Use Lean Six Sigma to make the new design reliable and measurable.</li></ul>`}],
+quiz:[
+{q:"Which stage comes first in design thinking?",o:["Prototype","Empathise","Test","Ideate"],a:1,why:"Understand the people you serve before defining the problem."},
+{q:"When is design thinking a better fit than DMAIC?",o:["When the defect is well measured","When it's unclear what the real problem is for users","When you need a control chart","Never"],a:1,why:"Design thinking explores the problem space."},
+{q:"A good prototype is:",o:["Polished and expensive","Cheap and quick enough to throw away","Only software","Built by IT"],a:1,why:"Cheap prototypes make learning fast and safe."},
+{q:"What should you do while users test a prototype?",o:["Explain how it works","Watch and listen without guiding them","Sell its benefits","Fix bugs live"],a:1,why:"You learn the most when you don't steer."}],
+ex:[{q:"Write a 'How might we…' question and a point-of-view statement for a process customers complain about.",model:"Point of view: 'Small business owners need a way to know where their loan application stands because silence makes them assume rejection and apply elsewhere.' How might we: 'How might we make every applicant feel informed at each step without adding work for underwriters?'"}]},
+
+/* ---------------------------------------------------------------- Lean startup */
+{id:"startup",group:"Other alternatives",dot:"alt",title:"Lean Startup",time:"30 min",
+summary:"Treat every new idea as a hypothesis. Build the smallest test, measure, learn, then pivot or persevere.",
+facts:[["Origin","Eric Ries, The Lean Startup (2011)"],["Best for","New products, services or internal tools under uncertainty"],["Compared with LSS","Validates whether to build something, not how to perfect it"]],
+sections:[
+{h:"Core idea",html:`<p>Most new initiatives fail not because they were built badly, but because nobody wanted them. <strong>Lean Startup</strong> applies Lean's war on waste to innovation: the biggest waste is building something people don't need.</p>${D.bml()}`},
+{h:"The method",html:steps([
+ ["Write your leap-of-faith assumptions","What must be true for this idea to succeed? Usually: people have this problem (value hypothesis) and the idea can spread or scale (growth hypothesis).",""],
+ ["Build a minimum viable product (MVP)","The smallest thing that tests the riskiest assumption. Could be a landing page, a manual service behind a simple form, or a spreadsheet pretending to be software.",""],
+ ["Measure with actionable metrics","Real behaviour (sign-ups, repeat use, time saved), not vanity metrics like page views.",""],
+ ["Learn: pivot or persevere","If the data supports the hypothesis, keep going. If not, change direction (pivot) while keeping what you learned.",""]])},
+{h:"Worked example",html:`<div class="callout example"><span class="eyebrow">Business example: internal self-service portal</span><p>IT wanted to spend $300,000 on a self-service portal for password resets and software requests. Leap-of-faith assumption: employees would use self-service instead of calling. <strong>MVP:</strong> a simple form plus a shared inbox, staffed manually, promoted to one department for 4 weeks. <strong>Measure:</strong> 70% of that department's requests came through the form; the most common were software installs, not passwords. <strong>Learn:</strong> persevere with self-service, but pivot the first release to software requests. The final build was smaller and better targeted.</p></div>`}],
+quiz:[
+{q:"What is an MVP?",o:["The most valuable player","The smallest product that tests your riskiest assumption","The first full release","A marketing plan"],a:1,why:"It's built to learn, not to impress."},
+{q:"What does 'pivot' mean?",o:["Give up","Change direction based on what you learned, keeping the useful parts","Hire new staff","Double the budget"],a:1,why:"A pivot is a structured course correction."},
+{q:"Which is an actionable metric?",o:["Total page views","Share of users who come back weekly","Number of press mentions","Social followers"],a:1,why:"Actionable metrics reflect real behaviour you can act on."},
+{q:"According to Lean Startup, the biggest waste is:",o:["Slow servers","Building something nobody needs","Too many meetings","Expensive offices"],a:1,why:"It applies Lean's idea of waste to innovation."}],
+ex:[{q:"Design an MVP to test whether customers would pay for express (same-day) refunds.",model:"Add an 'Express refund for $2.99' option on the refund page for 2 weeks, fulfilled manually by one clerk. Measure the share of refund requests choosing it and complaint changes. If fewer than 3% choose it, pivot (maybe free express refunds for loyalty members); if 15%+ choose it, persevere and design a proper process."}]},
+
+/* ---------------------------------------------------------------- BPR */
+{id:"bpr",group:"Other alternatives",dot:"alt",title:"Business Process Reengineering",time:"30 min",
+summary:"Start from a blank sheet and radically redesign a process end to end. High reward, high risk.",
+facts:[["Origin","Michael Hammer (1990, HBR); Hammer and Champy (1993)"],["Best for","Processes so broken that small fixes won't do"],["Compared with LSS","Radical leap rather than continuous improvement"]],
+sections:[
+{h:"Core idea",html:`<p>Michael Hammer's 1990 article was titled "Reengineering Work: Don't Automate, Obliterate". His argument: companies were using computers to speed up processes designed for paper. Instead, they should ask what the process would look like if they designed it from scratch today.</p>${D.change()}`},
+{h:"The classic example: Ford accounts payable",html:`<div class="callout example"><span class="eyebrow">Case study</span><p>In the 1980s, Ford had about 500 people in North American accounts payable and hoped to cut 20%. Then it saw that Mazda ran the same function with about 5 people. Rather than tweak, Ford redesigned the whole process: when goods arrived, receiving checked them against the purchase order in a database and payment was triggered automatically, with no invoice matching. Ford reported a 75% headcount reduction in that area. Hammer used it as the model case for reengineering.</p></div>`},
+{h:"The method",html:steps([
+ ["Pick the process and set a radical goal","End-to-end process (order-to-cash, not 'billing'). Target a step change, e.g. 10× faster.",""],
+ ["Understand, but don't over-analyse, the current state","Enough to know why it fails, not a perfect map.",""],
+ ["Design from a blank sheet","Organise around outcomes, not tasks. Capture information once at the source. Let the people who use the output do the process.",""],
+ ["Build and pilot","Test the new design with real cases, with IT and HR changes in place.",""],
+ ["Roll out and manage the transition","Training, new roles and measures. Expect a performance dip before the gain.",""]])},
+{h:"Why many projects failed",html:`<div class="callout warn"><span class="eyebrow">Caution</span><p>By the mid-1990s, reengineering had become a cover for mass layoffs, and many projects failed. Hammer and Champy themselves estimated that a large share (often quoted as 50–70%) didn't achieve their goals. Common causes: ignoring people, cutting too deep, and huge IT projects that overran. Use radical redesign selectively, with strong change management.</p></div>`}],
+quiz:[
+{q:"Hammer's famous phrase was:",o:["Measure twice, cut once","Don't automate, obliterate","Fail fast","Go to the gemba"],a:1,why:"From his 1990 Harvard Business Review article."},
+{q:"How did Ford redesign accounts payable?",o:["Hired more clerks","Paid automatically when receipt matched the PO, without invoice matching","Outsourced to Mazda","Bought faster printers"],a:1,why:"It removed invoice matching altogether."},
+{q:"A key reason many reengineering projects failed:",o:["Too much data","Ignoring people and change management","Too many small steps","Using control charts"],a:1,why:"Radical change without people support tends to fail."},
+{q:"How does reengineering differ from kaizen?",o:["It's the same","Radical redesign versus small continuous steps","Kaizen is more expensive","Reengineering is only for factories"],a:1,why:"Different shapes of change."}],
+ex:[{q:"If you reengineered expense claims from a blank sheet, what would the new design look like?",model:"Company cards for most spending, so transactions arrive automatically. Receipts photographed in an app and matched by amount and date. Policy rules check every line instantly; only exceptions go to a manager. Reimbursement for personal-card spend in the next daily payment run. No forms, no monthly batch, finance only audits samples."}]},
+
+/* ---------------------------------------------------------------- TQM */
+{id:"tqm",group:"Other alternatives",dot:"alt",title:"Total Quality Management",time:"30 min",
+summary:"Quality as everyone's job, every day. The parent of much of Lean Six Sigma.",
+facts:[["Origin","Deming, Juran and Japanese industry, 1950s–1980s"],["Best for","Building a quality culture across the whole organisation"],["Compared with LSS","Broader philosophy; fewer prescribed project tools"]],
+sections:[
+{h:"Core idea",html:`<p><strong>TQM</strong> is a management philosophy: long-term success comes from customer satisfaction, and every person and process in the organisation contributes to quality. It grew from the work of W. Edwards Deming and Joseph Juran in post-war Japan and spread to the West in the 1980s.</p>`},
+{h:"Key principles",html:`<ul><li><strong>Customer focus:</strong> the customer defines quality.</li><li><strong>Total involvement:</strong> everyone, not just a quality department.</li><li><strong>Process-centred:</strong> results come from processes.</li><li><strong>Continuous improvement:</strong> PDCA, kaizen.</li><li><strong>Fact-based decisions:</strong> data, not opinion.</li><li><strong>Communication and integrated systems.</strong></li></ul>
+<p><strong>Juran's trilogy:</strong> quality planning (design to meet needs), quality control (hold performance), quality improvement (raise it to new levels). <strong>Deming's 14 points</strong> include: create constancy of purpose, cease dependence on mass inspection, drive out fear, break down barriers between departments, and remove barriers to pride in workmanship.</p>`},
+{h:"Worked example",html:`<div class="callout example"><span class="eyebrow">Business example: a hotel group</span><p>A hotel group adopts TQM: every employee is trained in basic problem solving; housekeeping teams run weekly improvement huddles with guest feedback data; front-desk staff can spend up to a set amount to fix a guest problem without asking a manager (driving out fear); and departments share one guest-satisfaction score instead of separate targets. No single project, but steady improvement across hundreds of small actions.</p></div>`},
+{h:"TQM vs Lean Six Sigma",html:`<p>TQM gives the culture and philosophy. Six Sigma added a structured project method (DMAIC), belts, financial focus and statistical rigour, partly because many TQM programmes became slogans without results. Lean added flow and speed. Today, Lean Six Sigma works best inside a TQM-style culture.</p>`}],
+quiz:[
+{q:"In TQM, who is responsible for quality?",o:["The quality department","Everyone in the organisation","Only managers","External auditors"],a:1,why:"Total involvement is a core principle."},
+{q:"Juran's trilogy consists of:",o:["Plan, do, check","Quality planning, control and improvement","Define, measure, analyse","Sort, shine, sustain"],a:1,why:"Planning, control, improvement."},
+{q:"Which is one of Deming's 14 points?",o:["Increase inspection","Drive out fear","Pay by piece rate","Set numeric quotas"],a:1,why:"Fear stops people reporting problems."},
+{q:"What did Six Sigma add to TQM?",o:["Customer focus","A structured project method, roles and financial focus","Continuous improvement","Teamwork"],a:1,why:"DMAIC, belts and validated savings."}],
+ex:[{q:"Which of Deming's ideas is most broken in your workplace, and what's one action to fix it?",model:"Example: 'drive out fear'. Errors are hidden because whoever reports one gets blamed. Action: start a blameless weekly review where any error can be raised, and track the number of reported issues as a positive metric for 3 months."}]},
+
+/* ---------------------------------------------------------------- Toyota Kata */
+{id:"kata",group:"Other alternatives",dot:"alt",title:"Toyota Kata",time:"30 min",
+summary:"A daily routine that teaches everyone to improve scientifically, guided by a coach with five questions.",
+facts:[["Origin","Mike Rother, Toyota Kata (2009)"],["Best for","Building improvement habits in every team"],["Compared with LSS","Daily small experiments instead of formal projects"]],
+sections:[
+{h:"Core idea",html:`<p>Mike Rother studied why other companies couldn't copy Toyota's results even though they copied its tools. His answer: Toyota's real advantage is a <strong>routine of thinking</strong>, practised daily. A kata is a pattern you practise until it's automatic, as in martial arts.</p>${D.kata()}`},
+{h:"The Improvement Kata",html:steps([
+ ["Understand the direction or challenge","A long-term goal, e.g. 'every customer order shipped the same day'.",""],
+ ["Grasp the current condition","Facts and data about how the process works now.",""],
+ ["Establish the next target condition","A specific state to reach in 1–3 weeks, beyond what you know how to do.",""],
+ ["Experiment toward the target","Small PDCA cycles, one change at a time, learning from each.",""]])},
+{h:"The Coaching Kata: five questions",html:`<p>A coach (often the manager) asks the learner these five questions every day, ideally at the work itself, in about 15 minutes:</p>
+<ol><li>What is the target condition?</li><li>What is the actual condition now?</li><li>What obstacles do you think are preventing you from reaching the target condition? Which one are you addressing now?</li><li>What is your next step (next experiment)? What do you expect?</li><li>When can we go and see what we have learned from taking that step?</li></ol>`},
+{h:"Worked example",html:`<div class="callout example"><span class="eyebrow">Business example: customer support</span><p>Challenge: resolve 90% of tickets on first contact. Current condition: 62%. Target for the next 2 weeks: 70% for billing questions. Obstacle chosen: agents can't see invoice history. Experiment 1: give two agents read access to the billing system; expect 5 more first-contact resolutions a day. Result: +8. Next experiment: a one-page guide to the 10 most common billing questions. The manager coaches with the five questions every morning.</p></div>`}],
+quiz:[
+{q:"What is a 'kata'?",o:["A software tool","A practised routine that becomes a habit","A type of chart","A Japanese factory"],a:1,why:"From martial arts: patterns practised until automatic."},
+{q:"A target condition should be:",o:["Easy to reach","Beyond what you currently know how to achieve","Set by the CEO only","Five years away"],a:1,why:"It forces learning through experiments."},
+{q:"How often are coaching kata conversations typically held?",o:["Annually","Daily","Quarterly","Only when there's a crisis"],a:1,why:"Short daily cycles build the habit."},
+{q:"Which is one of the five coaching questions?",o:["Who caused this?","What is your next step, and what do you expect?","How much did it cost?","Why didn't you meet the deadline?"],a:1,why:"The questions focus on learning, not blame."}],
+ex:[{q:"Write a target condition and your first experiment for a process you own.",model:"Target condition (in 2 weeks): 80% of purchase requests are complete when submitted (today 55%). Obstacle: requesters don't know which supplier code to use. Experiment: add a supplier search with names to the form; expect complete requests to rise to 65% within 5 days. Check results on Friday."}]},
+
+/* ---------------------------------------------------------------- Compare */
+{id:"compare",group:"Choose and practise",dot:"tool",title:"Compare and choose",time:"15 min",
+summary:"All the methods side by side, a map of when to use each, and how to combine them with Lean Six Sigma.",
+sections:[
+{h:"Where each method fits",html:D.map()},
+{h:"Side-by-side comparison",html:`<div class="tbl"><table>
+<tr><th>Method</th><th>Best for</th><th>Size of change</th><th>Speed</th><th>Data rigour</th><th>Main risk</th></tr>
+<tr><td>Lean Six Sigma</td><td>Chronic, measurable defects and delays</td><td>Incremental</td><td>Months</td><td>High</td><td>Slow; analysis paralysis</td></tr>
+<tr><td>First principles</td><td>Costs or limits everyone treats as fixed</td><td>Radical</td><td>Varies</td><td>Medium</td><td>Mistaking real constraints for conventions</td></tr>
+<tr><td>5-step algorithm</td><td>Bloated products and processes</td><td>Medium to radical</td><td>Weeks</td><td>Low–medium</td><td>Deleting a needed control</td></tr>
+<tr><td>Theory of Constraints</td><td>Throughput and capacity</td><td>Focused</td><td>Weeks</td><td>Medium</td><td>Ignoring quality issues off the constraint</td></tr>
+<tr><td>Agile / Kanban</td><td>Knowledge work, changing priorities</td><td>Incremental</td><td>Weeks</td><td>Medium</td><td>Ceremony without improvement</td></tr>
+<tr><td>Design thinking</td><td>Unclear problems; experience design</td><td>Varies</td><td>Weeks</td><td>Qualitative</td><td>Great ideas, weak execution</td></tr>
+<tr><td>Lean Startup</td><td>New products or services</td><td>Exploratory</td><td>Weeks</td><td>Medium</td><td>Vanity metrics</td></tr>
+<tr><td>Reengineering</td><td>Fundamentally broken end-to-end processes</td><td>Radical</td><td>Months–years</td><td>Medium</td><td>High failure rate; people backlash</td></tr>
+<tr><td>TQM</td><td>Organisation-wide quality culture</td><td>Incremental</td><td>Years</td><td>Medium</td><td>Slogans without results</td></tr>
+<tr><td>Toyota Kata</td><td>Daily improvement habits</td><td>Incremental</td><td>Daily</td><td>Medium</td><td>Fades without committed coaches</td></tr>
+</table></div>`},
+{h:"A combined playbook",html:`<p>The strongest organisations don't pick one. Here's a sequence that borrows from Tesla and SpaceX while keeping Lean Six Sigma's discipline:</p>
+${steps([["Frame with first principles","What must be true? What's the theoretical minimum? Set an ambitious target."],["Question and delete (algorithm steps 1–2)","Named owners for every requirement; delete steps aggressively in a pilot."],["Fix flow (Lean, TOC, Kanban)","Find the constraint, limit WIP, cut batches."],["Fix stubborn defects (DMAIC)","Use data and root-cause analysis where problems survive."],["Automate last (algorithm step 5)","Then control the gain with a control plan."],["Sustain with daily habits (Toyota Kata / TQM)","Managers coach small experiments every day."]])}`}]},
+];
+
+const QUIZ=[
+{q:"Which method would you choose to challenge an industry-wide belief that a product must cost $600 per unit?",o:["Kanban","First principles thinking","TQM","Scrum"],a:1,why:"First principles starts from what the materials and physics allow."},
+{q:"Step 2 of the 5-step algorithm is:",o:["Automate","Delete parts or process steps","Accelerate cycle time","Hire experts"],a:1,why:"Question requirements, then delete."},
+{q:"An office process costs $20 per transaction; the irreducible work is worth $1. The idiot index is:",o:["0.05","20","21","2"],a:1,why:"20 ÷ 1 = 20."},
+{q:"Which Theory of Constraints step comes before spending money on capacity?",o:["Elevate","Exploit","Repeat","Automate"],a:1,why:"Identify, exploit, subordinate, then elevate."},
+{q:"A service team with constant incoming requests and no fixed release dates fits best with:",o:["Scrum sprints","The Kanban Method","DOE","Reengineering"],a:1,why:"Continuous flow plus WIP limits."},
+{q:"The first stage of design thinking is:",o:["Prototype","Empathise","Test","Define"],a:1,why:"Understand people first."},
+{q:"In Lean Startup, an MVP is built mainly to:",o:["Generate revenue","Test the riskiest assumption cheaply","Impress executives","Replace the final product"],a:1,why:"It exists for validated learning."},
+{q:"'Don't automate, obliterate' comes from:",o:["Taiichi Ohno","Michael Hammer","Eric Ries","Elon Musk"],a:1,why:"Hammer's 1990 HBR article on reengineering."},
+{q:"Which statement about Tesla's 2018 Model 3 ramp is accurate?",o:["Full automation worked first time","Excess automation slowed production and some was removed","No robots were used","It was a software problem only"],a:1,why:"Musk called excessive automation a mistake."},
+{q:"In Toyota Kata, the coach's questions are asked:",o:["Annually","Daily, ideally at the work","Only by HR","Only after failures"],a:1,why:"Daily practice builds the habit."},
+{q:"'Drive out fear' is one of:",o:["Goldratt's focusing steps","Deming's 14 points","The 5-step algorithm","Design thinking stages"],a:1,why:"Deming argued fear hides problems."},
+{q:"Why does the algorithm insist on named owners for requirements?",o:["For performance reviews","A person can explain and reconsider a requirement; a department can't","For legal compliance","To reduce headcount"],a:1,why:"Accountability makes requirements questionable."},
+{q:"A chronic billing-error rate with unknown causes and lots of data is best tackled with:",o:["Design thinking","Lean Six Sigma DMAIC","Lean Startup","Toyota Kata alone"],a:1,why:"Measurable, recurring defect with unknown cause: DMAIC."},
+{q:"Which risk is most associated with business process reengineering?",o:["Too slow to matter","High failure rate and people backlash","Too much statistics","Small gains only"],a:1,why:"Radical change without change management often fails."},
+{q:"In the combined playbook, automation comes:",o:["First","Last, after questioning, deleting, fixing flow and defects","In the middle","Never"],a:1,why:"Simplify before you automate."}
+];
+
+const GLOSSARY=[
+["First principles thinking","Breaking a problem down to fundamental facts and reasoning up from them, instead of copying existing solutions."],
+["Reasoning by analogy","Deciding based on what others do or what was done before."],
+["Theoretical minimum","The cost or time if only the truly necessary work remained."],
+["Socratic questioning","Systematic questions that test assumptions: How do I know? What would make this wrong?"],
+["Idiot index","Cost of a finished part divided by the cost of its raw materials. High values signal improvement potential."],
+["The algorithm","Musk's five steps: question requirements, delete, simplify, accelerate, automate."],
+["Requirement owner","The named person (not department) responsible for a requirement and able to explain it."],
+["Rapid iteration","Many short build-test-fix cycles where failures are treated as data."],
+["Vertical integration","Making key components or doing key steps in-house instead of buying them."],
+["Gigacasting","Casting large sections of a car body as a single piece, replacing many stamped and welded parts."],
+["Constraint","The step or resource that limits the output of the whole system."],
+["Drum-buffer-rope","TOC scheduling: the constraint sets the pace, a buffer protects it, the rope limits work release."],
+["Throughput accounting","Goldratt's measures: throughput, investment and operating expense."],
+["Kanban Method","Managing knowledge work with a visual board, WIP limits and explicit policies."],
+["WIP limit","A maximum number of items allowed in a stage at once."],
+["Scrum","An Agile framework using fixed time-boxed sprints, a product owner and a backlog."],
+["Sprint","A fixed period, usually 1–4 weeks, in which a Scrum team delivers a slice of work."],
+["Retrospective","A regular team meeting about how to improve the way the team works."],
+["Design thinking","A human-centred method: empathise, define, ideate, prototype, test."],
+["Empathy map","A tool capturing what users say, think, do and feel."],
+["Prototype","A cheap, quick version of an idea built to learn from users."],
+["Minimum viable product","The smallest version of a product that tests the riskiest assumption."],
+["MVP","Minimum viable product."],
+["Validated learning","Learning backed by real user behaviour data."],
+["Pivot","A structured change of direction based on what you learned."],
+["Build-measure-learn","Lean Startup's feedback loop."],
+["Reengineering","Radical, blank-sheet redesign of an end-to-end process."],
+["TQM","Total Quality Management: an organisation-wide philosophy where everyone is responsible for quality."],
+["Juran trilogy","Quality planning, quality control and quality improvement."],
+["Toyota Kata","Mike Rother's routines for daily scientific improvement and coaching."],
+["Target condition","A specific, near-term state you aim to reach, beyond what you currently know how to do."],
+["Coaching Kata","Five daily questions a coach asks a learner."],
+["Kaizen","Continuous, incremental improvement involving everyone."],
+["PDCA","Plan, Do, Check, Act: the improvement cycle."],
+["DMAIC","Define, Measure, Analyze, Improve, Control: the Six Sigma roadmap."],
+["Little's Law","Lead time = work in progress ÷ throughput."],
+["Gemba","The real place where work happens."],
+["Lean manufacturing","Toyota-derived production focused on flow, waste elimination and respect for people."]
+];
+
+/* ============================== STATE & UTIL ============================== */
+const KEY="lss-alt-v1";let state={best:{},ws:{}};
+try{const s=JSON.parse(localStorage.getItem(KEY)||"null");if(s)state=Object.assign(state,s);}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}};
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const L="ABCDEFG";
+function shuffleQ(q){const idx=q.o.map((_,i)=>i);for(let i=idx.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[idx[i],idx[j]]=[idx[j],idx[i]];}q.o=idx.map(i=>q.o[i]);q.a=idx.indexOf(q.a);}
+SECTIONS.forEach(s=>(s.quiz||[]).forEach(shuffleQ));QUIZ.forEach(shuffleQ);
+
+const PAGES=[{id:"home",title:"Overview",group:"Start",dot:""},...SECTIONS.map(s=>({id:s.id,title:s.title,group:s.group,dot:s.dot})),
+ {id:"tools",title:"Practice tools",group:"Choose and practise",dot:"tool"},{id:"quiz",title:"Final quiz (15 questions)",group:"Choose and practise",dot:"tool"}];
+
+function renderNav(){let h="",g="";PAGES.forEach(p=>{if(p.group!==g){g=p.group;h+=`<span class="eyebrow grp">${g}</span>`;}
+  h+=`<a href="#${p.id}" data-id="${p.id}"><span class="dot ${p.dot}"></span><span>${esc(p.title)}</span>${state.best[p.id]!=null?`<span class="tick">${state.best[p.id]}%</span>`:"<span></span>"}</a>`;});
+  h+=`<span class="eyebrow grp">Course</span><a href="index.html"><span class="dot back"></span><span>Back to the Lean Six Sigma course</span><span></span></a>`;$("#nav").innerHTML=h;}
+
+function quizHTML(qs){return qs.map((q,i)=>`<div class="qcard" data-q="${i}"><div class="qt"><span class="n">Q${i+1}</span><span>${esc(q.q)}</span></div>
+  <div class="opts">${q.o.map((o,j)=>`<button class="opt" data-o="${j}"><span class="k">${L[j]}</span><span>${esc(o)}</span></button>`).join("")}</div><div class="why" hidden></div></div>`).join("");}
+function wireQuiz(root,qs,id){let answered=0,correct=0;
+  const upd=()=>{const sc=root.querySelector(".score");sc.textContent=`${answered}/${qs.length} answered · ${correct} correct`;
+    if(answered===qs.length){const pct=Math.round(correct/qs.length*100);if(!(state.best[id]>=pct)){state.best[id]=pct;save();renderNav();setCurrent(id);}sc.textContent+=` · ${pct}%`;}};
+  root.querySelectorAll(".qcard").forEach(card=>{const q=qs[+card.dataset.q];card.querySelectorAll(".opt").forEach(b=>b.addEventListener("click",()=>{
+    const pick=+b.dataset.o;answered++;if(pick===q.a)correct++;card.querySelectorAll(".opt").forEach(x=>{x.disabled=true;const k=+x.dataset.o;if(k===q.a)x.classList.add("right");else if(k===pick)x.classList.add("wrong");});
+    const w=card.querySelector(".why");w.hidden=false;w.className="why "+(pick===q.a?"ok":"no");w.innerHTML=`<b>${pick===q.a?"Correct.":"Not quite. Answer: "+L[q.a]+"."}</b> ${esc(q.why)}`;upd();}));});
+  root.querySelector(".reset").addEventListener("click",()=>{root.querySelector(".qlist").innerHTML=quizHTML(qs);wireQuiz(root,qs,id);});upd();}
+function pager(id){const i=PAGES.findIndex(p=>p.id===id),pr=PAGES[i-1],nx=PAGES[i+1];
+  return `<nav class="pager">${pr?`<a href="#${pr.id}"><span>← Previous</span>${esc(pr.title)}</a>`:"<span></span>"}${nx?`<a href="#${nx.id}" style="text-align:right"><span>Next →</span>${esc(nx.title)}</a>`:`<a href="index.html" style="text-align:right"><span>Back →</span>Lean Six Sigma course</a>`}</nav>`;}
+
+/* ============================== VIEWS ============================== */
+function viewHome(){
+  const cards=SECTIONS.filter(s=>s.id!=="compare").map(s=>`<a class="mod" href="#${s.id}"><div class="top"><span class="eyebrow">${s.group==="Tesla and SpaceX playbook"?"Tesla and SpaceX":"Alternative"} · ${s.time}</span><span class="dot ${s.dot}"></span></div><h4>${esc(s.title)}</h4><p>${esc(s.summary)}</p></a>`).join("");
+  return `<div class="head"><span class="eyebrow">Extension to Lean Six Sigma Path · 10 tutorials</span>
+  <h1>Beyond Lean Six Sigma: first principles, the 5-step algorithm and other methods</h1>
+  <p class="lede">Tesla and SpaceX combine first principles thinking, Lean manufacturing and Elon Musk's 5-step algorithm. This guide teaches that playbook in full, then seven other improvement methods, and shows when to use each alongside Lean Six Sigma.</p>
+  <div class="row"><a class="btn primary" href="#first">Start with first principles</a><a class="btn" href="#algorithm">Jump to the 5-step algorithm</a><a class="btn" href="#compare">Compare all methods</a></div></div>
+  <div class="prose"><h2>How each tutorial works</h2><ul><li><strong>What it is and where it came from</strong>, with diagrams.</li><li><strong>Step-by-step method</strong> and a worked business example.</li><li><strong>Pitfalls</strong> and how it fits with Lean Six Sigma.</li><li><strong>Quiz</strong> with explanations, and a <strong>practice exercise</strong> with a model answer.</li><li><strong>Dotted terms</strong>: hover or tap for a definition.</li></ul></div>
+  <h2>Tutorials</h2><div class="path">${cards}
+  <a class="mod" href="#compare"><div class="top"><span class="eyebrow">Choose</span><span class="dot tool"></span></div><h4>Compare and choose</h4><p>All methods side by side and a combined playbook.</p></a>
+  <a class="mod" href="#tools"><div class="top"><span class="eyebrow">Practise</span><span class="dot tool"></span></div><h4>Practice tools</h4><p>Idiot index calculator, algorithm worksheet and a method chooser.</p></a>
+  <a class="mod" href="#quiz"><div class="top"><span class="eyebrow">Test</span><span class="dot tool"></span></div><h4>Final quiz</h4><p>15 questions across all methods.</p></a></div>`;}
+function viewSection(s){const i=SECTIONS.indexOf(s);
+  return `<div class="head"><span class="eyebrow">${esc(s.group)}</span><h1>${esc(s.title)}</h1>
+  <div class="meta">${s.time?`<span class="chip">${s.time}</span>`:""}${s.quiz?`<span class="chip">${s.quiz.length} quiz questions</span>`:""}${s.ex?`<span class="chip">${s.ex.length} practice exercise${s.ex.length>1?"s":""}</span>`:""}</div>
+  <p class="lede">${esc(s.summary)}</p></div>${s.facts?facts(s.facts):""}
+  ${s.sections.map((x,k)=>`<section class="lesson"><h3><span class="n">${i+1}.${k+1}</span>${esc(x.h)}</h3><div class="prose">${x.html}</div></section>`).join('<hr class="rule">')}
+  ${s.quiz?`<hr class="rule"><div class="block" id="qz"><div class="block-head"><h2>Quiz</h2><div class="row"><span class="score"></span><button class="btn reset">Reset</button></div></div><div class="qlist">${quizHTML(s.quiz)}</div></div>`:""}
+  ${s.ex?`<div class="block"><h2>Practice</h2>${s.ex.map((e,k)=>`<details class="oq"><summary><span class="n">P${k+1}</span><span>${esc(e.q)}</span></summary><textarea id="ex-${s.id}-${k}" aria-label="Your answer" placeholder="Write your answer before opening the model answer"></textarea><div class="ans"><span class="eyebrow">Model answer</span><p>${esc(e.model)}</p></div></details>`).join("")}</div>`:""}
+  ${pager(s.id)}`;}
+const WS=[["req","1. Requirements","List each requirement and the named person who owns it. Which have no owner?"],["del","2. Delete","Which steps or parts will you delete? What might you add back?"],["simp","3. Simplify","How will you simplify what remains?"],["acc","4. Accelerate","Where can cycle time drop? What's the new target?"],["auto","5. Automate","What is now simple and stable enough to automate?"]];
+function viewTools(){return `<div class="head"><span class="eyebrow">Choose and practise</span><h1>Practice tools</h1><p class="lede">Use these on a real process at work. Your worksheet is saved in this browser.</p></div>
+  <div class="tools">
+  <div class="tool"><h3>Idiot index calculator</h3><p style="color:var(--muted);font-size:.92rem">Works for physical parts (finished cost vs raw materials) and office processes (full cost per transaction vs cost of the irreducible work).</p>
+   <div class="fields"><label for="ii-f">Finished cost or full cost per transaction ($)<input id="ii-f" type="number" step="any" value="12"></label><label for="ii-r">Raw material or irreducible work cost ($)<input id="ii-r" type="number" step="any" value="0.5"></label></div><div class="out" id="ii-out"></div></div>
+  <div class="tool"><h3>5-step algorithm worksheet</h3><label for="ws-name">Process or product<input id="ws-name" type="text" placeholder="e.g. Purchase approvals under $5,000"></label>
+   <div class="ws">${WS.map(([k,t,p])=>`<label for="ws-${k}"><b>${t}</b><textarea id="ws-${k}" placeholder="${p}"></textarea></label>`).join("")}</div>
+   <div class="row"><button class="btn primary" id="ws-copy" type="button">Copy worksheet</button><button class="btn" id="ws-clear" type="button">Clear</button><span class="score" id="ws-msg"></span></div></div>
+  <div class="tool"><h3>Method chooser</h3><form class="chooser" id="chooser">
+   <fieldset><legend>How well do you understand the problem?</legend><label><input type="radio" name="c1" value="clear" checked> Clear and measurable</label><label><input type="radio" name="c1" value="unclear"> Unclear: we're not sure what users need</label></fieldset>
+   <fieldset><legend>How big a change do you need?</legend><label><input type="radio" name="c2" value="small" checked> Steady improvement (10–30%)</label><label><input type="radio" name="c2" value="big"> A step change (2–10× better)</label></fieldset>
+   <fieldset><legend>What kind of work is it?</legend><label><input type="radio" name="c3" value="ops" checked> An existing operational process</label><label><input type="radio" name="c3" value="flow"> A team handling a stream of requests</label><label><input type="radio" name="c3" value="new"> A new product, service or tool</label></fieldset>
+   <fieldset><legend>What's the main pain?</legend><label><input type="radio" name="c4" value="defects" checked> Errors and inconsistent results</label><label><input type="radio" name="c4" value="speed"> Slow, too many steps or approvals</label><label><input type="radio" name="c4" value="capacity"> Can't keep up with demand</label><label><input type="radio" name="c4" value="cost"> Cost far higher than it should be</label></fieldset>
+  </form><div id="chooser-out"></div></div>
+  </div>${pager("tools")}`;}
+function wireTools(){
+  const calc=()=>{const f=parseFloat($("#ii-f").value),r=parseFloat($("#ii-r").value);
+    if(!(f>0&&r>0)){$("#ii-out").textContent="Enter two costs above zero.";return;}const ix=f/r;
+    $("#ii-out").innerHTML=`<span>Idiot index <b>${ix.toLocaleString(undefined,{maximumFractionDigits:1})}</b></span><span>${ix<2?"Low: most of the cost is essential. Look elsewhere for savings.":ix<10?"Moderate: worth questioning the steps that add cost.":"High: most of the cost comes from how the work is done. Strong candidate for the 5-step algorithm."}</span><span>Share of cost that is not irreducible <b>${Math.max(0,(1-r/f)*100).toFixed(0)}%</b></span>`;};
+  ["#ii-f","#ii-r"].forEach(s=>$(s).addEventListener("input",calc));calc();
+  const fields=["name",...WS.map(w=>w[0])];fields.forEach(k=>{const el=$("#ws-"+k);el.value=state.ws[k]||"";el.addEventListener("input",()=>{state.ws[k]=el.value;save();});});
+  $("#ws-copy").addEventListener("click",()=>{const t=`5-step algorithm: ${$("#ws-name").value||"(unnamed)"}\n\n`+WS.map(([k,h])=>`${h}\n${$("#ws-"+k).value||"-"}`).join("\n\n");
+    navigator.clipboard.writeText(t).then(()=>$("#ws-msg").textContent="Copied",()=>$("#ws-msg").textContent="Copy blocked here: select the text manually");});
+  $("#ws-clear").addEventListener("click",()=>{if($("#ws-clear").dataset.c!=="1"){$("#ws-clear").dataset.c="1";$("#ws-clear").textContent="Click again to clear";return;}
+    fields.forEach(k=>{$("#ws-"+k).value="";});state.ws={};save();$("#ws-clear").dataset.c="";$("#ws-clear").textContent="Clear";$("#ws-msg").textContent="Cleared";});
+  const pick=()=>{const v=n=>new FormData($("#chooser")).get(n),c1=v("c1"),c2=v("c2"),c3=v("c3"),c4=v("c4");const rec=[];
+    if(c3==="new")rec.push(c1==="unclear"?["design","Design Thinking","to understand what users really need"]:["startup","Lean Startup","to test whether the idea is worth building"]);
+    if(c1==="unclear"&&c3!=="new")rec.push(["design","Design Thinking","to understand the people the process serves"]);
+    if(c4==="cost"||c2==="big")rec.push(["first","First Principles Thinking","to find the theoretical minimum and challenge fixed beliefs"]);
+    if(c4==="speed")rec.push(["algorithm","The 5-Step Algorithm","to question requirements and delete steps"]);
+    if(c4==="capacity")rec.push(["toc","Theory of Constraints","to find and exploit the bottleneck"]);
+    if(c3==="flow")rec.push(["agile","The Kanban Method","to visualise work and limit WIP"]);
+    if(c4==="defects"&&c1==="clear")rec.push(["","Lean Six Sigma DMAIC (in the course)","to find root causes with data"]);
+    if(c2==="big"&&c3==="ops")rec.push(["bpr","Business Process Reengineering","for a blank-sheet redesign, with strong change management"]);
+    if(c2==="small")rec.push(["kata","Toyota Kata","to make small improvements a daily habit"]);
+    const seen=new Set(),out=rec.filter(r=>!seen.has(r[1])&&seen.add(r[1])).slice(0,3);
+    $("#chooser-out").innerHTML=`<div class="result"><span class="eyebrow">Recommended for your situation</span><ol style="margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px">${out.map(r=>`<li><strong>${r[0]?`<a href="#${r[0]}">${r[1]}</a>`:`<a href="index.html#m6">${r[1]}</a>`}</strong> ${r[2]}</li>`).join("")}</ol></div>`;};
+  $("#chooser").addEventListener("change",pick);pick();}
+function viewQuiz(){return `<div class="head"><span class="eyebrow">Choose and practise</span><h1>Final quiz</h1><p class="lede">15 questions across all ten tutorials, with an explanation for each answer.</p></div>
+  <div class="block" id="qz"><div class="block-head"><h2>Questions</h2><div class="row"><span class="score"></span><button class="btn reset">Reset</button></div></div><div class="qlist">${quizHTML(QUIZ)}</div></div>${pager("quiz")}`;}
+
+/* ============================== THEME ============================== */
+const ROOT=document.documentElement;
+try{const t=localStorage.getItem("lss-theme");if(t==="light"||t==="dark")ROOT.dataset.theme=t;}catch(e){}
+const curTheme=()=>ROOT.dataset.theme||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");
+const ICON={moon:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>`,sun:`<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>`};
+function paintThemeBtn(){const d=curTheme()==="dark",b=$("#themeBtn");b.innerHTML=d?ICON.sun:ICON.moon;const l=d?"Switch to light mode":"Switch to dark mode";b.setAttribute("aria-label",l);b.title=l;}
+
+/* ============================== KEY TERMS ============================== */
+let TERM_RE=null;const TERM_MAP={};
+function buildTerms(){GLOSSARY.forEach(([t],i)=>{const k=t.toLowerCase();if(!(k in TERM_MAP))TERM_MAP[k]={i,a:t};});
+  const keys=Object.values(TERM_MAP).map(v=>v.a).sort((a,b)=>b.length-a.length).map(a=>a.replace(/[.*+?^${}()|[\]\\]/g,"\\$&"));
+  TERM_RE=new RegExp(`(?<![\\w-])(${keys.join("|")})(?:s|es|ing)?(?![\\w])`,"gi");}
+function linkTerms(root){if(!TERM_RE)buildTerms();const used=new Set();
+  root.querySelectorAll(".prose,.steps").forEach(pr=>{const w=document.createTreeWalker(pr,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement.closest(".term,.formula,code,a,th,figure,button,h1,h2,h3,h4,.eyebrow,b")?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT});
+    const nodes=[];while(w.nextNode())nodes.push(w.currentNode);
+    nodes.forEach(n=>{const txt=n.nodeValue;TERM_RE.lastIndex=0;let m,last=0,frag=null;
+      while((m=TERM_RE.exec(txt))){const hit=TERM_MAP[m[1].toLowerCase()];if(!hit||used.has(hit.i))continue;if(hit.a.length<=4&&m[1]!==hit.a)continue;
+        used.add(hit.i);frag=frag||document.createDocumentFragment();frag.append(txt.slice(last,m.index));
+        const b=document.createElement("button");b.type="button";b.className="term";b.dataset.g=hit.i;b.setAttribute("aria-expanded","false");b.textContent=m[0];frag.append(b);last=m.index+m[0].length;}
+      if(frag){frag.append(txt.slice(last));n.replaceWith(frag);}});});}
+const pop=document.createElement("div");pop.id="pop";pop.setAttribute("role","tooltip");pop.hidden=true;document.body.appendChild(pop);
+let popFor=null,pinned=false;
+function showPop(b,pin){const [t,d]=GLOSSARY[+b.dataset.g];pop.innerHTML=`<b>${esc(t)}</b>${esc(d)}`;pop.hidden=false;
+  if(popFor&&popFor!==b)popFor.setAttribute("aria-expanded","false");popFor=b;pinned=!!pin;b.setAttribute("aria-expanded","true");
+  const r=b.getBoundingClientRect(),pw=pop.offsetWidth,ph=pop.offsetHeight;let x=Math.min(Math.max(12,r.left+r.width/2-pw/2),innerWidth-pw-12),y=r.bottom+8;if(y+ph>innerHeight-8)y=r.top-ph-8;
+  pop.style.left=x+"px";pop.style.top=Math.max(8,y)+"px";}
+function hidePop(){pop.hidden=true;pinned=false;if(popFor)popFor.setAttribute("aria-expanded","false");popFor=null;}
+document.addEventListener("mouseover",e=>{const b=e.target.closest&&e.target.closest(".term");if(b&&!pinned)showPop(b);});
+document.addEventListener("mouseout",e=>{const b=e.target.closest&&e.target.closest(".term");if(b&&!pinned&&!b.contains(e.relatedTarget))hidePop();});
+document.addEventListener("focusin",e=>{if(e.target.classList&&e.target.classList.contains("term"))showPop(e.target);});
+document.addEventListener("focusout",e=>{if(e.target.classList&&e.target.classList.contains("term")&&!pinned)hidePop();});
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest(".term");if(b){e.preventDefault();if(pinned&&popFor===b)hidePop();else showPop(b,true);}else if(!pop.contains(e.target))hidePop();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")hidePop();});
+addEventListener("scroll",()=>{if(!pop.hidden&&popFor){const r=popFor.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)hidePop();else showPop(popFor,pinned);}},{passive:true});
+
+/* ============================== ROUTER ============================== */
+function setCurrent(id){document.querySelectorAll("#nav a").forEach(a=>{if(a.dataset.id===id)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");});}
+function route(){const id=(location.hash||"#home").slice(1),v=$("#view"),s=SECTIONS.find(x=>x.id===id);hidePop();
+  if(s){v.innerHTML=viewSection(s);if(s.quiz)wireQuiz($("#qz"),s.quiz,s.id);linkTerms(v);}
+  else if(id==="tools"){v.innerHTML=viewTools();wireTools();}
+  else if(id==="quiz"){v.innerHTML=viewQuiz();wireQuiz($("#qz"),QUIZ,"quiz");}
+  else v.innerHTML=viewHome();
+  setCurrent(PAGES.some(p=>p.id===id)?id:"home");$("#side").classList.remove("open");$("#menuBtn").setAttribute("aria-expanded","false");window.scrollTo(0,0);}
+$("#menuBtn").addEventListener("click",()=>{const o=$("#side").classList.toggle("open");$("#menuBtn").setAttribute("aria-expanded",o);});
+$("#themeBtn").addEventListener("click",()=>{const n=curTheme()==="dark"?"light":"dark";ROOT.dataset.theme=n;try{localStorage.setItem("lss-theme",n);}catch(e){}paintThemeBtn();});
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",paintThemeBtn);
+addEventListener("hashchange",route);
+paintThemeBtn();renderNav();route();
+</script>
+</body>
+</html>
